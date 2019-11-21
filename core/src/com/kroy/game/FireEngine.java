@@ -7,7 +7,8 @@ package com.kroy.game;
 public class FireEngine extends Unit{
     int volumeOfWater;
 
-    public FireEngine(int volumeOfWater){
+    public FireEngine(int volumeOfWater,int movementSpeed, int health, int range, Point position){
+        super(movementSpeed, health, range, position);
         this.volumeOfWater = volumeOfWater;
     }
 

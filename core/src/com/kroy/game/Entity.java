@@ -5,7 +5,7 @@ import static java.lang.Math.abs;
 /**
  *
  */
-private class Entity {
+public class Entity {
     int health;
     int range;
     Point position;
