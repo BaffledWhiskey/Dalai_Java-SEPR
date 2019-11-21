@@ -5,7 +5,8 @@ public class AlienPatrol extends Unit{
     boolean hunting;
     Point[] patrolRoute;
 
-    public AlienPatrol(boolean hunting, Point[] patrolRoute){
+    public AlienPatrol(boolean hunting, Point[] patrolRoute, int movementSpeed, int health, int range, Point position){
+        super(movementSpeed, health,  range, position);
         this.hunting = hunting;
         this.patrolRoute = patrolRoute;
     }
