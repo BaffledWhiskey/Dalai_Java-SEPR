@@ -1,4 +1,4 @@
-package com.kroy.game;
+package com.kroy.screens;
 
 
 import java.util.Iterator;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Screen;
+import com.kroy.game.KROY;
 
 
 public class GameScreen implements Screen {

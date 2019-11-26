@@ -1,4 +1,6 @@
-package com.kroy.game;
+package com.kroy.entities;
+
+import com.kroy.game.Point;
 
 /**
  *  Unit class extends the entity class and has the children of Alien patrol and FireEngine

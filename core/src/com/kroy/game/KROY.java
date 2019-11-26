@@ -1,10 +1,9 @@
 package com.kroy.game;
 
 import com.badlogic.gdx.Game;
-import com.kroy.game.GameScreen;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
+import com.kroy.screens.MainMenuScreen;
 
 
 public class KROY extends Game {

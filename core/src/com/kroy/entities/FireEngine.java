@@ -1,4 +1,6 @@
-package com.kroy.game;
+package com.kroy.entities;
+
+import com.kroy.game.Point;
 
 /**
  *

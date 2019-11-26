@@ -1,4 +1,4 @@
-package com.kroy.game;
+package com.kroy.entities;
 
 public class Fortress {
 

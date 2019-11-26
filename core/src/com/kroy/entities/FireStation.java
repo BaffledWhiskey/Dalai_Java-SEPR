@@ -1,6 +1,7 @@
-package com.kroy.game;
+package com.kroy.entities;
 
-import java.util.concurrent.TimeUnit;
+import com.kroy.game.Point;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
