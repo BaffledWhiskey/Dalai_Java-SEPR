@@ -31,10 +31,10 @@ public class MainMenuScreen implements Screen {
 
     public MainMenuScreen(KROY game){
         this.game = game;
-        playButtonActive = new Texture("playButtonActive.png");
-        playButtonInactive = new Texture("playButton.png");
-        exitButtonActive = new Texture("exitButtonActive.png");
-        exitButtonInactive = new Texture("exitButton.png");
+        playButtonActive = new Texture("MainMenuScreen/playButtonActive.png");
+        playButtonInactive = new Texture("MainMenuScreen/playButton.png");
+        exitButtonActive = new Texture("MainMenuScreen/exitButtonActive.png");
+        exitButtonInactive = new Texture("MainMenuScreen/exitButton.png");
         kroyLogo = new Texture("KROY_logo.png");
     }
 
@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
                 this.dispose();
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new GameScreen());
             }
         }else {
             game.batch.draw(playButtonInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
