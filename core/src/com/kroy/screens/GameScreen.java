@@ -1,39 +1,34 @@
 package com.kroy.screens;
 
 
-import java.util.Iterator;
-
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.Screen;
-import com.kroy.game.KROY;
-
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 public class GameScreen implements Screen {
 
-	SpriteBatch batch;
-	Texture img;
-	KROY game;
-	public static int WIDTH = 480;
-	public static int HEIGHT = 720;
+	private OrthographicCamera camera;
+	private OrthogonalTiledMapRenderer renderer;
+	private TiledMap map;
 
-	public GameScreen(KROY game) {
-		this.game = game;
-
-	}
-
-
+	public static int WIDTH = 720;
+	public static int HEIGHT = 480;
 	@Override
-	public void show() {
+	public void render(float delta){
+		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		renderer.render();
 	}
 
 	@Override
-	public void render(float delta) {
-
+	public void show(){
+		map = new TmxMapLoader().load("maps/Map.tmx");
+		renderer = new OrthogonalTiledMapRenderer(map);
 	}
 
 	@Override
@@ -51,14 +46,17 @@ public class GameScreen implements Screen {
 
 	}
 
-	@Override
-	public void hide() {
 
+
+	public void hide(){
+		dispose();
 	}
 
 	@Override
 	public void dispose() {
-
+		map.dispose();
+		renderer.dispose();
 	}
+
 
 }
