@@ -9,14 +9,14 @@ import com.kroy.game.KROY;
 
 public class MainMenuScreen implements Screen {
 
-    private static final int BUTTON_WIDTH = 300;
-    private static final int BUTTON_HEIGHT = 150;
+    private static final int BUTTON_WIDTH = 225;
+    private static final int BUTTON_HEIGHT = 100;
     private static final int x = GameScreen.WIDTH/2;
-    private static final int EXIT_BUTTON_Y = 100;
-    private static final int PLAY_BUTTON_Y = 300;
-    private static final int KROY_LOGO_Y = 500;
-    private static final int LOGO_WIDTH = 400;
-    private static final int LOGO_HEIGHT = 200;
+    private static final int EXIT_BUTTON_Y = 50;
+    private static final int PLAY_BUTTON_Y = 175;
+    private static final int KROY_LOGO_Y = 300;
+    private static final int LOGO_WIDTH = 350;
+    private static final int LOGO_HEIGHT = 175;
 
 
 
