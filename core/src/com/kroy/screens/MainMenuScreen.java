@@ -53,7 +53,7 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT
+        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -64,7 +64,7 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(playButtonInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT
+        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
@@ -90,10 +90,13 @@ public class MainMenuScreen implements Screen {
     public void resume() { }
 
     @Override
-    public void hide() { }
+    public void hide() {
+        this.dispose();
+    }
 
     @Override
     public void dispose() {
+        Gdx.gl.glClearColor(0,0,0,1);
         playButtonActive.dispose();
         playButtonInactive.dispose();
         exitButtonActive.dispose();
