@@ -16,8 +16,8 @@ public class GameScreen implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
 
-    public static int WIDTH = 720;
-    public static int HEIGHT = 480;
+    public static int WIDTH = 1280;
+    public static int HEIGHT = 720;
 
 
 
@@ -44,9 +44,10 @@ public class GameScreen implements Screen {
 
     @Override
     public void show(){
-        map = new TmxMapLoader().load("maps/Map.tmx");
+        map = new TmxMapLoader().load("maps/2/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map);
         camera = new OrthographicCamera();
+
     }
 
 
