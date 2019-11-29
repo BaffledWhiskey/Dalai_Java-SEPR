@@ -53,17 +53,20 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
         game.batch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
+        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT
+                - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
+                && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
-                this.dispose();
                 game.setScreen(new GameScreen());
             }
         }else {
             game.batch.draw(playButtonInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
+        if(Gdx.input.getX() < x + BUTTON_WIDTH && Gdx.input.getX() > x - BUTTON_WIDTH && GameScreen.HEIGHT
+                - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
+                && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
                 Gdx.app.exit();
@@ -91,6 +94,10 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        playButtonActive.dispose();
+        playButtonInactive.dispose();
+        exitButtonActive.dispose();
+        exitButtonInactive.dispose();
+        kroyLogo.dispose();
     }
 }
