@@ -1,6 +1,13 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.kroy.game.Point;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+
+import java.util.ArrayList;
 
 import static java.lang.Math.abs;
 
@@ -11,6 +18,9 @@ public class Entity {
     int health;
     int range;
     Point position;
+    ShapeRenderer shape = new ShapeRenderer();
+    OrthographicCamera camera = new OrthographicCamera();
+
 
     /**
      * @param health The current health of the Entity
@@ -36,6 +46,21 @@ public class Entity {
             return true;
         }
         return false;
+    }
+
+    public void drawBox(ArrayList<Entity> entities) {
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeType.Line);
+        for(Entity entity : entities) {
+            if (inRange(entity)) {
+                shape.setColor(Color.RED);
+            }
+            else {
+                shape.setColor(Color.GREEN);
+            }
+        }
+        shape.rect(position.x, position.y, range * 2, range * 2);
+        shape.end();
     }
 
     public int getHealth(){
