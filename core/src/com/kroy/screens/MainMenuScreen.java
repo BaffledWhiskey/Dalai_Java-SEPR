@@ -14,9 +14,9 @@ public class MainMenuScreen implements Screen {
     private static final int x = GameScreen.WIDTH/2;
     private static final int EXIT_BUTTON_Y = 50;
     private static final int PLAY_BUTTON_Y = 175;
-    private static final int KROY_LOGO_Y = 300;
-    private static final int LOGO_WIDTH = 350;
-    private static final int LOGO_HEIGHT = 175;
+    private static final int KROY_LOGO_Y = 400;
+    private static final int LOGO_WIDTH = 600;
+    private static final int LOGO_HEIGHT = 300;
 
 
 
@@ -58,7 +58,7 @@ public class MainMenuScreen implements Screen {
                 && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
-                game.setScreen(new GameScreen());
+                game.setScreen(new GameScreen(game));
             }
         }else {
             game.batch.draw(playButtonInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
