@@ -36,7 +36,7 @@ public class GameScreen implements Screen, InputProcessor {
     private SpriteBatch sb;
 
     public static int WIDTH = 1080;
-    public static int HEIGHT = 720;
+    public static int HEIGHT = 900;
 
 
     final KROY game;
@@ -47,17 +47,19 @@ public class GameScreen implements Screen, InputProcessor {
         Texture img = new Texture("KROY_logo.png");
         Sprite test = new Sprite(img);
 
+        //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/2/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
-        camera = new OrthographicCamera();
+        camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
         test.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2);
         Gdx.input.setInputProcessor(this);
 
-        //loaded the test player model and drawing it onto the middle of the screen
+        //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
         sb = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         player = new Sprite(texture);
+        player.setOrigin(52,54);
         player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
     }
 
@@ -77,13 +79,13 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0,0,0,1) ;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
         renderer.setMap(map);
         renderer.setView(camera);
         renderer.render();
 
-
+        //section for drawing the actual sprite here
+        //I MANAGED TO LOCK THE SPRITE TO THE MAP AND NOT THE SCREEN!!!!!!!
+        sb.setProjectionMatrix(camera.combined);
         sb.begin();
         player.draw(sb);
         sb.end();
