@@ -35,7 +35,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Sprite player;
     private SpriteBatch sb;
 
-    public static int WIDTH = 1100;
+    public static int WIDTH = 1080;
     public static int HEIGHT = 720;
 
 
@@ -54,10 +54,10 @@ public class GameScreen implements Screen, InputProcessor {
         test.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2);
         Gdx.input.setInputProcessor(this);
 
+        //loaded the test player model and drawing it onto the middle of the screen
         sb = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         player = new Sprite(texture);
-
         player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
     }
 
@@ -68,9 +68,9 @@ public class GameScreen implements Screen, InputProcessor {
         //Cheap and dirty way of moving the map around, doesn't need to be permanent
         //*********************************
         if(Gdx.input.isTouched()) {
-            float x = Gdx.input.getDeltaX();
+            //float x = Gdx.input.getDeltaX(); commented out and changed the camera alterations to adjust for map scaling
             float y = Gdx.input.getDeltaY();
-            camera.position.add(-x, y, 0);
+            camera.position.add(0, y, 0);
             camera.update();
         }
         //*********************************
