@@ -6,9 +6,15 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.Map;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -23,15 +29,16 @@ public class GameScreen implements Screen, InputProcessor {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    Texture img;
-    Sprite test;
+    private Texture texture;
+    private Sprite test;
+    private Sprite player;
+    private SpriteBatch sb;
 
     public static int WIDTH = 1280;
     public static int HEIGHT = 720;
 
 
     final KROY game;
-
 
     public GameScreen(final KROY game) {
         this.game = game;
@@ -45,6 +52,12 @@ public class GameScreen implements Screen, InputProcessor {
         camera.setToOrtho(false, WIDTH, HEIGHT);
         test.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2);
         Gdx.input.setInputProcessor(this);
+
+        sb = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
+        player = new Sprite(texture);
+
+        player.setPosition(320,320); //draws the player at a position on the screen, not the map.
     }
 
 
@@ -68,6 +81,13 @@ public class GameScreen implements Screen, InputProcessor {
         renderer.setMap(map);
         renderer.setView(camera);
         renderer.render();
+
+
+        sb.begin();
+        player.draw(sb);
+        sb.end();
+
+
 
 
 
@@ -125,7 +145,16 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean keyUp(int keycode) {
         //this is to get the sprite to move as a test, I think it renders in behind the map though.
         if(keycode == Input.Keys.LEFT){
-            test.translateX(-1f);
+            player.translateX(-10f);
+        }
+        if(keycode == Input.Keys.RIGHT){
+            player.translateX(10f);
+        }
+        if (keycode == Input.Keys.UP){
+            player.translateY(10f);
+        }
+        if (keycode == Input.Keys.DOWN){
+            player.translateY(-10f);
         }
         return false;
     }
@@ -161,4 +190,7 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+
+
+
 }
