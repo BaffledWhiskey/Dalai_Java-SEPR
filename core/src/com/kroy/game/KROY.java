@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kroy.entities.Entity;
+import com.kroy.entities.Bullet;
 import com.kroy.screens.MainMenuScreen;
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class KROY extends Game {
     public BitmapFont font;
 
     public ArrayList<Entity> entities;
+
 
     public void create() {
         batch = new SpriteBatch();
