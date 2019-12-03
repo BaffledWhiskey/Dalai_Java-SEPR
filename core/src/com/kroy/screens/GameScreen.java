@@ -20,6 +20,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.game.KROY;
+import javafx.scene.input.InputEvent;
 
 import javax.swing.*;
 
@@ -34,7 +35,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Sprite player;
     private SpriteBatch sb;
 
-    public static int WIDTH = 1280;
+    public static int WIDTH = 1100;
     public static int HEIGHT = 720;
 
 
@@ -47,7 +48,7 @@ public class GameScreen implements Screen, InputProcessor {
         Sprite test = new Sprite(img);
 
         map = new TmxMapLoader().load("maps/2/Map.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map);
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
         camera = new OrthographicCamera();
         camera.setToOrtho(false, WIDTH, HEIGHT);
         test.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2);
@@ -57,7 +58,7 @@ public class GameScreen implements Screen, InputProcessor {
         texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         player = new Sprite(texture);
 
-        player.setPosition(320,320); //draws the player at a position on the screen, not the map.
+        player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
     }
 
 
@@ -190,7 +191,6 @@ public class GameScreen implements Screen, InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
 
 
 }
