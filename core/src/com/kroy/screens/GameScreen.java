@@ -52,7 +52,7 @@ public class GameScreen implements Screen, InputProcessor {
         Sprite test = new Sprite(img);
 
         //defining the camera and map characteristics
-        map = new TmxMapLoader().load("maps/2/Map.tmx");
+        map = new TmxMapLoader().load("maps/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
