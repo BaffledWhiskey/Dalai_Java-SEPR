@@ -19,8 +19,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.kroy.entities.FireEngine;
 import com.kroy.game.KROY;
+import com.kroy.game.Point;
 import javafx.scene.input.InputEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -34,6 +37,7 @@ public class GameScreen implements Screen, InputProcessor {
     private Sprite test;
     private Sprite player;
     private SpriteBatch sb;
+    private FireEngine engine;
 
     public static int WIDTH = 1080;
     public static int HEIGHT = 900;
@@ -61,6 +65,9 @@ public class GameScreen implements Screen, InputProcessor {
         player = new Sprite(texture);
         player.setOrigin(52,54);
         player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
+        //Links to fire engine class
+        Point p = new Point(Math.round(WIDTH - test.getWidth()/2), Math.round(HEIGHT - test.getHeight()/2));
+        engine = new FireEngine(50,50,50,50,p);
     }
 
 
@@ -89,11 +96,9 @@ public class GameScreen implements Screen, InputProcessor {
         sb.begin();
         player.draw(sb);
         sb.end();
-
-
-
-
-
+        //Draws a range box
+        ArrayList list = new ArrayList<FireEngine>();
+        engine.drawBox(list, camera);
 
 
         // Sound does play and so map should have been rendered. WHY???
@@ -149,15 +154,20 @@ public class GameScreen implements Screen, InputProcessor {
         //this is to get the sprite to move as a test, I think it renders in behind the map though.
         if(keycode == Input.Keys.LEFT){
             player.translateX(-10f);
+            engine.updatePosition(new Point(engine.position.x - 10,engine.position.y));
         }
         if(keycode == Input.Keys.RIGHT){
             player.translateX(10f);
+            engine.updatePosition(new Point(engine.position.x + 10,engine.position.y));
         }
         if (keycode == Input.Keys.UP){
             player.translateY(10f);
+            engine.updatePosition(new Point(engine.position.x,engine.position.y + 10));
+
         }
         if (keycode == Input.Keys.DOWN){
             player.translateY(-10f);
+            engine.updatePosition(new Point(engine.position.x,engine.position.y - 10));
         }
         return false;
     }

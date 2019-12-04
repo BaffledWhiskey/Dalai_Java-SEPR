@@ -17,9 +17,8 @@ import static java.lang.Math.abs;
 public class Entity {
     int health;
     int range;
-    Point position;
+    public Point position;
     ShapeRenderer shape = new ShapeRenderer();
-    OrthographicCamera camera = new OrthographicCamera();
 
 
     /**
@@ -48,18 +47,22 @@ public class Entity {
         return false;
     }
 
-    public void drawBox(ArrayList<Entity> entities) {
+    public void drawBox(ArrayList<Entity> entities, OrthographicCamera camera) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
+        boolean redBox = false;
         for(Entity entity : entities) {
             if (inRange(entity)) {
-                shape.setColor(Color.RED);
-            }
-            else {
-                shape.setColor(Color.GREEN);
+                redBox = true;
             }
         }
-        shape.rect(position.x, position.y, range * 2, range * 2);
+        if (redBox) {
+            shape.setColor(Color.RED);
+        }
+        else {
+            shape.setColor(Color.GREEN);
+        }
+        shape.rect(position.x + 10 - range, position.y + 10 - range, range * 2, range * 2);
         shape.end();
     }
 
@@ -70,5 +73,6 @@ public class Entity {
     public void setHealth(int health){
         this.health = health;
     }
+
 
 }
