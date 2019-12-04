@@ -100,6 +100,28 @@ public class GameScreen implements Screen, InputProcessor {
         ArrayList list = new ArrayList<FireEngine>();
         engine.drawBox(list, camera);
 
+        //If you want smooth movement can use this, don't know how to get it to work with interrupts
+        //Note: the box doesn't move smoothly with the player
+        //***********************************************************************************************************
+        /**
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            player.translateX(200f * Gdx.graphics.getDeltaTime());
+            engine.updatePosition(new Point((int) (engine.position.x + 200 * Gdx.graphics.getDeltaTime()), engine.position.y));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+            player.translateX(-1*(200f * Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point(-1*(int) (engine.position.x + 200 * Gdx.graphics.getDeltaTime()), engine.position.y));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
+            player.translateY((200f * Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point(engine.position.x, (int) (engine.position.y + 200 * Gdx.graphics.getDeltaTime())));
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
+            player.translateY(-1*(200f * Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point(engine.position.x, -1*(int) (engine.position.y + 200 * Gdx.graphics.getDeltaTime())));
+        }
+         **/
+        //****************************************************************************************************************
 
         // Sound does play and so map should have been rendered. WHY???
         //Sound sound = Gdx.audio.newSound(Gdx.files.internal("service-bell_daniel_simion.mp3"));
@@ -116,9 +138,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void show(){
-
-
-
 
     }
 
@@ -146,12 +165,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
-    }
+        //Moved this to keyDown so sprite moves when key is depressed not released
 
-    @Override
-    public boolean keyUp(int keycode) {
-        //this is to get the sprite to move as a test, I think it renders in behind the map though.
         if(keycode == Input.Keys.LEFT){
             player.translateX(-10f);
             engine.updatePosition(new Point(engine.position.x - 10,engine.position.y));
@@ -159,6 +174,7 @@ public class GameScreen implements Screen, InputProcessor {
         if(keycode == Input.Keys.RIGHT){
             player.translateX(10f);
             engine.updatePosition(new Point(engine.position.x + 10,engine.position.y));
+
         }
         if (keycode == Input.Keys.UP){
             player.translateY(10f);
@@ -169,7 +185,16 @@ public class GameScreen implements Screen, InputProcessor {
             player.translateY(-10f);
             engine.updatePosition(new Point(engine.position.x,engine.position.y - 10));
         }
+
+        return true;
+    }
+
+
+    @Override
+    public boolean keyUp(int keycode) {
+
         return false;
+
     }
 
     @Override
@@ -201,7 +226,19 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        return false;
+        //This should work to zoom the map in and out with scroll wheel, the mouse input is a bit off though
+
+        Vector3 screenCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
+        Vector3 worldCoordsBefore = camera.unproject(new Vector3(screenCoords));
+        camera.zoom += amount * camera.zoom * 0.1f;
+        camera.update();
+        Vector3 worldCoordsAfter = camera.unproject(new Vector3(screenCoords));
+        Vector3 diff = new Vector3(worldCoordsAfter).sub(worldCoordsBefore);
+        camera.position.sub(diff);
+        camera.update();
+        return true;
+
+
     }
 
 
