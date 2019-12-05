@@ -23,6 +23,8 @@ import com.kroy.entities.FireEngine;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
 import javafx.scene.input.InputEvent;
+
+import java.security.Key;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -38,6 +40,8 @@ public class GameScreen implements Screen, InputProcessor {
     private Sprite player;
     private SpriteBatch sb;
     private FireEngine engine;
+    private FireEngine engine2;
+    ArrayList<FireEngine> fireEngines;
 
     public static int WIDTH = 1080;
     public static int HEIGHT = 900;
@@ -67,11 +71,15 @@ public class GameScreen implements Screen, InputProcessor {
         //player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p,new Texture((Gdx.files.internal("Sprites/playerTest.png"))));
+        engine = new FireEngine(50,200,50,50,p, texture);
+        engine2 = new FireEngine(100, 300, 12, 32,p, texture);
         Sprite boi = engine.drawable;
         System.out.println(boi);
         boi.setOrigin(52,54);
         engine.drawable.setPosition(WIDTH - engine.drawable.getWidth()/2, HEIGHT - engine.drawable.getHeight()/2);
+        fireEngines = new ArrayList<>();
+        fireEngines.add(engine);
+        fireEngines.add(engine2);
     }
 
 
@@ -90,6 +98,16 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0,0,0,1) ;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        //Press A to control engine 1 and D to control engine 2 -- temp (will implement click to control later)
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            engine.setState(true);
+            engine2.setState(false);
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            engine.setState(false);
+            engine2.setState(true);
+        }
+
         renderer.setMap(map);
         renderer.setView(camera);
         renderer.render();
@@ -99,29 +117,42 @@ public class GameScreen implements Screen, InputProcessor {
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
         engine.drawable.draw(sb);
+        engine2.drawable.draw(sb);
         //player.draw(sb);
         sb.end();
         //Draws a range box
         ArrayList list = new ArrayList<FireEngine>();
         engine.drawBox(list, camera, engine.drawable);
+        engine2.drawBox(list,camera,engine2.drawable);
 
         //If you want smooth movement can use this, don't know how to get it to work with interrupts
         //***********************************************************************************************************
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            engine.drawable.translateX((int)(engine.movementSpeed) * Gdx.graphics.getDeltaTime());
-            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            engine.drawable.translateX( (int)((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            engine.drawable.translateY((int)((engine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            engine.drawable.translateY((int) ((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
+
+        for(FireEngine fireEngine: fireEngines) {
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                if(fireEngine.isActive) {
+                    fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
+                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                if(fireEngine.isActive) {
+                    fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                if (fireEngine.isActive) {
+                    fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
+                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                }
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                if(fireEngine.isActive) {
+                    fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                }
+            }
         }
         //****************************************************************************************************************
 

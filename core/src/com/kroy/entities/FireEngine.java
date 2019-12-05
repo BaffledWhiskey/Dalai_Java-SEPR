@@ -9,12 +9,18 @@ import com.kroy.game.Point;
  */
 public class FireEngine extends Unit{
     int volumeOfWater;
+    public boolean isActive;
 
 
     public FireEngine(int volumeOfWater, int movementSpeed, int health, int range, Point position, Texture img){
         super(movementSpeed, health, range, position,img);
         this.volumeOfWater = volumeOfWater;
     }
+
+    public void setState(boolean state){
+        isActive = state;
+    }
+
 
     /**
      *
