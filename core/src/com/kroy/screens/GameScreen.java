@@ -48,26 +48,30 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(final KROY game) {
         this.game = game;
 
-        Texture img = new Texture("KROY_logo.png");
-        Sprite test = new Sprite(img);
+
+
 
         //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
-        test.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2);
+
         Gdx.input.setInputProcessor(this);
 
         //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
         sb = new SpriteBatch();
         texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
-        player = new Sprite(texture);
-        player.setOrigin(52,54);
-        player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
+        //player = new Sprite(texture);
+        //player.setOrigin(52,54);
+        //player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
         //Links to fire engine class
-        Point p = new Point(Math.round(WIDTH - test.getWidth()/2), Math.round(HEIGHT - test.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p);
+        Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
+        engine = new FireEngine(50,200,50,50,p,new Texture((Gdx.files.internal("Sprites/playerTest.png"))));
+        Sprite boi = engine.drawable;
+        System.out.println(boi);
+        boi.setOrigin(52,54);
+        engine.drawable.setPosition(WIDTH - engine.drawable.getWidth()/2, HEIGHT - engine.drawable.getHeight()/2);
     }
 
 
@@ -94,30 +98,30 @@ public class GameScreen implements Screen, InputProcessor {
         //I MANAGED TO LOCK THE SPRITE TO THE MAP AND NOT THE SCREEN!!!!!!!
         sb.setProjectionMatrix(camera.combined);
         sb.begin();
-        player.draw(sb);
+        engine.drawable.draw(sb);
+        //player.draw(sb);
         sb.end();
         //Draws a range box
         ArrayList list = new ArrayList<FireEngine>();
-        engine.drawBox(list, camera, player);
+        engine.drawBox(list, camera, engine.drawable);
 
         //If you want smooth movement can use this, don't know how to get it to work with interrupts
         //***********************************************************************************************************
-
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            player.translateX((int)(engine.movementSpeed) * Gdx.graphics.getDeltaTime());
-            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
+            engine.drawable.translateX((int)(engine.movementSpeed) * Gdx.graphics.getDeltaTime());
+            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            player.translateX( (int)((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
+            engine.drawable.translateX( (int)((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            player.translateY((int)((engine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
+            engine.drawable.translateY((int)((engine.movementSpeed) * Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            player.translateY((int) ((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
+            engine.drawable.translateY((int) ((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(engine.drawable.getX()) , (int)engine.drawable.getY()));
         }
         //****************************************************************************************************************
 

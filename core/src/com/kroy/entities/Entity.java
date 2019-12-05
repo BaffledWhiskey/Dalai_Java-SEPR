@@ -1,6 +1,7 @@
 package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.kroy.game.Point;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,18 +15,28 @@ import static java.lang.Math.abs;
 /**
  *
  */
-public class Entity {
+public class Entity{
     int health;
     int range;
     public Point position;
     ShapeRenderer shape = new ShapeRenderer();
+    public Sprite drawable;
 
 
     /**
      * @param health The current health of the Entity
      * @param range The maximum range that the Entity can attack from
      * @param position The current position of the Entity
+     * @param img The texture of the entity that is to be drawn
      */
+    public Entity(int health, int range, Point position,Texture img){
+        this.health = health;
+        this.range = range;
+        this.position = position;
+        this.drawable = new Sprite(img);
+        drawable.setPosition(position.x,position.y);
+    }
+
     public Entity(int health, int range, Point position){
         this.health = health;
         this.range = range;

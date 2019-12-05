@@ -1,5 +1,6 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
 /**
@@ -9,8 +10,9 @@ import com.kroy.game.Point;
 public class FireEngine extends Unit{
     int volumeOfWater;
 
-    public FireEngine(int volumeOfWater,int movementSpeed, int health, int range, Point position){
-        super(movementSpeed, health, range, position);
+
+    public FireEngine(int volumeOfWater, int movementSpeed, int health, int range, Point position, Texture img){
+        super(movementSpeed, health, range, position,img);
         this.volumeOfWater = volumeOfWater;
     }
 

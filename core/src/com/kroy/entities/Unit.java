@@ -1,5 +1,6 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
 /**
@@ -8,8 +9,8 @@ import com.kroy.game.Point;
 public class Unit extends Entity {
     public int movementSpeed;
 
-    public Unit(int movementSpeed, int health, int range, Point position){
-        super(health,range,position);
+    public Unit(int movementSpeed, int health, int range, Point position, Texture img){
+        super(health,range,position,img);
         this.movementSpeed = movementSpeed;
     }
 
