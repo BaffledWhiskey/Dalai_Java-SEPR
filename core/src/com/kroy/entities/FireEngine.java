@@ -17,8 +17,12 @@ public class FireEngine extends Unit{
         this.volumeOfWater = volumeOfWater;
     }
 
-    public void setState(boolean state){
-        isActive = state;
+    public void toggleState(){
+        if(isActive){
+            isActive = false;
+        }else {
+            isActive = true;
+        }
     }
 
 

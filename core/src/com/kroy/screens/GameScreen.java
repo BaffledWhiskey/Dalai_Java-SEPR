@@ -98,14 +98,17 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0,0,0,1) ;
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //Press A to control engine 1 and D to control engine 2 -- temp (will implement click to control later)
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            engine.setState(true);
-            engine2.setState(false);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            engine.setState(false);
-            engine2.setState(true);
+
+
+        //This works some of the time, needs fixing - struggling to get the bounds right, might need a click method for Classes or
+        for(FireEngine fireEngine: fireEngines){
+            if(Gdx.input.getX() > fireEngine.position.x && Gdx.input.getX() < fireEngine.position.x + fireEngine.drawable.getWidth() &&
+            GameScreen.HEIGHT-Gdx.input.getY() > fireEngine.position.y && GameScreen.HEIGHT-Gdx.input.getY() < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
+                System.out.println("im here ");
+                if(Gdx.input.isTouched()) {
+                    fireEngine.toggleState();
+                }
+            }
         }
 
         renderer.setMap(map);
