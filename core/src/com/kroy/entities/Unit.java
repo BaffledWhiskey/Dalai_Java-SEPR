@@ -6,7 +6,7 @@ import com.kroy.game.Point;
  *  Unit class extends the entity class and has the children of Alien patrol and FireEngine
  */
 public class Unit extends Entity {
-    int movementSpeed;
+    public int movementSpeed;
 
     public Unit(int movementSpeed, int health, int range, Point position){
         super(health,range,position);

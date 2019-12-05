@@ -67,7 +67,7 @@ public class GameScreen implements Screen, InputProcessor {
         player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - test.getWidth()/2), Math.round(HEIGHT - test.getHeight()/2));
-        engine = new FireEngine(50,50,50,50,p);
+        engine = new FireEngine(50,200,50,50,p);
     }
 
 
@@ -104,19 +104,19 @@ public class GameScreen implements Screen, InputProcessor {
         //***********************************************************************************************************
 
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            player.translateX((int)200f * Gdx.graphics.getDeltaTime());
+            player.translateX((int)(engine.movementSpeed) * Gdx.graphics.getDeltaTime());
             engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            player.translateX((int) (200f * -Gdx.graphics.getDeltaTime()));
+            player.translateX( (int)((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
             engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            player.translateY((int)(200f * Gdx.graphics.getDeltaTime()));
+            player.translateY((int)((engine.movementSpeed) * Gdx.graphics.getDeltaTime()));
             engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            player.translateY((int) (200f * -Gdx.graphics.getDeltaTime()));
+            player.translateY((int) ((engine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
             engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         //****************************************************************************************************************
