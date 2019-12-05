@@ -98,29 +98,27 @@ public class GameScreen implements Screen, InputProcessor {
         sb.end();
         //Draws a range box
         ArrayList list = new ArrayList<FireEngine>();
-        engine.drawBox(list, camera);
+        engine.drawBox(list, camera, player);
 
         //If you want smooth movement can use this, don't know how to get it to work with interrupts
-        //Note: the box doesn't move smoothly with the player
         //***********************************************************************************************************
-        /**
+
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            player.translateX(200f * Gdx.graphics.getDeltaTime());
-            engine.updatePosition(new Point((int) (engine.position.x + 200 * Gdx.graphics.getDeltaTime()), engine.position.y));
+            player.translateX((int)200f * Gdx.graphics.getDeltaTime());
+            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.LEFT)){
-            player.translateX(-1*(200f * Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point(-1*(int) (engine.position.x + 200 * Gdx.graphics.getDeltaTime()), engine.position.y));
+            player.translateX((int) (200f * -Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
         if(Gdx.input.isKeyPressed(Input.Keys.UP)){
-            player.translateY((200f * Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point(engine.position.x, (int) (engine.position.y + 200 * Gdx.graphics.getDeltaTime())));
+            player.translateY((int)(200f * Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)){
-            player.translateY(-1*(200f * Gdx.graphics.getDeltaTime()));
-            engine.updatePosition(new Point(engine.position.x, -1*(int) (engine.position.y + 200 * Gdx.graphics.getDeltaTime())));
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            player.translateY((int) (200f * -Gdx.graphics.getDeltaTime()));
+            engine.updatePosition(new Point( (int)(player.getX()) , (int)player.getY()));
         }
-         **/
         //****************************************************************************************************************
 
         // Sound does play and so map should have been rendered. WHY???
@@ -166,7 +164,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         //Moved this to keyDown so sprite moves when key is depressed not released
-
+        /**
         if(keycode == Input.Keys.LEFT){
             player.translateX(-10f);
             engine.updatePosition(new Point(engine.position.x - 10,engine.position.y));
@@ -187,6 +185,8 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
         return true;
+         **/
+        return false;
     }
 
 

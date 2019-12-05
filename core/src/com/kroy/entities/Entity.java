@@ -47,7 +47,7 @@ public class Entity {
         return false;
     }
 
-    public void drawBox(ArrayList<Entity> entities, OrthographicCamera camera) {
+    public void drawBox(ArrayList<Entity> entities, OrthographicCamera camera, Sprite sprite) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         boolean redBox = false;
@@ -62,7 +62,7 @@ public class Entity {
         else {
             shape.setColor(Color.GREEN);
         }
-        shape.rect(position.x + 10 - range, position.y + 10 - range, range * 2, range * 2);
+        shape.rect(position.x + sprite.getWidth()/2 - range, position.y + sprite.getHeight()/2 - range, range * 2, range * 2);
         shape.end();
     }
 
