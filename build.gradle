@@ -10,8 +10,9 @@ buildscript {
         google()
     }
     dependencies {
-        
-
+        classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.4'
+        classpath 'com.android.tools.build:gradle:0.10+'
+        classpath 'com.github.jtakakura:gradle-robovm-plugin:0.0.7'
     }
 }
 
@@ -52,11 +53,11 @@ project(":desktop") {
 
 project(":core") {
     apply plugin: "java-library"
-
+    apply plugin: "java"
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
-        
+        testCompile "junit:junit:+"
     }
 }
