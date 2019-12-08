@@ -29,6 +29,14 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+//////////// ANIMATION
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+/////////// ANIMATION
+
 
 public class GameScreen implements Screen, InputProcessor {
 
@@ -48,6 +56,13 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     final KROY game;
+
+    /////// ANIMATION
+    Animation animation;
+    float elapseTime = 0f;
+    TextureAtlas textureAtlas;
+    SpriteBatch sb1;
+    ////// ANIMATION
 
     public GameScreen(final KROY game) {
         this.game = game;
@@ -80,6 +95,13 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines = new ArrayList<>();
         fireEngines.add(engine);
         fireEngines.add(engine2);
+
+
+        ////////ANIMATION
+        sb1 = new SpriteBatch();
+        textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
+        animation = new Animation(1f / 40f, textureAtlas.getRegions());
+        //////// ANIMATION
     }
 
 
@@ -156,6 +178,15 @@ public class GameScreen implements Screen, InputProcessor {
                     fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
                 }
             }
+
+            ////////ANIMATION
+            elapseTime += Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                sb1.begin();
+                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 50, 50, 1, 1, 9, true);
+                sb1.end();
+            }
+            ////// ANIMATION
         }
         //****************************************************************************************************************
 
