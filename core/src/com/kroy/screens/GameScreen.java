@@ -22,7 +22,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.entities.FireEngine;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
-import javafx.scene.input.InputEvent;
 
 import java.security.Key;
 import java.util.ArrayList;
