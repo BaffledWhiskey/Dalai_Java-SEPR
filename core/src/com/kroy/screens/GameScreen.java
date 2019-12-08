@@ -180,10 +180,15 @@ public class GameScreen implements Screen, InputProcessor {
             }
 
             ////////ANIMATION
+            sb1.setProjectionMatrix(camera.combined);
+            sb1.begin();
+            engine.drawable.draw(sb1);
+            engine2.drawable.draw(sb1);
+            sb1.end();
             elapseTime += Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 50, 50, 1, 1, 9, true);
+                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
                 sb1.end();
             }
             ////// ANIMATION
