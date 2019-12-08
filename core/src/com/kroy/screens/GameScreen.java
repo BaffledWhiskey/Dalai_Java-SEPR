@@ -29,13 +29,13 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-//////////// ANIMATION
+//////////// ANIMATION //////////////////////////////////////////////////////////////////////
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-/////////// ANIMATION
+/////////// ANIMATION //////////////////////////////////////////////////////////////////////
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -57,12 +57,12 @@ public class GameScreen implements Screen, InputProcessor {
 
     final KROY game;
 
-    /////// ANIMATION
+    /////// ANIMATION ////////////////////////////
     Animation animation;
     float elapseTime = 0f;
     TextureAtlas textureAtlas;
     SpriteBatch sb1;
-    ////// ANIMATION
+    ////// ANIMATION ///////////////////////
 
     public GameScreen(final KROY game) {
         this.game = game;
@@ -97,11 +97,11 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines.add(engine2);
 
 
-        ////////ANIMATION
+        ////////ANIMATION //////////////////////////////////////////////////////////////////////
         sb1 = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
         animation = new Animation(1f / 40f, textureAtlas.getRegions());
-        //////// ANIMATION
+        //////// ANIMATION //////////////////////////////////////////////////////////////////////
     }
 
 
@@ -179,7 +179,7 @@ public class GameScreen implements Screen, InputProcessor {
                 }
             }
 
-            ////////ANIMATION
+            ////////ANIMATION //////////////////////////////////////////////////////////////////////
             sb1.setProjectionMatrix(camera.combined);
             sb1.begin();
             engine.drawable.draw(sb1);
@@ -191,7 +191,15 @@ public class GameScreen implements Screen, InputProcessor {
                 sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
                 sb1.end();
             }
-            ////// ANIMATION
+
+            if (Gdx.input.isTouched()){
+                sb1.begin();
+                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+                sb1.end();
+            }
+
+
+            ////// ANIMATION //////////////////////////////////////////////////////////////////////
         }
         //****************************************************************************************************************
 
@@ -278,7 +286,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        return true;
     }
 
     @Override
