@@ -2,6 +2,7 @@ package com.kroy.screens;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,6 +40,24 @@ import com.badlogic.gdx.Input;
 
 public class GameScreen implements Screen, InputProcessor {
 
+    // Parameters for Pause Screen
+    private static final int BUTTON_WIDTH = 175;
+    private static final int BUTTON_HEIGHT = 50;
+    private static final int x = GameScreen.WIDTH/2;
+    private static final int EXIT_BUTTON_Y = 50;
+    private static final int PLAY_BUTTON_Y = 175;
+    private static final int KROY_LOGO_Y = 400;
+    private static final int LOGO_WIDTH = 600;
+    private static final int LOGO_HEIGHT = 300;
+
+    Texture playAgainActive;
+    Texture playAgainInactive;
+    Texture exitButtonActive;
+    Texture exitButtonInactive;
+    Texture kroyLogo;
+    Texture gameOverImage;
+
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -50,11 +69,14 @@ public class GameScreen implements Screen, InputProcessor {
     private FireEngine engine2;
     ArrayList<FireEngine> fireEngines;
 
+    private boolean gamePaused;
+
     public static int WIDTH = 1080;
     public static int HEIGHT = 900;
 
 
     final KROY game;
+    FPSLogger FPS;
 
     /////// ANIMATION ////////////////////////////
     Animation animation;
@@ -65,9 +87,15 @@ public class GameScreen implements Screen, InputProcessor {
 
     public GameScreen(final KROY game) {
         this.game = game;
+        FPS = new FPSLogger();
+        gamePaused = false;
 
-
-
+        // Pause Screen Textures
+        playAgainActive = new Texture("PauseScreen/ResumeActive.png");
+        playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
+        exitButtonActive = new Texture("PauseScreen/exitActive.png");
+        exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
+        kroyLogo = new Texture("KROY_logo.png");
 
         //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/Map.tmx");
@@ -75,6 +103,7 @@ public class GameScreen implements Screen, InputProcessor {
         camera = new OrthographicCamera(WIDTH, HEIGHT);
         camera.setToOrtho(false, WIDTH, HEIGHT);
 
+        // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
 
         //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
@@ -88,9 +117,9 @@ public class GameScreen implements Screen, InputProcessor {
         engine = new FireEngine(50,200,50,50,p, texture); // Instance Number 1
         engine2 = new FireEngine(100, 300, 12, 32,p, texture); // Instance Number 2
         engine2.toggleState(); // Sets to active for testing
-        Sprite boi = engine.drawable;
-        System.out.println(boi);
-        boi.setOrigin(52,54);
+        Sprite drawable = engine.drawable;
+
+        drawable.setOrigin(52,54);
         engine.drawable.setPosition(WIDTH - engine.drawable.getWidth()/2, HEIGHT - engine.drawable.getHeight()/2);
         fireEngines = new ArrayList<>();
         fireEngines.add(engine);
@@ -108,97 +137,135 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta){
-        //Cheap and dirty way of moving the map around, doesn't need to be permanent
-        //*********************************
-        if(Gdx.input.isTouched()) {
-            //float x = Gdx.input.getDeltaX(); commented out and changed the camera alterations to adjust for map scaling
-            float y = Gdx.input.getDeltaY();
-            camera.position.add(0, y, 0);
-            camera.update();
-        }
-        //*********************************
-        Gdx.gl.glClearColor(0,0,0,1) ;
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        renderer.setMap(map);
-        renderer.setView(camera);
-        renderer.render();
+        if(gamePaused){
+            pauseScreen();
 
-        //section for drawing the actual sprite here
-        //I MANAGED TO LOCK THE SPRITE TO THE MAP AND NOT THE SCREEN!!!!!!!
-        sb.setProjectionMatrix(camera.combined);
-        sb.begin();
-        engine.drawable.draw(sb);
-        engine2.drawable.draw(sb);
-        //player.draw(sb);
-        sb.end();
-        //Draws a range box - Testing Purposes
-        ArrayList list = new ArrayList<FireEngine>();
-        engine.drawBox(list, camera, engine.drawable);
-        engine2.drawBox(list,camera,engine2.drawable);
+        }else {
 
-        // If fire Engine is clicked on change its state to active, All other fire engines are now inActive
-
-
-        //If you want smooth movement can use this, don't know how to get it to work with interrupts
-        //***********************************************************************************************************
-        // Only moves the fire engine if its currently selected
-        for(FireEngine fireEngine: fireEngines) {
-            if (fireEngine.isActive) {
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                    }
-                }
-                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                    }
-                }
+            //Cheap and dirty way of moving the map around, doesn't need to be permanent
+            //*********************************
+            if (Gdx.input.isTouched()) {
+                //float x = Gdx.input.getDeltaX(); commented out and changed the camera alterations to adjust for map scaling
+                float y = Gdx.input.getDeltaY();
+                camera.position.add(0, y, 0);
+                camera.update();
             }
+            //*********************************
+            FPS.log(); // Prints FPS to Console
+
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-            ////////ANIMATION //////////////////////////////////////////////////////////////////////
+            renderer.setMap(map);
+            renderer.setView(camera);
+            renderer.render();
 
-            //Plays explosion when clicked or space is hit for testing purposes
-            sb1.setProjectionMatrix(camera.combined);
-            sb1.begin();
-            engine.drawable.draw(sb1);
-            engine2.drawable.draw(sb1);
-            sb1.end();
-            elapseTime += Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            //section for drawing the actual sprite here
+            //I MANAGED TO LOCK THE SPRITE TO THE MAP AND NOT THE SCREEN!!!!!!!
+            sb.setProjectionMatrix(camera.combined);
+            sb.begin();
+            engine.drawable.draw(sb);
+            engine2.drawable.draw(sb);
+            //player.draw(sb);
+            sb.end();
+            //Draws a range box - Testing Purposes
+            ArrayList list = new ArrayList<FireEngine>();
+            engine.drawBox(list, camera, engine.drawable);
+            engine2.drawBox(list, camera, engine2.drawable);
+
+            // If fire Engine is clicked on change its state to active, All other fire engines are now inActive
+
+
+            //If you want smooth movement can use this, don't know how to get it to work with interrupts
+            //***********************************************************************************************************
+            // Only moves the fire engine if its currently selected. isActive == true;
+            for (FireEngine fireEngine : fireEngines) {
+                if (fireEngine.isActive) {
+                    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                        if (fireEngine.isActive) {
+                            fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
+                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        }
+                    }
+                    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                        if (fireEngine.isActive) {
+                            fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        }
+                    }
+                    if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                        if (fireEngine.isActive) {
+                            fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
+                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        }
+                    }
+                    if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                        if (fireEngine.isActive) {
+                            fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        }
+                    }
+                }
+
+
+                ////////ANIMATION //////////////////////////////////////////////////////////////////////
+
+                //Plays explosion when clicked or space is hit for testing purposes
+                sb1.setProjectionMatrix(camera.combined);
                 sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+                engine.drawable.draw(sb1);
+                engine2.drawable.draw(sb1);
                 sb1.end();
+                elapseTime += Gdx.graphics.getDeltaTime();
+                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                    sb1.begin();
+                    sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+                    sb1.end();
+                }
+
+                if (Gdx.input.isTouched()) {
+                    sb1.begin();
+                    sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+                    sb1.end();
+                }
+
+
+                ////// ANIMATION //////////////////////////////////////////////////////////////////////
             }
+            //****************************************************************************************************************
 
-            if (Gdx.input.isTouched()){
-                sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                sb1.end();
-            }
-
-
-            ////// ANIMATION //////////////////////////////////////////////////////////////////////
         }
-        //****************************************************************************************************************
+    }
 
+    public void pauseScreen(){
+        game.batch.begin();
+        game.batch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+
+        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
+                - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
+                && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
+            game.batch.draw(playAgainActive, (x) - BUTTON_WIDTH/2 , PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            if(Gdx.input.isTouched()){
+                this.resume();
+            }
+        }else {
+            game.batch.draw(playAgainInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
+
+        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
+                - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
+                && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
+            game.batch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            if(Gdx.input.isTouched()){
+                Gdx.app.exit();
+            }
+        }else {
+            game.batch.draw(exitButtonInactive, (x) - BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+        }
+        game.batch.end();
 
     }
     @Override
@@ -222,11 +289,14 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause(){
-
+        gamePaused = true;
+        System.out.println("Pause Method Called");
     }
 
     @Override
     public void resume(){
+        gamePaused = false;
+        System.out.println("Resume Method Called");
 
     }
 
@@ -234,33 +304,45 @@ public class GameScreen implements Screen, InputProcessor {
     public void dispose(){
         map.dispose();
         renderer.dispose();
+
+        //Pause Screen
+        playAgainActive.dispose();
+        playAgainInactive.dispose();
+        exitButtonActive.dispose();
+        exitButtonInactive.dispose();
+        kroyLogo.dispose();
     }
 
     @Override
     public boolean keyDown(int keycode) {
         //Moved this to keyDown so sprite moves when key is depressed not released
-        /**
-        if(keycode == Input.Keys.LEFT){
-            player.translateX(-10f);
-            engine.updatePosition(new Point(engine.position.x - 10,engine.position.y));
-        }
-        if(keycode == Input.Keys.RIGHT){
-            player.translateX(10f);
-            engine.updatePosition(new Point(engine.position.x + 10,engine.position.y));
 
+//        if(keycode == Input.Keys.LEFT){
+//            player.translateX(-10f);
+//            engine.updatePosition(new Point(engine.position.x - 10,engine.position.y));
+//        }
+//        if(keycode == Input.Keys.RIGHT){
+//            player.translateX(10f);
+//            engine.updatePosition(new Point(engine.position.x + 10,engine.position.y));
+//
+//        }
+//        if (keycode == Input.Keys.UP){
+//            player.translateY(10f);
+//            engine.updatePosition(new Point(engine.position.x,engine.position.y + 10));
+//
+//        }
+//        if (keycode == Input.Keys.DOWN){
+//            player.translateY(-10f);
+//            engine.updatePosition(new Point(engine.position.x,engine.position.y - 10));
+//        }
+//
+//        return true;
+        if(keycode == Input.Keys.ESCAPE && gamePaused == true){
+            this.resume();
         }
-        if (keycode == Input.Keys.UP){
-            player.translateY(10f);
-            engine.updatePosition(new Point(engine.position.x,engine.position.y + 10));
-
+        else if(keycode == Input.Keys.ESCAPE && gamePaused == false){
+            this.pause();
         }
-        if (keycode == Input.Keys.DOWN){
-            player.translateY(-10f);
-            engine.updatePosition(new Point(engine.position.x,engine.position.y - 10));
-        }
-
-        return true;
-         **/
         return false;
     }
 
@@ -284,7 +366,7 @@ public class GameScreen implements Screen, InputProcessor {
             if(screenX> fireEngine.position.x && screenX < fireEngine.position.x + fireEngine.drawable.getWidth() &&
                     GameScreen.HEIGHT-screenY > fireEngine.position.y && screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
 
-                //Bad way to do it. Almost certainly more efficent way to do it.
+                // Bad way to do it. Almost certainly more efficient way to do it.
                 // Changes any active fireEngine to inActive
                 for(FireEngine checkState: fireEngines){
                     if (checkState.isActive){

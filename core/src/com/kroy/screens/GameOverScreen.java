@@ -51,6 +51,7 @@ public class GameOverScreen implements Screen {
         Gdx.gl.glClearColor(0.5f, 0.25f, 0.25f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+
         game.batch.begin();
         game.batch.draw(gameOverImage, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
