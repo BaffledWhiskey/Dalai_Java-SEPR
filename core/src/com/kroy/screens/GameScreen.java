@@ -85,8 +85,8 @@ public class GameScreen implements Screen, InputProcessor {
         //player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p, texture);
-        engine2 = new FireEngine(100, 300, 12, 32,p, texture);
+        engine = new FireEngine(50,200,50,50,p, texture); // Instance Number 1
+        engine2 = new FireEngine(100, 300, 12, 32,p, texture); // Instance Number 2
         engine2.toggleState(); // Sets to active for testing
         Sprite boi = engine.drawable;
         System.out.println(boi);
@@ -174,6 +174,8 @@ public class GameScreen implements Screen, InputProcessor {
 
 
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
+
+            //Plays explosion when clicked or space is hit for testing purposes
             sb1.setProjectionMatrix(camera.combined);
             sb1.begin();
             engine.drawable.draw(sb1);
@@ -291,7 +293,7 @@ public class GameScreen implements Screen, InputProcessor {
                 }
                 // Makes fireEngine that was just clicked Active
                 fireEngine.toggleState();
-                System.out.println("Fire Engine State Changed:" +fireEngine.isActive);
+                System.out.println("Fire Engine State Changed:" +fireEngine.isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }
         return false;
