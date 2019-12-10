@@ -60,6 +60,7 @@ public class GameScreen implements Screen, InputProcessor {
     private SpriteBatch sb;
     private FireEngine engine;
     private FireEngine engine2;
+    private FireEngine engine3;
     private ArrayList<FireEngine> fireEngines;
 
     private boolean gamePaused;
@@ -108,8 +109,10 @@ public class GameScreen implements Screen, InputProcessor {
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
         engine = new FireEngine(50,200,50,50,p, texture); // Instance Number 1
-        engine2 = new FireEngine(100, 300, 12, 32,p, texture); // Instance Number 2
-        engine2.toggleState(); // Sets to active for testing
+        engine2 = new FireEngine(200, 500, 25, 25,p, texture); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 12, 32,p, texture); // Instance Number 3
+
+        engine.toggleState(); // Sets to active for testing
         Sprite drawable = engine.drawable;
 
         drawable.setOrigin(52,54);
@@ -117,6 +120,7 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines = new ArrayList<>();
         fireEngines.add(engine);
         fireEngines.add(engine2);
+        fireEngines.add(engine3);
 
 
         ////////ANIMATION //////////////////////////////////////////////////////////////////////
@@ -130,7 +134,6 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta){
-
 
         if(gamePaused){
             pauseScreen();
@@ -157,83 +160,61 @@ public class GameScreen implements Screen, InputProcessor {
             renderer.render();
 
             //section for drawing the actual sprite here
-            //I MANAGED TO LOCK THE SPRITE TO THE MAP AND NOT THE SCREEN!!!!!!!
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
             engine.drawable.draw(sb);
             engine2.drawable.draw(sb);
+            engine3.drawable.draw(sb);
             //player.draw(sb);
             sb.end();
             //Draws a range box - Testing Purposes
             ArrayList list = new ArrayList<FireEngine>();
             engine.drawBox(list, camera, engine.drawable);
             engine2.drawBox(list, camera, engine2.drawable);
-
-            // If fire Engine is clicked on change its state to active, All other fire engines are now inActive
+            engine3.drawBox(list,camera,engine3.drawable);
 
 
             //If you want smooth movement can use this, don't know how to get it to work with interrupts
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
-            for (FireEngine fireEngine : fireEngines) {
-                if (fireEngine.isActive) {
-                    if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                        if (fireEngine.isActive) {
-                            fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
-                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                        }
-                    }
-                    if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                        if (fireEngine.isActive) {
-                            fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                        }
-                    }
-                    if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                        if (fireEngine.isActive) {
-                            fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                        }
-                    }
-                    if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                        if (fireEngine.isActive) {
-                            fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                            fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                        }
-                    }
-                }
+            fireEngineMovement();
 
 
-                ////////ANIMATION //////////////////////////////////////////////////////////////////////
+            ////////ANIMATION //////////////////////////////////////////////////////////////////////
 
-                //Plays explosion when clicked or space is hit for testing purposes
-                sb1.setProjectionMatrix(camera.combined);
+            //Plays explosion when clicked or space is hit for testing purposes
+            sb1.setProjectionMatrix(camera.combined);
+            sb1.begin();
+            engine.drawable.draw(sb1);
+            engine2.drawable.draw(sb1);
+            sb1.end();
+            elapseTime += Gdx.graphics.getDeltaTime();
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 sb1.begin();
-                engine.drawable.draw(sb1);
-                engine2.drawable.draw(sb1);
+                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
                 sb1.end();
-                elapseTime += Gdx.graphics.getDeltaTime();
-                if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                    sb1.begin();
-                    sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                    sb1.end();
-                }
-
-                if (Gdx.input.isTouched()) {
-                    sb1.begin();
-                    sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                    sb1.end();
-                }
-
-
-                ////// ANIMATION //////////////////////////////////////////////////////////////////////
             }
-            //****************************************************************************************************************
+
+            if (Gdx.input.isTouched()) {
+                sb1.begin();
+                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+                sb1.end();
+            }
+
+
+            ////// ANIMATION //////////////////////////////////////////////////////////////////////
+        //****************************************************************************************************************
 
         }
     }
 
-    public void pauseScreen(){
+    /** This method is called whenever a new screen is rendered and gamePaused == true;.
+     * The method draws the required textures to the screen over the top of the game state. No changes to the game are
+     * possible whilst this method is being called
+     *
+     */
+
+    private void pauseScreen(){
         game.batch.begin();
         game.batch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
@@ -259,6 +240,46 @@ public class GameScreen implements Screen, InputProcessor {
             game.batch.draw(exitButtonInactive, (x) - BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
         game.batch.end();
+
+    }
+
+    /** This method is called whenever a new screen is rendered and gamePaused == false;
+     * The method is responsible for the movement of each of the fire engines and checking which one should be moved by
+     * the players input. It checks through the ArrayList fireEngines and if the current FireEngine objects
+     * isActive attribute is True, then applies the needed movement to that FireEngine. It drwas the fire Engine to the
+     * new location on the screen.
+     *
+     * Once added it wil also change which fireEngine texture is needed based on the direction that it is traveling in.
+     */
+    private void fireEngineMovement(){
+        for (FireEngine fireEngine : fireEngines) {
+            if (fireEngine.isActive) {
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+            }
+        }
 
     }
     @Override
@@ -330,10 +351,10 @@ public class GameScreen implements Screen, InputProcessor {
 //        }
 //
 //        return true;
-        if(keycode == Input.Keys.ESCAPE && gamePaused == true){
+        if(keycode == Input.Keys.ESCAPE && gamePaused){
             this.resume();
         }
-        else if(keycode == Input.Keys.ESCAPE && gamePaused == false){
+        else if(keycode == Input.Keys.ESCAPE){
             this.pause();
         }
         return false;
@@ -354,7 +375,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // If clicked on a fire Engine change the isActive State
+        // If you click on a fire Engine change the isActive State
+        // Iterates through all drawn fireEngines on the screen and checks weather the mouse is over the current fireEngine
+        // If it is all FireEngines are changed to inActive and the one clicked then changed to Active.
         for(FireEngine fireEngine: fireEngines){
             if(screenX> fireEngine.position.x && screenX < fireEngine.position.x + fireEngine.drawable.getWidth() &&
                     GameScreen.HEIGHT-screenY > fireEngine.position.y && screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
@@ -371,6 +394,7 @@ public class GameScreen implements Screen, InputProcessor {
                 System.out.println("Fire Engine State Changed:" +fireEngine.isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }
+
         return false;
     }
 
