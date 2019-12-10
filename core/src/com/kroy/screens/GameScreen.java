@@ -87,6 +87,7 @@ public class GameScreen implements Screen, InputProcessor {
         Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
         engine = new FireEngine(50,200,50,50,p, texture);
         engine2 = new FireEngine(100, 300, 12, 32,p, texture);
+        engine2.toggleState(); // Sets to active for testing
         Sprite boi = engine.drawable;
         System.out.println(boi);
         boi.setOrigin(52,54);
@@ -120,18 +121,6 @@ public class GameScreen implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-
-        //This works some of the time, needs fixing - struggling to get the bounds right, might need a click method for Classes or
-        for(FireEngine fireEngine: fireEngines){
-            if(Gdx.input.getX() > fireEngine.position.x && Gdx.input.getX() < fireEngine.position.x + fireEngine.drawable.getWidth() &&
-            GameScreen.HEIGHT-Gdx.input.getY() > fireEngine.position.y && GameScreen.HEIGHT-Gdx.input.getY() < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
-                System.out.println("im here ");
-                if(Gdx.input.isTouched()) {
-                    fireEngine.toggleState();
-                }
-            }
-        }
-
         renderer.setMap(map);
         renderer.setView(camera);
         renderer.render();
@@ -144,39 +133,45 @@ public class GameScreen implements Screen, InputProcessor {
         engine2.drawable.draw(sb);
         //player.draw(sb);
         sb.end();
-        //Draws a range box
+        //Draws a range box - Testing Purposes
         ArrayList list = new ArrayList<FireEngine>();
         engine.drawBox(list, camera, engine.drawable);
         engine2.drawBox(list,camera,engine2.drawable);
 
+        // If fire Engine is clicked on change its state to active, All other fire engines are now inActive
+
+
         //If you want smooth movement can use this, don't know how to get it to work with interrupts
         //***********************************************************************************************************
-
+        // Only moves the fire engine if its currently selected
         for(FireEngine fireEngine: fireEngines) {
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                if(fireEngine.isActive) {
-                    fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
-                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+            if (fireEngine.isActive) {
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
+                }
+                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                    if (fireEngine.isActive) {
+                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    }
                 }
             }
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                if(fireEngine.isActive) {
-                    fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                }
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                if (fireEngine.isActive) {
-                    fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                }
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                if(fireEngine.isActive) {
-                    fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                    fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
-                }
-            }
+
 
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
             sb1.setProjectionMatrix(camera.combined);
@@ -202,9 +197,6 @@ public class GameScreen implements Screen, InputProcessor {
         }
         //****************************************************************************************************************
 
-        // Sound does play and so map should have been rendered. WHY???
-        //Sound sound = Gdx.audio.newSound(Gdx.files.internal("service-bell_daniel_simion.mp3"));
-        //sound.play();
 
     }
     @Override
@@ -285,7 +277,24 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return true;
+        // If clicked on a fire Engine change the isActive State
+        for(FireEngine fireEngine: fireEngines){
+            if(screenX> fireEngine.position.x && screenX < fireEngine.position.x + fireEngine.drawable.getWidth() &&
+                    GameScreen.HEIGHT-screenY > fireEngine.position.y && screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
+
+                //Bad way to do it. Almost certainly more efficent way to do it.
+                // Changes any active fireEngine to inActive
+                for(FireEngine checkState: fireEngines){
+                    if (checkState.isActive){
+                        checkState.toggleState();
+                    }
+                }
+                // Makes fireEngine that was just clicked Active
+                fireEngine.toggleState();
+                System.out.println("Fire Engine State Changed:" +fireEngine.isActive);
+            }
+        }
+        return false;
     }
 
     @Override
