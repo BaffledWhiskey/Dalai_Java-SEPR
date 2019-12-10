@@ -1,5 +1,6 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
 public class Fortress extends Tower{
@@ -10,8 +11,8 @@ public class Fortress extends Tower{
      * @param position   The position of the tower on the map
      */
 
-    public Fortress(int[] dimensions, int health, int range, Point position) {
-        super(dimensions, health, range, position);
+    public Fortress(int[] dimensions, int health, int range, Point position, Texture img) {
+        super(dimensions, health, range, position, img);
     }
 
     public int increaseHealth(){

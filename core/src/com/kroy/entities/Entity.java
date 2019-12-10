@@ -58,12 +58,13 @@ public class Entity{
         return false;
     }
 
-    public void drawBox(ArrayList<Entity> entities, OrthographicCamera camera, Sprite sprite) {
+
+    public void drawBox(ArrayList<FireEngine> target, OrthographicCamera camera, Sprite sprite) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         boolean redBox = false;
-        for(Entity entity : entities) {
-            if (inRange(entity)) {
+        for(Entity entity : target) {
+            if (this.inRange(entity)) {
                 redBox = true;
             }
         }

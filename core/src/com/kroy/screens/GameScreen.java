@@ -1,14 +1,12 @@
 package com.kroy.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,6 +15,8 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 import com.kroy.entities.FireEngine;
+import com.kroy.entities.FireStation;
+import com.kroy.entities.Fortress;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
 
@@ -27,10 +27,12 @@ import java.util.ArrayList;
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 /////////// ANIMATION //////////////////////////////////////////////////////////////////////
+
+// Testing - FireStation Co-Ords
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -52,16 +54,52 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture kroyLogo;
     private Texture gameOverImage;
 
+    //Parameters for Firestation
+    private static final int FIRE_STATION_X = 736;
+    private static final int FIRE_STATION_Y = 96;
+    private static final int FIRE_STATION_WIDTH = 192;
+    private static final int FIRE_STATION_HEIGHT = 96 ;
+
+    private Texture fireStationTexture;
+    private FireStation fireStation;
+
+    // Parameters for Fortress 1
+    private static final int FORTRESS_1_X = 736;
+    private static final int FORTRESS_1_Y = 656;
+    private static final int FORTRESS_1_WIDTH = 80;
+    private static final int FORTRESS_1_HEIGHT = 64;
+
+    // Parameters for Fortress 2
+    private static final int FORTRESS_2_X = 400;
+    private static final int FORTRESS_2_Y = 784;
+    private static final int FORTRESS_2_WIDTH = 96;
+    private static final int FORTRESS_2_HEIGHT = 96;
+
+    // Parameters for Fortress 3
+    private static final int FORTRESS_3_X = 48;
+    private static final int FORTRESS_3_Y = 702;
+    private static final int FORTRESS_3_WIDTH = 96;
+    private static final int FORTRESS_3_HEIGHT = 176;
+
+
+    private Texture fortressTexture;
+    private Fortress fortress1;
+    private Fortress fortress2;
+    private Fortress fortress3;
+
+
+
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private Texture texture;
+    private Texture fireEngineTexture;
     private SpriteBatch sb;
     private FireEngine engine;
     private FireEngine engine2;
     private FireEngine engine3;
     private ArrayList<FireEngine> fireEngines;
+    private ArrayList<Fortress> fortressList;
 
     private boolean gamePaused;
 
@@ -71,6 +109,9 @@ public class GameScreen implements Screen, InputProcessor {
 
     private final KROY game;
     private FPSLogger FPS;
+
+    // Testing - Fire Statoin Co-Ords
+    ShapeRenderer shape = new ShapeRenderer();
 
     /////// ANIMATION ////////////////////////////
     Animation animation;
@@ -91,6 +132,8 @@ public class GameScreen implements Screen, InputProcessor {
         exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
         kroyLogo = new Texture("KROY_logo.png");
 
+
+
         //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
@@ -102,15 +145,12 @@ public class GameScreen implements Screen, InputProcessor {
 
         //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
         sb = new SpriteBatch();
-        texture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
-        //player = new Sprite(texture);
-        //player.setOrigin(52,54);
-        //player.setPosition(WIDTH - test.getWidth()/2, HEIGHT - test.getHeight()/2); //draws the player at a position on the screen, not the map.
+        fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
-        Point p = new Point(Math.round(WIDTH - texture.getWidth()/2), Math.round(HEIGHT - texture.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p, texture); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 25, 25,p, texture); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 32,p, texture); // Instance Number 3
+        Point p = new Point(Math.round(WIDTH - fireEngineTexture.getWidth()/2), Math.round(HEIGHT - fireEngineTexture.getHeight()/2));
+        engine = new FireEngine(50,200,50,50,p, fireEngineTexture); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
 
         engine.toggleState(); // Sets to active for testing
         Sprite drawable = engine.drawable;
@@ -122,6 +162,42 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines.add(engine2);
         fireEngines.add(engine3);
 
+        // FireStation
+        fireStationTexture = new Texture("Sprites/FireStation.png");
+        int[] fireStationDimensions = new int[2];
+        fireStationDimensions[0] = FIRE_STATION_HEIGHT;
+        fireStationDimensions[1] = FIRE_STATION_WIDTH;
+        Point fireStationPoint = new Point(FIRE_STATION_X, FIRE_STATION_Y);
+        fireStation = new FireStation(fireStationDimensions, 200, 100, fireStationPoint, fireStationTexture);
+
+        //Fortress 1
+        fortressTexture = new Texture("Sprites/Fortress1.png");
+        int[] fortress1Dimensions = new int[2];
+        fortress1Dimensions[0] = FORTRESS_1_WIDTH;
+        fortress1Dimensions[1] = FORTRESS_1_HEIGHT;
+        Point fortress1Point = new Point(FORTRESS_1_X, FORTRESS_1_Y);
+        fortress1 = new Fortress(fortress1Dimensions, 200, 100, fortress1Point, fortressTexture);
+
+        //Fortress 2
+        fortressTexture = new Texture("Sprites/Fortress2.png");
+        int[] fortress2Dimensions = new int[2];
+        fortress2Dimensions[0] = FORTRESS_2_WIDTH;
+        fortress2Dimensions[1] = FORTRESS_2_HEIGHT;
+        Point fortress2Point = new Point(FORTRESS_2_X, FORTRESS_2_Y);
+        fortress2 = new Fortress(fortress2Dimensions, 200, 100, fortress2Point, fortressTexture);
+
+        //Fortress 3
+        fortressTexture = new Texture("Sprites/Fortress3.png");
+        int[] fortress3Dimensions = new int[2];
+        fortress3Dimensions[0] = FORTRESS_3_WIDTH;
+        fortress3Dimensions[1] = FORTRESS_3_HEIGHT;
+        Point fortress3Point = new Point(FORTRESS_3_X, FORTRESS_3_Y);
+        fortress3 = new Fortress(fortress3Dimensions, 200, 100, fortress3Point, fortressTexture);
+
+        fortressList = new ArrayList<>();
+        fortressList.add(fortress1);
+        fortressList.add(fortress2);
+        fortressList.add(fortress3);
 
         ////////ANIMATION //////////////////////////////////////////////////////////////////////
         sb1 = new SpriteBatch();
@@ -159,19 +235,27 @@ public class GameScreen implements Screen, InputProcessor {
             renderer.setView(camera);
             renderer.render();
 
-            //section for drawing the actual sprite here
+            //section for drawing the actual sprites here
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
+            fireStation.drawable.draw(sb);
             engine.drawable.draw(sb);
             engine2.drawable.draw(sb);
             engine3.drawable.draw(sb);
-            //player.draw(sb);
+            fortress1.drawable.draw(sb);
+            fortress2.drawable.draw(sb);
+            fortress3.drawable.draw(sb);
+
             sb.end();
             //Draws a range box - Testing Purposes
-            ArrayList list = new ArrayList<FireEngine>();
-            engine.drawBox(list, camera, engine.drawable);
-            engine2.drawBox(list, camera, engine2.drawable);
-            engine3.drawBox(list,camera,engine3.drawable);
+            ArrayList fireEngineList = new ArrayList<FireEngine>();
+            //engine.drawBox(fortressList, camera, engine.drawable);
+            //engine2.drawBox(fortressList, camera, engine2.drawable);
+            //engine3.drawBox(fortressList,camera,engine3.drawable);
+            //fireStation.drawBox(patrolList, camera,fireStation.drawable);
+            fortress1.drawBox(fireEngines,camera,fortress1.drawable);
+            fortress2.drawBox(fireEngines,camera,fortress2.drawable);
+            fortress3.drawBox(fireEngines,camera,fortress3.drawable);
 
 
             //If you want smooth movement can use this, don't know how to get it to work with interrupts
@@ -180,14 +264,13 @@ public class GameScreen implements Screen, InputProcessor {
             fireEngineMovement();
 
 
+            //TESTING - FINDING Co-Ords for Fire Station
+            drawRect();
+
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
 
             //Plays explosion when clicked or space is hit for testing purposes
             sb1.setProjectionMatrix(camera.combined);
-            sb1.begin();
-            engine.drawable.draw(sb1);
-            engine2.drawable.draw(sb1);
-            sb1.end();
             elapseTime += Gdx.graphics.getDeltaTime();
             if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
                 sb1.begin();
@@ -206,6 +289,19 @@ public class GameScreen implements Screen, InputProcessor {
         //****************************************************************************************************************
 
         }
+    }
+
+    /**
+     * Method that we used to find the co-oridnates of certain places
+     */
+    private void drawRect(){
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeType.Line);
+        shape.setColor(Color.RED);
+        shape.rect(48, 702, 96, 176);
+        shape.end();
+
+
     }
 
     /** This method is called whenever a new screen is rendered and gamePaused == true;.
@@ -249,7 +345,7 @@ public class GameScreen implements Screen, InputProcessor {
      * isActive attribute is True, then applies the needed movement to that FireEngine. It drwas the fire Engine to the
      * new location on the screen.
      *
-     * Once added it wil also change which fireEngine texture is needed based on the direction that it is traveling in.
+     * Once added it wil also change which fireEngine fireEngineTexture is needed based on the direction that it is traveling in.
      */
     private void fireEngineMovement(){
         for (FireEngine fireEngine : fireEngines) {

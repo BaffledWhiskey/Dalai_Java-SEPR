@@ -1,9 +1,11 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 
 public class FireStation extends Tower {
@@ -14,8 +16,9 @@ public class FireStation extends Tower {
      * @param range The range at which the station can refill/repair a Fire Engine
      * @param position The position of the fire station on the map
      */
-    public FireStation(int[] dimensions, int health, int range, Point position) {
-        super(dimensions,health,range,position);
+
+    public FireStation(int[] dimensions, int health, int range, Point position, Texture img) {
+        super(dimensions,health,range,position, img);
     }
 
     /**
