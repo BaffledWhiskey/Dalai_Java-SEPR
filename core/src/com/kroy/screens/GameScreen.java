@@ -1,7 +1,6 @@
 package com.kroy.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,25 +8,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.Map;
-import com.badlogic.gdx.maps.MapLayer;
+
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
-import com.badlogic.gdx.math.Vector2;
+
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
 import com.kroy.entities.FireEngine;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
 
-import java.security.Key;
+
 import java.util.ArrayList;
 
-import javax.swing.*;
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -50,24 +45,22 @@ public class GameScreen implements Screen, InputProcessor {
     private static final int LOGO_WIDTH = 600;
     private static final int LOGO_HEIGHT = 300;
 
-    Texture playAgainActive;
-    Texture playAgainInactive;
-    Texture exitButtonActive;
-    Texture exitButtonInactive;
-    Texture kroyLogo;
-    Texture gameOverImage;
+    private Texture playAgainActive;
+    private Texture playAgainInactive;
+    private Texture exitButtonActive;
+    private Texture exitButtonInactive;
+    private Texture kroyLogo;
+    private Texture gameOverImage;
 
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private Texture texture;
-    private Sprite test;
-    private Sprite player;
     private SpriteBatch sb;
     private FireEngine engine;
     private FireEngine engine2;
-    ArrayList<FireEngine> fireEngines;
+    private ArrayList<FireEngine> fireEngines;
 
     private boolean gamePaused;
 
@@ -75,8 +68,8 @@ public class GameScreen implements Screen, InputProcessor {
     public static int HEIGHT = 900;
 
 
-    final KROY game;
-    FPSLogger FPS;
+    private final KROY game;
+    private FPSLogger FPS;
 
     /////// ANIMATION ////////////////////////////
     Animation animation;
