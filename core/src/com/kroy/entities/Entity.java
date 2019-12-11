@@ -51,7 +51,7 @@ public class Entity{
      *         false the enemy is not in range to be attacked
      */
     public boolean inRange(Entity target){
-        if(abs(target.position.x - this.position.x) < this.range ||
+        if(abs(target.position.x - this.position.x) < this.range &&
                 abs(target.position.y - this.position.y) < this.range){
             return true;
         }
@@ -59,7 +59,7 @@ public class Entity{
     }
 
 
-    public void drawBox(ArrayList<FireEngine> target, OrthographicCamera camera, Sprite sprite) {
+    public void drawBox(ArrayList<Entity> target, OrthographicCamera camera, Sprite sprite) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         boolean redBox = false;

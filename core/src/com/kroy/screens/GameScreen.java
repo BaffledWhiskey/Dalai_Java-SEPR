@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import com.badlogic.gdx.math.Vector3;
 
+import com.kroy.entities.Entity;
 import com.kroy.entities.FireEngine;
 import com.kroy.entities.FireStation;
 import com.kroy.entities.Fortress;
@@ -83,9 +84,9 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     private Texture fortressTexture;
-    private Fortress fortress1;
-    private Fortress fortress2;
-    private Fortress fortress3;
+    private Entity fortress1;
+    private Entity fortress2;
+    private Entity fortress3;
 
 
 
@@ -95,11 +96,11 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private Texture fireEngineTexture;
     private SpriteBatch sb;
-    private FireEngine engine;
-    private FireEngine engine2;
-    private FireEngine engine3;
-    private ArrayList<FireEngine> fireEngines;
-    private ArrayList<Fortress> fortressList;
+    private Entity engine;
+    private Entity engine2;
+    private Entity engine3;
+    private ArrayList<Entity> fireEngines;
+    private ArrayList<Entity> fortressList;
 
     private boolean gamePaused;
 
@@ -152,15 +153,15 @@ public class GameScreen implements Screen, InputProcessor {
         engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
 
-        engine.toggleState(); // Sets to active for testing
+        ((FireEngine) engine).toggleState(); // Sets to active for testing
         Sprite drawable = engine.drawable;
 
         drawable.setOrigin(52,54);
         engine.drawable.setPosition(WIDTH - engine.drawable.getWidth()/2, HEIGHT - engine.drawable.getHeight()/2);
         fireEngines = new ArrayList<>();
-        fireEngines.add(engine);
-        fireEngines.add(engine2);
-        fireEngines.add(engine3);
+        fireEngines.add((FireEngine) engine);
+        fireEngines.add((FireEngine) engine2);
+        fireEngines.add((FireEngine) engine3);
 
         // FireStation
         fireStationTexture = new Texture("Sprites/FireStation.png");
@@ -249,9 +250,9 @@ public class GameScreen implements Screen, InputProcessor {
             sb.end();
             //Draws a range box - Testing Purposes
             ArrayList fireEngineList = new ArrayList<FireEngine>();
-            //engine.drawBox(fortressList, camera, engine.drawable);
-            //engine2.drawBox(fortressList, camera, engine2.drawable);
-            //engine3.drawBox(fortressList,camera,engine3.drawable);
+            engine.drawBox(fortressList, camera, engine.drawable);
+            engine2.drawBox(fortressList, camera, engine2.drawable);
+            engine3.drawBox(fortressList,camera,engine3.drawable);
             //fireStation.drawBox(patrolList, camera,fireStation.drawable);
             fortress1.drawBox(fireEngines,camera,fortress1.drawable);
             fortress2.drawBox(fireEngines,camera,fortress2.drawable);
@@ -348,30 +349,30 @@ public class GameScreen implements Screen, InputProcessor {
      * Once added it wil also change which fireEngine fireEngineTexture is needed based on the direction that it is traveling in.
      */
     private void fireEngineMovement(){
-        for (FireEngine fireEngine : fireEngines) {
-            if (fireEngine.isActive) {
+        for (Entity fireEngine : fireEngines) {
+            if (((FireEngine)fireEngine).isActive) {
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateX((int) (fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime());
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    if (((FireEngine)fireEngine).isActive) {
+                        fireEngine.drawable.translateX((int) (((FireEngine)fireEngine).movementSpeed) * Gdx.graphics.getDeltaTime());
+                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateX((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    if (((FireEngine)fireEngine).isActive) {
+                        fireEngine.drawable.translateX((int) ((((FireEngine)fireEngine).movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    if (((FireEngine)fireEngine).isActive) {
+                        fireEngine.drawable.translateY((int) ((((FireEngine)fireEngine).movementSpeed) * Gdx.graphics.getDeltaTime()));
+                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                    if (fireEngine.isActive) {
-                        fireEngine.drawable.translateY((int) ((fireEngine.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        fireEngine.updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                    if (((FireEngine)fireEngine).isActive) {
+                        fireEngine.drawable.translateY((int) ((((FireEngine)fireEngine).movementSpeed) * -Gdx.graphics.getDeltaTime()));
+                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
                     }
                 }
             }
@@ -474,20 +475,20 @@ public class GameScreen implements Screen, InputProcessor {
         // If you click on a fire Engine change the isActive State
         // Iterates through all drawn fireEngines on the screen and checks weather the mouse is over the current fireEngine
         // If it is all FireEngines are changed to inActive and the one clicked then changed to Active.
-        for(FireEngine fireEngine: fireEngines){
+        for(Entity fireEngine: fireEngines){
             if(screenX> fireEngine.position.x && screenX < fireEngine.position.x + fireEngine.drawable.getWidth() &&
                     GameScreen.HEIGHT-screenY > fireEngine.position.y && screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
 
                 // Bad way to do it. Almost certainly more efficient way to do it.
                 // Changes any active fireEngine to inActive
-                for(FireEngine checkState: fireEngines){
-                    if (checkState.isActive){
-                        checkState.toggleState();
+                for(Entity checkState: fireEngines){
+                    if (((FireEngine)checkState).isActive){
+                        ((FireEngine)checkState).toggleState();
                     }
                 }
                 // Makes fireEngine that was just clicked Active
-                fireEngine.toggleState();
-                System.out.println("Fire Engine State Changed:" +fireEngine.isActive+"\n FireEngine "+ fireEngine + " Is active");
+                ((FireEngine) fireEngine).toggleState();
+                System.out.println("Fire Engine State Changed:" +((FireEngine) fireEngine).isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }
 
