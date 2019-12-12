@@ -56,8 +56,8 @@ public class GameScreen implements Screen, InputProcessor {
     private Texture gameOverImage;
 
     //Parameters for Firestation
-    private static final int FIRE_STATION_X = 736;
-    private static final int FIRE_STATION_Y = 96;
+    private static final int FIRE_STATION_X = 832;
+    private static final int FIRE_STATION_Y = 144;
     private static final int FIRE_STATION_WIDTH = 192;
     private static final int FIRE_STATION_HEIGHT = 96 ;
 
@@ -65,20 +65,20 @@ public class GameScreen implements Screen, InputProcessor {
     private FireStation fireStation;
 
     // Parameters for Fortress 1
-    private static final int FORTRESS_1_X = 736;
-    private static final int FORTRESS_1_Y = 656;
+    private static final int FORTRESS_1_X = 776;
+    private static final int FORTRESS_1_Y = 688;
     private static final int FORTRESS_1_WIDTH = 80;
     private static final int FORTRESS_1_HEIGHT = 64;
 
     // Parameters for Fortress 2
-    private static final int FORTRESS_2_X = 400;
-    private static final int FORTRESS_2_Y = 784;
+    private static final int FORTRESS_2_X = 448;
+    private static final int FORTRESS_2_Y = 832;
     private static final int FORTRESS_2_WIDTH = 96;
     private static final int FORTRESS_2_HEIGHT = 96;
 
     // Parameters for Fortress 3
-    private static final int FORTRESS_3_X = 48;
-    private static final int FORTRESS_3_Y = 702;
+    private static final int FORTRESS_3_X = 96;
+    private static final int FORTRESS_3_Y = 790;
     private static final int FORTRESS_3_WIDTH = 96;
     private static final int FORTRESS_3_HEIGHT = 176;
 

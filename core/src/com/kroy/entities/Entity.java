@@ -34,7 +34,7 @@ public class Entity{
         this.range = range;
         this.position = position;
         this.drawable = new Sprite(img);
-        drawable.setPosition(position.x,position.y);
+        drawable.setPosition(position.x - drawable.getWidth()/2,position.y - drawable.getHeight()/2);
     }
 
     public Entity(int health, int range, Point position){
@@ -74,7 +74,7 @@ public class Entity{
         else {
             shape.setColor(Color.GREEN);
         }
-        shape.rect(position.x + sprite.getWidth()/2 - range, position.y + sprite.getHeight()/2 - range, range * 2, range * 2);
+        shape.rect(position.x - range, position.y - range, range * 2, range * 2);
         shape.end();
     }
 

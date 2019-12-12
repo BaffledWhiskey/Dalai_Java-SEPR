@@ -39,7 +39,7 @@ public class Unit extends Entity {
         else if(direction=="RIGHT"){
             this.drawable.translateX((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
         }
-        this.position = new Point((int)this.drawable.getX(),(int)this.drawable.getY());
+        this.position = new Point((int)(this.drawable.getX()+this.drawable.getWidth()/2),(int)(this.drawable.getY()+this.drawable.getHeight()/2));
 
     }
 
