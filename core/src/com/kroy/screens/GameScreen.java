@@ -228,7 +228,7 @@ public class GameScreen implements Screen, InputProcessor {
             //*********************************
             FPS.log(); // Prints FPS to Console
 
-            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClearColor(19/355f , 103/255f, 44/255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
