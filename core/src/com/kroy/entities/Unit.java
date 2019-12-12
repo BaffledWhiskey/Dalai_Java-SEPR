@@ -1,5 +1,6 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
@@ -23,8 +24,23 @@ public class Unit extends Entity {
         return false;
     }
 
-    public void updatePosition(Point newPos){
-        this.position = newPos;
+
+    //Added this so that we can move both the sprite and entity with the same method
+    public void updatePosition(String direction){
+        if(direction=="UP"){
+            this.drawable.translateY((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
+        }
+        else if(direction=="DOWN"){
+            this.drawable.translateY((int) ((this.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+        }
+        else if(direction=="LEFT"){
+            this.drawable.translateX((int) ((this.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+        }
+        else if(direction=="RIGHT"){
+            this.drawable.translateX((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
+        }
+        this.position = new Point((int)this.drawable.getX(),(int)this.drawable.getY());
+
     }
 
 }

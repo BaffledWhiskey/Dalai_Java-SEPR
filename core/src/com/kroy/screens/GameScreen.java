@@ -349,30 +349,27 @@ public class GameScreen implements Screen, InputProcessor {
      * Once added it wil also change which fireEngine fireEngineTexture is needed based on the direction that it is traveling in.
      */
     private void fireEngineMovement(){
+        //why is Entity used as the type for fire engine? - if you set it as fire engine you don't need to cast it later
         for (Entity fireEngine : fireEngines) {
             if (((FireEngine)fireEngine).isActive) {
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        fireEngine.drawable.translateX((int) (((FireEngine)fireEngine).movementSpeed) * Gdx.graphics.getDeltaTime());
-                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        ((FireEngine) fireEngine).updatePosition("RIGHT");
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        fireEngine.drawable.translateX((int) ((((FireEngine)fireEngine).movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        ((FireEngine) fireEngine).updatePosition("LEFT");
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        fireEngine.drawable.translateY((int) ((((FireEngine)fireEngine).movementSpeed) * Gdx.graphics.getDeltaTime()));
-                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        ((FireEngine) fireEngine).updatePosition("UP");
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        fireEngine.drawable.translateY((int) ((((FireEngine)fireEngine).movementSpeed) * -Gdx.graphics.getDeltaTime()));
-                        ((FireEngine)fireEngine).updatePosition(new Point((int) (fireEngine.drawable.getX()), (int) fireEngine.drawable.getY()));
+                        ((FireEngine) fireEngine).updatePosition("DOWN");
                     }
                 }
             }
