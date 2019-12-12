@@ -313,28 +313,28 @@ public class GameScreen implements Screen, InputProcessor {
 
     private void pauseScreen(){
         game.batch.begin();
-        game.batch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+        game.batch.draw(kroyLogo, GameScreen.WIDTH/2-LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
+        if(Gdx.input.getX() < GameScreen.WIDTH/2 + BUTTON_WIDTH/2 && Gdx.input.getX() > GameScreen.WIDTH/2 - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
-            game.batch.draw(playAgainActive, (x) - BUTTON_WIDTH/2 , PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(playAgainActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2 , PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
                 this.resume();
             }
         }else {
-            game.batch.draw(playAgainInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(playAgainInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
 
-        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
+        if(Gdx.input.getX() < GameScreen.WIDTH/2 + BUTTON_WIDTH/2 && Gdx.input.getX() > GameScreen.WIDTH/2 - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
-            game.batch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(exitButtonActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             if(Gdx.input.isTouched()){
                 Gdx.app.exit();
             }
         }else {
-            game.batch.draw(exitButtonInactive, (x) - BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            game.batch.draw(exitButtonInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
         game.batch.end();
 
