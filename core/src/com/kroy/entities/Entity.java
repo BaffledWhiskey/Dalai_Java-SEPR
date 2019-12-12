@@ -55,6 +55,7 @@ public class Entity{
                 abs(target.position.y - this.position.y) < this.range){
             return true;
         }
+        //Todo: Currently works well for square entitys. Needs to work for rectangles and possbily other shapes as well.
         return false;
     }
 

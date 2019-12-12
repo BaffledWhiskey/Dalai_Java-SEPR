@@ -11,14 +11,14 @@ import java.util.ArrayList;
 public class KROY extends Game {
 
     public SpriteBatch batch;
-    public BitmapFont font;
+    //public BitmapFont font;
 
-    public ArrayList<Entity> entities;
+    //public ArrayList<Entity> entities;
 
 
     public void create() {
         batch = new SpriteBatch();
-        font = new BitmapFont();
+
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -28,7 +28,7 @@ public class KROY extends Game {
 
     public void dispose() {
         batch.dispose();
-        font.dispose();
+
     }
 
 }

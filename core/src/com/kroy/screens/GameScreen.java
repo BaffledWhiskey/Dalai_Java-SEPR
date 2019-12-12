@@ -14,10 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import com.badlogic.gdx.math.Vector3;
 
-import com.kroy.entities.Entity;
-import com.kroy.entities.FireEngine;
-import com.kroy.entities.FireStation;
-import com.kroy.entities.Fortress;
+import com.kroy.entities.*;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
 
@@ -149,9 +146,9 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - fireEngineTexture.getWidth()/2), Math.round(HEIGHT - fireEngineTexture.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p, fireEngineTexture); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
+        engine = new FireEngine(50,200,50,50,p, fireEngineTexture, 2); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture, 5); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture, 1); // Instance Number 3
 
         ((FireEngine) engine).toggleState(); // Sets to active for testing
         Sprite drawable = engine.drawable;
@@ -263,10 +260,8 @@ public class GameScreen implements Screen, InputProcessor {
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
             fireEngineMovement();
+            bulletRendering();
 
-
-            //TESTING - FINDING Co-Ords for Fire Station
-            drawRect();
 
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
 
@@ -376,6 +371,17 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
     }
+    public void bulletRendering(){
+        for(Entity engine: fireEngines){
+            for(Bullet bullet: ((FireEngine)engine).bullets){
+                bullet.newPosition();
+                sb.begin();
+                bullet.drawable.draw(sb);
+                sb.end();
+            }
+        }
+    }
+
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
@@ -445,6 +451,14 @@ public class GameScreen implements Screen, InputProcessor {
 //        }
 //
 //        return true;
+        if(keycode == Input.Keys.SPACE && !gamePaused){
+            for(Entity engine: fireEngines){
+                if(((FireEngine)engine).isActive){
+                    ((FireEngine) engine).attackFortress();
+                }
+            }
+        }
+
         if(keycode == Input.Keys.ESCAPE && gamePaused){
             this.resume();
         }

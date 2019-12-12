@@ -7,4 +7,10 @@ public class Point {
         this.x = x;
         this.y = y;
     }
+
+    public double distance(Point newPosition){
+        double a = Math.abs(newPosition.x-this.x);
+        double b = Math.abs(newPosition.y-this.y);
+        return Math.hypot(a,b);
+    }
 }
