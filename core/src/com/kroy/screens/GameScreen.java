@@ -96,7 +96,7 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private Texture fireEngineTexture;
     private SpriteBatch sb;
-    private Entity engine;
+    private Entity engine1;
     private Entity engine2;
     private Entity engine3;
     private ArrayList<Entity> fireEngines;
@@ -149,19 +149,24 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
         Point p = new Point(Math.round(WIDTH - fireEngineTexture.getWidth()/2), Math.round(HEIGHT - fireEngineTexture.getHeight()/2));
-        engine = new FireEngine(50,200,50,50,p, fireEngineTexture); // Instance Number 1
+        engine1 = new FireEngine(50,200,50,50,p, fireEngineTexture); // Instance Number 1
         engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
 
-        ((FireEngine) engine).toggleState(); // Sets to active for testing
-        Sprite drawable = engine.drawable;
+        ((FireEngine) engine1).toggleState(); // Sets to active for testing
+        Sprite drawable = engine1.drawable;
 
         drawable.setOrigin(52,54);
-        engine.drawable.setPosition(WIDTH - engine.drawable.getWidth()/2, HEIGHT - engine.drawable.getHeight()/2);
+
+        // this is where the engines are drawn
+        engine1.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
+        engine2.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
+        engine3.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
+        
         fireEngines = new ArrayList<>();
-        fireEngines.add((FireEngine) engine);
-        fireEngines.add((FireEngine) engine2);
-        fireEngines.add((FireEngine) engine3);
+        fireEngines.add(engine1);
+        fireEngines.add(engine2);
+        fireEngines.add(engine3);
 
         // FireStation
         fireStationTexture = new Texture("Sprites/FireStation.png");
@@ -240,7 +245,7 @@ public class GameScreen implements Screen, InputProcessor {
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
             fireStation.drawable.draw(sb);
-            engine.drawable.draw(sb);
+            engine1.drawable.draw(sb);
             engine2.drawable.draw(sb);
             engine3.drawable.draw(sb);
             fortress1.drawable.draw(sb);
@@ -250,7 +255,7 @@ public class GameScreen implements Screen, InputProcessor {
             sb.end();
             //Draws a range box - Testing Purposes
             ArrayList fireEngineList = new ArrayList<FireEngine>();
-            engine.drawBox(fortressList, camera, engine.drawable);
+            engine1.drawBox(fortressList, camera, engine1.drawable);
             engine2.drawBox(fortressList, camera, engine2.drawable);
             engine3.drawBox(fortressList,camera,engine3.drawable);
             //fireStation.drawBox(patrolList, camera,fireStation.drawable);
