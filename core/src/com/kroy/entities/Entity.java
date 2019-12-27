@@ -19,7 +19,6 @@ public class Entity{
     int health;
     int range;
     public Point position;
-    ShapeRenderer shape = new ShapeRenderer();
     public Sprite drawable;
 
 
@@ -59,7 +58,7 @@ public class Entity{
     }
 
 
-    public void drawBox(ArrayList<Entity> target, OrthographicCamera camera, Sprite sprite) {
+    public void drawBox(ArrayList<Entity> target, OrthographicCamera camera, Sprite sprite, ShapeRenderer shape) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         boolean redBox = false;

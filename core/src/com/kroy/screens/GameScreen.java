@@ -255,13 +255,13 @@ public class GameScreen implements Screen, InputProcessor {
             sb.end();
             //Draws a range box - Testing Purposes
             ArrayList fireEngineList = new ArrayList<FireEngine>();
-            engine1.drawBox(fortressList, camera, engine1.drawable);
-            engine2.drawBox(fortressList, camera, engine2.drawable);
-            engine3.drawBox(fortressList,camera,engine3.drawable);
+            engine1.drawBox(fortressList, camera, engine1.drawable, shape);
+            engine2.drawBox(fortressList, camera, engine2.drawable, shape);
+            engine3.drawBox(fortressList,camera,engine3.drawable, shape);
             //fireStation.drawBox(patrolList, camera,fireStation.drawable);
-            fortress1.drawBox(fireEngines,camera,fortress1.drawable);
-            fortress2.drawBox(fireEngines,camera,fortress2.drawable);
-            fortress3.drawBox(fireEngines,camera,fortress3.drawable);
+            fortress1.drawBox(fireEngines,camera,fortress1.drawable, shape);
+            fortress2.drawBox(fireEngines,camera,fortress2.drawable,shape);
+            fortress3.drawBox(fireEngines,camera,fortress3.drawable, shape);
 
 
             //If you want smooth movement can use this, don't know how to get it to work with interrupts

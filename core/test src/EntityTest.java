@@ -7,7 +7,6 @@ class EntityTest {
 
 @Test
     public void testInRangeBoundary() {
-        Assertions.assertTrue(5 == 5);
         Entity e = new Entity(0,5, new Point(5,5));
         Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(9,0))));
         Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(10,0))));
@@ -15,5 +14,15 @@ class EntityTest {
         Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(0,9))));
         Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(0,10))));
         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(0,11))));
+    }
+
+    public void pointShouldBeInRangeTest() {
+        Entity e = new Entity(0,5, new Point(5,5));
+        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(3,3))));
+    }
+
+    public void pointShouldNotBeInRangeTest() {
+        Entity e = new Entity(0,5, new Point(5,5));
+        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(15,15))));
     }
 }
