@@ -54,7 +54,9 @@ public class Entity{
                 abs(target.position.y - this.position.y) < this.range){
             return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
 
