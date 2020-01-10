@@ -148,7 +148,7 @@ public class GameScreen implements Screen, InputProcessor {
         sb = new SpriteBatch();
         fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
-        Point p = new Point(Math.round(WIDTH - fireEngineTexture.getWidth()/2), Math.round(HEIGHT - fireEngineTexture.getHeight()/2));
+        Point p = new Point(Math.round(WIDTH/2 - fireEngineTexture.getWidth()/2), Math.round(HEIGHT/2 - fireEngineTexture.getHeight()/2));
         engine1 = new FireEngine(50,200,50,50,p, fireEngineTexture); // Instance Number 1
         engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
@@ -158,10 +158,7 @@ public class GameScreen implements Screen, InputProcessor {
 
         drawable.setOrigin(52,54);
 
-        // this is where the engines are drawn
-        engine1.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
-        engine2.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
-        engine3.drawable.setPosition(WIDTH - engine1.drawable.getWidth()/2, HEIGHT - engine1.drawable.getHeight()/2);
+
         
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
