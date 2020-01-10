@@ -153,10 +153,10 @@ public class GameScreen implements Screen, InputProcessor {
         engine2 = new FireEngine(200, 500, 25, 25,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 32,p, fireEngineTexture); // Instance Number 3
 
-        ((FireEngine) engine1).toggleState(); // Sets to active for testing
-        Sprite drawable = engine1.drawable;
+        //((FireEngine) engine1).toggleState(); // Sets to active for testing
+        //Sprite drawable = engine1.drawable;
 
-        drawable.setOrigin(52,54);
+        //drawable.setOrigin(52,54);
 
 
         
@@ -475,18 +475,19 @@ public class GameScreen implements Screen, InputProcessor {
         // Iterates through all drawn fireEngines on the screen and checks weather the mouse is over the current fireEngine
         // If it is all FireEngines are changed to inActive and the one clicked then changed to Active.
         for(Entity fireEngine: fireEngines){
-            if(screenX> fireEngine.position.x && screenX < fireEngine.position.x + fireEngine.drawable.getWidth() &&
-                    GameScreen.HEIGHT-screenY > fireEngine.position.y && screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
+            if(screenX > fireEngine.position.x - fireEngine.drawable.getWidth()/2 && screenX < fireEngine.position.x
+                + fireEngine.drawable.getWidth()/2 && GameScreen.HEIGHT - screenY > fireEngine.position.y - fireEngine.drawable.getHeight()/2
+                && GameScreen.HEIGHT - screenY < fireEngine.position.y + fireEngine.drawable.getHeight()/2){
 
                 // Bad way to do it. Almost certainly more efficient way to do it.
                 // Changes any active fireEngine to inActive
                 for(Entity checkState: fireEngines){
                     if (((FireEngine)checkState).isActive){
-                        ((FireEngine)checkState).toggleState();
+                        ((FireEngine)checkState).setState(false);
                     }
                 }
                 // Makes fireEngine that was just clicked Active
-                ((FireEngine) fireEngine).toggleState();
+                ((FireEngine) fireEngine).setState(true);
                 System.out.println("Fire Engine State Changed:" +((FireEngine) fireEngine).isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }

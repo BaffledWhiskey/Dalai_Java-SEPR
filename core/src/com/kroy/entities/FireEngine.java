@@ -28,12 +28,8 @@ public class FireEngine extends Unit{
     public String toString(){
         return String.valueOf(instanceNum);
     }
-    public void toggleState(){
-        if(isActive){
-            isActive = false;
-        }else {
-            isActive = true;
-        }
+    public void setState(boolean bool){
+        isActive = bool;
     }
 
 
