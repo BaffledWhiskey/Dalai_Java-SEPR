@@ -7,6 +7,7 @@
 
  class EntityTest {
 
+
     @Test
     public void insideBoundaryTest() {
         Entity e = new Entity(0,5, new Point(5,5));

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.Math.abs;
 
@@ -18,6 +20,8 @@ import static java.lang.Math.abs;
 public class Entity{
     int health;
     int range;
+    int height;
+    int width;
     public Point position;
     public Sprite drawable;
 
@@ -32,6 +36,8 @@ public class Entity{
         this.health = health;
         this.range = range;
         this.position = position;
+        this.height = img.getHeight();
+        this.width = img.getWidth();
         this.drawable = new Sprite(img);
         drawable.setPosition(position.x - drawable.getWidth()/2,position.y - drawable.getHeight()/2);
     }
@@ -50,14 +56,38 @@ public class Entity{
      *         false the enemy is not in range to be attacked
      */
     public boolean inRange(Entity target){
-        if(abs(target.position.x - this.position.x) < this.range &&
-                abs(target.position.y - this.position.y) < this.range){
+        //Middle box is target, outer is this
+        //Initialising square for the shooter
+        List<Integer> box1 = Arrays.asList(position.x, range, position.y, range);
+        //Initialising square for the target
+        List<Integer> box2 = Arrays.asList(target.position.x, target.width / 2, target.position.y, target.height / 2);
+        if(squaresOverlap(box1,box2)) {
             return true;
         }
         else {
             return false;
         }
     }
+
+    /**
+     * Returns whether or not an entity is in range to be attacked based on a square of width 2*range centered on the
+     * current Entity
+     * @param square1 and square2, two arrayLists containing the x position, width, y position and height of a square
+     * @return true the squares overlap
+     *         false the squares do not overlap
+     */
+    public boolean squaresOverlap(List<Integer> square1, List<Integer> square2) {
+        if(square2.get(0) - square2.get(1) < square1.get(0) + square1.get(1)
+                && square1.get(0) - square1.get(1) < square2.get(0) + square2.get(1)
+                && square2.get(2) - square2.get(3)  < square1.get(2) + square1.get(3)
+                && square1.get(2) - square1.get(3) <  square2.get(2) + square2.get(3)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
 
 
     public void drawBox(ArrayList<Entity> target, OrthographicCamera camera, Sprite sprite, ShapeRenderer shape) {
