@@ -1,18 +1,16 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.kroy.game.Point;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.kroy.game.Point;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static java.lang.Math.abs;
 
 /**
  *
@@ -99,6 +97,5 @@ public class Entity{
     public void setHealth(int health){
         this.health = health;
     }
-
 
 }

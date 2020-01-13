@@ -22,8 +22,8 @@ public class EntityTest {
      @Before
      public void setup() {
          mockedImg = mock(Texture.class);
-         lenient().when(mockedImg.getWidth()).thenReturn(5);
-         lenient().when(mockedImg.getHeight()).thenReturn(5);
+         when(mockedImg.getWidth()).thenReturn(5);
+         when(mockedImg.getHeight()).thenReturn(5);
      }
 
 
