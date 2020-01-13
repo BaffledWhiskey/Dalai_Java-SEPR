@@ -84,9 +84,9 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     private Texture fortressTexture;
-    private Entity fortress1;
-    private Entity fortress2;
-    private Entity fortress3;
+    private Fortress fortress1;
+    private Fortress fortress2;
+    private Fortress fortress3;
 
 
 
@@ -96,11 +96,11 @@ public class GameScreen implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private Texture fireEngineTexture;
     private SpriteBatch sb;
-    private Entity engine1;
-    private Entity engine2;
-    private Entity engine3;
-    private ArrayList<Entity> fireEngines;
-    private ArrayList<Entity> fortressList;
+    private FireEngine engine1;
+    private FireEngine engine2;
+    private FireEngine engine3;
+    private ArrayList<FireEngine> fireEngines;
+    private ArrayList<Fortress> fortressList;
 
     private boolean gamePaused;
 
@@ -202,6 +202,11 @@ public class GameScreen implements Screen, InputProcessor {
         fortressList.add(fortress2);
         fortressList.add(fortress3);
 
+        fireEngines = new ArrayList<>();
+        fireEngines.add(engine1);
+        fireEngines.add(engine2);
+        fireEngines.add(engine3);
+
         ////////ANIMATION //////////////////////////////////////////////////////////////////////
         sb1 = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
@@ -251,14 +256,14 @@ public class GameScreen implements Screen, InputProcessor {
 
             sb.end();
             //Draws a range box - Testing Purposes
-            ArrayList fireEngineList = new ArrayList<FireEngine>();
+
             engine1.drawBox(fortressList, camera, engine1.drawable, shape);
             engine2.drawBox(fortressList, camera, engine2.drawable, shape);
             engine3.drawBox(fortressList,camera,engine3.drawable, shape);
             //fireStation.drawBox(patrolList, camera,fireStation.drawable);
-            fortress1.drawBox(fireEngines,camera,fortress1.drawable, shape);
-            fortress2.drawBox(fireEngines,camera,fortress2.drawable,shape);
-            fortress3.drawBox(fireEngines,camera,fortress3.drawable, shape);
+            fortress1.drawBox(fireEngines,camera, shape);
+            fortress2.drawBox(fireEngines,camera,shape);
+            fortress3.drawBox(fireEngines,camera, shape);
 
 
             //If you want smooth movement can use this, don't know how to get it to work with interrupts
@@ -290,6 +295,23 @@ public class GameScreen implements Screen, InputProcessor {
 
             ////// ANIMATION //////////////////////////////////////////////////////////////////////
         //****************************************************************************************************************
+
+
+            for(Fortress fortress: fortressList){
+                for(FireEngine fireEngine: fireEngines){
+                    if(fireEngine.inRange(fortress)){
+                        fireEngine.attackFortress(fortress);
+                    }
+                    if(fortress.inRange(fireEngine)){
+                        fortress.attackFireEngine(fireEngine);
+                    }
+                    if(fireEngine.getHealth() <= 0){
+                        fireEngine.destroy(animation,elapseTime);
+                        //Need a way of deleting this object properly but can't figure it out
+                    }
+                }
+            }
+
 
         }
     }

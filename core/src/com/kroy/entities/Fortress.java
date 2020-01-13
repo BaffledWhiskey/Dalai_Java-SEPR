@@ -21,8 +21,8 @@ public class Fortress extends Tower{
 
 
 
-    public void attackFireEngine(FireEngine engine, int healthChangePerSecond){
-
+    public void attackFireEngine(FireEngine engine){
+        engine.setHealth(engine.getHealth() - 10);
     }
 
 }

@@ -71,7 +71,26 @@ public class Entity{
 
 
 
-    public void drawBox(ArrayList<Entity> target, OrthographicCamera camera, Sprite sprite, ShapeRenderer shape) {
+    public void drawBox(ArrayList<FireEngine> target, OrthographicCamera camera, ShapeRenderer shape) {
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeType.Line);
+        boolean redBox = false;
+        for(Entity entity : target) {
+            if (this.inRange(entity)) {
+                redBox = true;
+            }
+        }
+        if (redBox) {
+            shape.setColor(Color.RED);
+        }
+        else {
+            shape.setColor(Color.GREEN);
+        }
+        shape.rect(position.x - range, position.y - range, range * 2, range * 2);
+        shape.end();
+    }
+
+    public void drawBox(ArrayList<Fortress> target, OrthographicCamera camera, Sprite sprite, ShapeRenderer shape) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         boolean redBox = false;
