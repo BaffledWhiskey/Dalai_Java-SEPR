@@ -56,31 +56,14 @@ public class Entity{
      *         false the enemy is not in range to be attacked
      */
     public boolean inRange(Entity target){
-        //Middle box is target, outer is this
         //Initialising square for the shooter
-        List<Integer> box1 = Arrays.asList(position.x, range, position.y, range);
+        List<Integer> rangeBox = Arrays.asList(position.x, range, position.y, range);
         //Initialising square for the target
-        List<Integer> box2 = Arrays.asList(target.position.x, target.width / 2, target.position.y, target.height / 2);
-        if(squaresOverlap(box1,box2)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
-    /**
-     * Returns whether or not an entity is in range to be attacked based on a square of width 2*range centered on the
-     * current Entity
-     * @param square1 and square2, two arrayLists containing the x position, width, y position and height of a square
-     * @return true the squares overlap
-     *         false the squares do not overlap
-     */
-    public boolean squaresOverlap(List<Integer> square1, List<Integer> square2) {
-        if(square2.get(0) - square2.get(1) < square1.get(0) + square1.get(1)
-                && square1.get(0) - square1.get(1) < square2.get(0) + square2.get(1)
-                && square2.get(2) - square2.get(3)  < square1.get(2) + square1.get(3)
-                && square1.get(2) - square1.get(3) <  square2.get(2) + square2.get(3)) {
+        List<Integer> targetBox = Arrays.asList(target.position.x, target.width / 2, target.position.y, target.height / 2);
+        if(targetBox.get(0) - targetBox.get(1) < rangeBox.get(0) + rangeBox.get(1)
+                && rangeBox.get(0) - rangeBox.get(1) < targetBox.get(0) + targetBox.get(1)
+                && targetBox.get(2) - targetBox.get(3)  < rangeBox.get(2) + rangeBox.get(3)
+                && rangeBox.get(2) - rangeBox.get(3) <  targetBox.get(2) + targetBox.get(3)) {
             return true;
         }
         else {
