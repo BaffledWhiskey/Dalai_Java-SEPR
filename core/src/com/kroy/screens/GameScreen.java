@@ -38,16 +38,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    // Parameters for Pause Screen
-    private static final int BUTTON_WIDTH = 175;
-    private static final int BUTTON_HEIGHT = 50;
-    private static final int x = GameScreen.WIDTH/2;
-    private static final int EXIT_BUTTON_Y = 50;
-    private static final int PLAY_BUTTON_Y = 175;
-    private static final int KROY_LOGO_Y = 400;
-    private static final int LOGO_WIDTH = 600;
-    private static final int LOGO_HEIGHT = 300;
-
     private Texture playAgainActive;
     private Texture playAgainInactive;
     private Texture exitButtonActive;
@@ -111,6 +101,8 @@ public class GameScreen implements Screen, InputProcessor {
     private final KROY game;
     private FPSLogger FPS;
 
+    PauseScreen pauseScreen = new PauseScreen();
+
     // Testing - Fire Statoin Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
 
@@ -124,14 +116,7 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(final KROY game) {
         this.game = game;
         FPS = new FPSLogger();
-        gamePaused = false;
-
-        // Pause Screen Textures
-        playAgainActive = new Texture("PauseScreen/ResumeActive.png");
-        playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
-        exitButtonActive = new Texture("PauseScreen/exitActive.png");
-        exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
-        kroyLogo = new Texture("KROY_logo.png");
+        pauseScreen.setPaused(false);
 
 
 
@@ -220,7 +205,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta){
 
         if(gamePaused){
-            pauseScreen();
+            pauseScreen.pauseScreen(game);
 
         }else {
 
@@ -329,40 +314,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     }
 
-    /** This method is called whenever a new screen is rendered and gamePaused == true;.
-     * The method draws the required textures to the screen over the top of the game state. No changes to the game are
-     * possible whilst this method is being called
-     *
-     */
 
-    private void pauseScreen(){
-        game.batch.begin();
-        game.batch.draw(kroyLogo, GameScreen.WIDTH/2-LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
-
-        if(Gdx.input.getX() < GameScreen.WIDTH/2 + BUTTON_WIDTH/2 && Gdx.input.getX() > GameScreen.WIDTH/2 - BUTTON_WIDTH/2 && GameScreen.HEIGHT
-                - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
-                && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
-            game.batch.draw(playAgainActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2 , PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            if(Gdx.input.isTouched()){
-                this.resume();
-            }
-        }else {
-            game.batch.draw(playAgainInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        }
-
-        if(Gdx.input.getX() < GameScreen.WIDTH/2 + BUTTON_WIDTH/2 && Gdx.input.getX() > GameScreen.WIDTH/2 - BUTTON_WIDTH/2 && GameScreen.HEIGHT
-                - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
-                && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
-            game.batch.draw(exitButtonActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            if(Gdx.input.isTouched()){
-                Gdx.app.exit();
-            }
-        }else {
-            game.batch.draw(exitButtonInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        }
-        game.batch.end();
-
-    }
 
     /** This method is called whenever a new screen is rendered and gamePaused == false;
      * The method is responsible for the movement of each of the fire engines and checking which one should be moved by
@@ -421,15 +373,14 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause(){
-        gamePaused = true;
+        pauseScreen.setPaused(true);
         System.out.println("Pause Method Called");
     }
 
     @Override
     public void resume(){
-        gamePaused = false;
+        pauseScreen.setPaused(false);
         System.out.println("Resume Method Called");
-
     }
 
     @Override
@@ -469,7 +420,7 @@ public class GameScreen implements Screen, InputProcessor {
 //        }
 //
 //        return true;
-        if(keycode == Input.Keys.ESCAPE && gamePaused){
+        if(keycode == Input.Keys.ESCAPE && pauseScreen.isPaused()){
             this.resume();
         }
         else if(keycode == Input.Keys.ESCAPE){
@@ -550,6 +501,4 @@ public class GameScreen implements Screen, InputProcessor {
 
 
     }
-
-
 }
