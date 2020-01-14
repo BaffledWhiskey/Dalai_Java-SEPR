@@ -133,7 +133,7 @@ public class GameScreen implements Screen, InputProcessor {
         sb = new SpriteBatch();
         fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
-        Point p = new Point(Math.round(WIDTH/2 - fireEngineTexture.getWidth()/2), Math.round(HEIGHT/2 - fireEngineTexture.getHeight()/2));
+        Point p = new Point(830,220 );
         engine1 = new FireEngine(50,200,50,100,p, fireEngineTexture); // Instance Number 1
         engine2 = new FireEngine(200, 500, 25, 50,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 64,p, fireEngineTexture); // Instance Number 3
@@ -231,27 +231,26 @@ public class GameScreen implements Screen, InputProcessor {
             //section for drawing the actual sprites here
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
+
             fireStation.drawable.draw(sb);
-            engine1.drawable.draw(sb);
-            engine2.drawable.draw(sb);
-            engine3.drawable.draw(sb);
-            fortress1.drawable.draw(sb);
-            fortress2.drawable.draw(sb);
-            fortress3.drawable.draw(sb);
+            for(FireEngine fireEngine: fireEngines){
+                fireEngine.drawable.draw(sb);
+            }
+            for(Fortress fortress: fortressList){
+                fortress.drawable.draw(sb);
+            }
 
             sb.end();
+
             //Draws a range box - Testing Purposes
-
-            engine1.drawBox(fortressList, camera, engine1.drawable, shape);
-            engine2.drawBox(fortressList, camera, engine2.drawable, shape);
-            engine3.drawBox(fortressList,camera,engine3.drawable, shape);
-            //fireStation.drawBox(patrolList, camera,fireStation.drawable);
-            fortress1.drawBox(fireEngines,camera, shape);
-            fortress2.drawBox(fireEngines,camera,shape);
-            fortress3.drawBox(fireEngines,camera, shape);
+            for(FireEngine fireEngine: fireEngines){
+                fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+            }
+            for(Fortress fortress: fortressList){
+                fortress.drawBox(fireEngines,camera,shape);
+            }
 
 
-            //If you want smooth movement can use this, don't know how to get it to work with interrupts
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
             fireEngineMovement();
@@ -281,9 +280,10 @@ public class GameScreen implements Screen, InputProcessor {
             ////// ANIMATION //////////////////////////////////////////////////////////////////////
         //****************************************************************************************************************
 
-
+            ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             for(Fortress fortress: fortressList){
                 for(FireEngine fireEngine: fireEngines){
+
                     if(fireEngine.inRange(fortress)){
                         fireEngine.attackFortress(fortress);
                     }
@@ -293,9 +293,15 @@ public class GameScreen implements Screen, InputProcessor {
                     if(fireEngine.getHealth() <= 0){
                         fireEngine.destroy(animation,elapseTime);
                         //Need a way of deleting this object properly but can't figure it out
+                        fireEnginesToDelete.add(fireEngine);
                     }
+
                 }
             }
+            if(fireEngines.isEmpty()){
+                game.setScreen(new GameOverScreen(game));
+            }
+            fireEngines.removeAll(fireEnginesToDelete);
 
 
         }

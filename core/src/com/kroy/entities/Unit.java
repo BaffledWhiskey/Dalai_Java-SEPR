@@ -29,15 +29,19 @@ public class Unit extends Entity {
     public void updatePosition(String direction){
         if(direction=="UP"){
             this.drawable.translateY((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
+            this.drawable.setRotation(0);
         }
         else if(direction=="DOWN"){
             this.drawable.translateY((int) ((this.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+            this.drawable.setRotation(180);
         }
         else if(direction=="LEFT"){
             this.drawable.translateX((int) ((this.movementSpeed) * -Gdx.graphics.getDeltaTime()));
+            this.drawable.setRotation(270);
         }
         else if(direction=="RIGHT"){
             this.drawable.translateX((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
+            this.drawable.setRotation(90);
         }
         this.position = new Point((int)(this.drawable.getX()+this.drawable.getWidth()/2),(int)(this.drawable.getY()+this.drawable.getHeight()/2));
 
