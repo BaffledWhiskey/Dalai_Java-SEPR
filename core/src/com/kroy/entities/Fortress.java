@@ -22,7 +22,7 @@ public class Fortress extends Tower{
 
 
     public void attackFireEngine(FireEngine engine){
-        engine.setHealth(engine.getHealth() - 10);
+        engine.setHealth(engine.getHealth() - 1);
     }
 
 }

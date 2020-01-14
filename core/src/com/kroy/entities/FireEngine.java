@@ -71,7 +71,7 @@ public class FireEngine extends Unit{
         else{
             SpriteBatch sb = new SpriteBatch();
             sb.begin();
-                sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 20, 20, 80, 80, 1, 1, 9, true);
+                sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
             sb.end();
             sb.dispose();
         }

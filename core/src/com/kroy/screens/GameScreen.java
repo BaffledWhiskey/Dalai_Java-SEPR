@@ -34,6 +34,7 @@ import com.badlogic.gdx.Input;
 
 // Testing - FireStation Co-Ords
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import sun.security.util.ArrayUtil;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -246,27 +247,26 @@ public class GameScreen implements Screen, InputProcessor {
             //section for drawing the actual sprites here
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
+
             fireStation.drawable.draw(sb);
-            engine1.drawable.draw(sb);
-            engine2.drawable.draw(sb);
-            engine3.drawable.draw(sb);
-            fortress1.drawable.draw(sb);
-            fortress2.drawable.draw(sb);
-            fortress3.drawable.draw(sb);
+            for(FireEngine fireEngine: fireEngines){
+                fireEngine.drawable.draw(sb);
+            }
+            for(Fortress fortress: fortressList){
+                fortress.drawable.draw(sb);
+            }
 
             sb.end();
+
             //Draws a range box - Testing Purposes
-
-            engine1.drawBox(fortressList, camera, engine1.drawable, shape);
-            engine2.drawBox(fortressList, camera, engine2.drawable, shape);
-            engine3.drawBox(fortressList,camera,engine3.drawable, shape);
-            //fireStation.drawBox(patrolList, camera,fireStation.drawable);
-            fortress1.drawBox(fireEngines,camera, shape);
-            fortress2.drawBox(fireEngines,camera,shape);
-            fortress3.drawBox(fireEngines,camera, shape);
+            for(FireEngine fireEngine: fireEngines){
+                fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+            }
+            for(Fortress fortress: fortressList){
+                fortress.drawBox(fireEngines,camera,shape);
+            }
 
 
-            //If you want smooth movement can use this, don't know how to get it to work with interrupts
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
             fireEngineMovement();
@@ -296,9 +296,10 @@ public class GameScreen implements Screen, InputProcessor {
             ////// ANIMATION //////////////////////////////////////////////////////////////////////
         //****************************************************************************************************************
 
-
+            ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             for(Fortress fortress: fortressList){
                 for(FireEngine fireEngine: fireEngines){
+
                     if(fireEngine.inRange(fortress)){
                         fireEngine.attackFortress(fortress);
                     }
@@ -308,9 +309,12 @@ public class GameScreen implements Screen, InputProcessor {
                     if(fireEngine.getHealth() <= 0){
                         fireEngine.destroy(animation,elapseTime);
                         //Need a way of deleting this object properly but can't figure it out
+                        fireEnginesToDelete.add(fireEngine);
                     }
+
                 }
             }
+            fireEngines.removeAll(fireEnginesToDelete);
 
 
         }
