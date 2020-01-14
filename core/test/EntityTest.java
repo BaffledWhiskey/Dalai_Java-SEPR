@@ -32,12 +32,19 @@ public class EntityTest {
          Assertions.assertEquals(mockedImg.getHeight(),5);
      }*/
 
-     @ParameterizedTest
-     @ValueSource(ints = {10,11})
-     public void outsideBoundaryTest(int val) {
+    @ParameterizedTest
+    @ValueSource(ints = {11,12})
+    public void insideBoundaryTest(int val) {
+        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
+        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(val,5), mockedImg)));
+        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(5,val), mockedImg)));
+    }
+
+     @Test
+     public void outsideBoundaryTest() {
          Entity e = new Entity(0,5, new Point(5,5), mockedImg);
-         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(val,5), mockedImg)));
-         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(5,val), mockedImg)));
+         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(13,5), mockedImg)));
+         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(5,13), mockedImg)));
      }
 
     @Test
