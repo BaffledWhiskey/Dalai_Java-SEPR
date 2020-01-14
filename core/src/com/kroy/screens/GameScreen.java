@@ -149,7 +149,7 @@ public class GameScreen implements Screen, InputProcessor {
         sb = new SpriteBatch();
         fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
-        Point p = new Point(Math.round(WIDTH/2 - fireEngineTexture.getWidth()/2), Math.round(HEIGHT/2 - fireEngineTexture.getHeight()/2));
+        Point p = new Point(830,220 );
         engine1 = new FireEngine(50,200,50,100,p, fireEngineTexture); // Instance Number 1
         engine2 = new FireEngine(200, 500, 25, 50,p, fireEngineTexture); // Instance Number 2
         engine3 = new FireEngine(100, 300, 12, 64,p, fireEngineTexture); // Instance Number 3
