@@ -68,4 +68,13 @@ public class PauseScreen {
         game.batch.end();
 
     }
+
+    public void dispose() {
+        //Pause Screen
+        playAgainActive.dispose();
+        playAgainInactive.dispose();
+        exitButtonActive.dispose();
+        exitButtonInactive.dispose();
+        kroyLogo.dispose();
+    }
 }

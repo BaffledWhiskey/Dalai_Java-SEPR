@@ -1,5 +1,6 @@
-/*import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.kroy.entities.Entity;
@@ -12,7 +13,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
+import org.junit.runners.model.InitializationError;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.powermock.api.mockito.PowerMockito;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -23,19 +26,19 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PauseScreenTest {
+
     @Before
     public void setup() {
         graphics = PowerMockito.mock(Graphics.class);
-        PauseScreen p = new PauseScreen();
-
+        Gdx.gl20 = Mockito.mock(GL20.class);
     }
     //Width - 1080, Button_Width = 175, Height = 900, Play_Button_Y = 175, Button_Height = 50,
     @Test
     public void pauseScreenResumesWhenResumeButtonPressed() {
+        PauseScreen p = new PauseScreen();
         when(Gdx.input.getX()).thenReturn(540);
         when(Gdx.input.getY()).thenReturn(700);
         when(Gdx.input.isTouched()).thenReturn(true);
-        Assertions.assertTrue(p.getGamePaused());
+        Assertions.assertFalse(p.isPaused());
     }
 }
-*/

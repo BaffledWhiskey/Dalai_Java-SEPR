@@ -204,7 +204,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta){
 
-        if(gamePaused){
+        if(pauseScreen.isPaused()){
             pauseScreen.pauseScreen(game);
 
         }else {
@@ -393,13 +393,7 @@ public class GameScreen implements Screen, InputProcessor {
     public void dispose(){
         map.dispose();
         renderer.dispose();
-
-        //Pause Screen
-        playAgainActive.dispose();
-        playAgainInactive.dispose();
-        exitButtonActive.dispose();
-        exitButtonInactive.dispose();
-        kroyLogo.dispose();
+        pauseScreen.dispose();
     }
 
     @Override
