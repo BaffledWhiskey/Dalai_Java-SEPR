@@ -34,7 +34,6 @@ import com.badlogic.gdx.Input;
 
 // Testing - FireStation Co-Ords
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import sun.security.util.ArrayUtil;
 
 
 public class GameScreen implements Screen, InputProcessor {
