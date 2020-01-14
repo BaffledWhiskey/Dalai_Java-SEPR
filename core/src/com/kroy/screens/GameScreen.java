@@ -314,6 +314,9 @@ public class GameScreen implements Screen, InputProcessor {
 
                 }
             }
+            if(fireEngines.isEmpty()){
+                game.setScreen(new GameOverScreen(game));
+            }
             fireEngines.removeAll(fireEnginesToDelete);
 
 
