@@ -6,7 +6,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Rectangle;
 import com.kroy.game.Point;
+import com.kroy.screens.GameScreen;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,4 +122,25 @@ public class Entity{
         this.health = health;
     }
 
+    //function that creates a rectangle around the entity, returning a rectangle of type Rectangle.
+    public Rectangle getRectangle() {
+        Rectangle rect = new Rectangle(position.x-(width/2), position.y-(height/2), 8,8);
+        return rect;
+    }
+    //function that returns nothing and prints the rectangle around the entity.
+    public void testCoords(){
+        System.out.println(position.x);
+        System.out.println(position.y);
+        //System.out.println(getRectangle());
+        System.out.println();
+    }
+
+    //function to draw the collision box around the fire engine
+    public void drawRect(OrthographicCamera camera, ShapeRenderer shape) {
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeType.Line);
+        shape.setColor(Color.GREEN);
+        shape.rect(position.x-(width/2), position.y-(height/2), width, height);
+        shape.end();
+    }
 }
