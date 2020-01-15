@@ -131,14 +131,13 @@ public class GameScreen implements Screen, InputProcessor {
         // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
 
-        //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
+        //Section for defining the player characteristics
         sb = new SpriteBatch();
-        fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
         Point p = new Point(830,220 );
-        engine1 = new FireEngine(50,200,50,100,p, fireEngineTexture); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 25, 50,p, fireEngineTexture); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 64,p, fireEngineTexture); // Instance Number 3
+        engine1 = new FireEngine(50,200,50,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 25, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 12, 64,p, new Texture(Gdx.files.internal("Sprites/playerTest.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
