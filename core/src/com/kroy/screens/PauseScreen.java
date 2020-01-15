@@ -4,13 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.KROY;
 
-public class PauseScreen {
+import java.util.List;
 
-    Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
-    Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
-    Texture exitButtonActive = new Texture("PauseScreen/exitActive.png");
-    Texture exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
-    Texture kroyLogo = new Texture("KROY_logo.png");
+public class PauseScreen {
 
     // Parameters for Pause Screen
     private static final int BUTTON_WIDTH = 175;
@@ -22,10 +18,21 @@ public class PauseScreen {
     private static final int LOGO_WIDTH = 600;
     private static final int LOGO_HEIGHT = 300;
 
+    Texture playAgainActive;
+    Texture playAgainInactive;
+    Texture exitButtonActive;
+    Texture exitButtonInactive;
+    Texture kroyLogo;
+
     private boolean paused;
 
-    public void PauseScreen(boolean paused) {
+    public PauseScreen(boolean paused, List<Texture> textures) {
         this.paused = paused;
+        this.playAgainActive = textures.get(0);
+        this.playAgainInactive = textures.get(1);
+        this.exitButtonActive = textures.get(2);
+        this.exitButtonInactive = textures.get(3);
+        this.kroyLogo = textures.get(4);
     }
 
     public void setPaused(boolean paused) {

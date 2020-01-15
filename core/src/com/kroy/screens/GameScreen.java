@@ -23,6 +23,8 @@ import com.kroy.game.Point;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -37,13 +39,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 public class GameScreen implements Screen, InputProcessor {
-
-    private Texture playAgainActive;
-    private Texture playAgainInactive;
-    private Texture exitButtonActive;
-    private Texture exitButtonInactive;
-    private Texture kroyLogo;
-    private Texture gameOverImage;
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -101,7 +96,15 @@ public class GameScreen implements Screen, InputProcessor {
     private final KROY game;
     private FPSLogger FPS;
 
-    PauseScreen pauseScreen = new PauseScreen();
+    Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
+    Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
+    Texture exitButtonActive = new Texture("PauseScreen/exitActive.png");
+    Texture exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
+    Texture kroyLogo = new Texture("KROY_logo.png");
+    private Texture gameOverImage;
+    List<Texture> pauseTextures = Arrays.asList(playAgainActive, playAgainInactive, exitButtonActive, exitButtonInactive, kroyLogo);
+
+    PauseScreen pauseScreen = new PauseScreen(false, pauseTextures);
 
     // Testing - Fire Statoin Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
@@ -117,7 +120,6 @@ public class GameScreen implements Screen, InputProcessor {
         this.game = game;
         FPS = new FPSLogger();
         pauseScreen.setPaused(false);
-
 
 
         //defining the camera and map characteristics
