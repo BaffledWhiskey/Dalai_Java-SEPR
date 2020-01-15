@@ -263,19 +263,19 @@ public class GameScreen implements Screen, InputProcessor {
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
 
             //Plays explosion when clicked or space is hit for testing purposes
-            sb1.setProjectionMatrix(camera.combined);
-            elapseTime += Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                sb1.end();
-            }
-
-            if (Gdx.input.isTouched()) {
-                sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                sb1.end();
-            }
+//            sb1.setProjectionMatrix(camera.combined);
+//            elapseTime += Gdx.graphics.getDeltaTime();
+//            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//                sb1.begin();
+//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+//                sb1.end();
+//            }
+//
+//            if (Gdx.input.isTouched()) {
+//                sb1.begin();
+//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+//                sb1.end();
+//            }
 
 
             ////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -309,7 +309,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     /**
-     * Method that we used to find the co-oridnates of certain places
+     * Method that we used to find the co-oridnates of certain places. Testing Use Only
      */
     private void drawRect(){
         shape.setProjectionMatrix(camera.combined);
