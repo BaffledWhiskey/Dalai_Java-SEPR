@@ -16,7 +16,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@PowerMockIgnore("org.myproject.*")
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Graphics.class})
 public class UnitTest {
