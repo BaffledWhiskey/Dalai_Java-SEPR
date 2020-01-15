@@ -1,10 +1,8 @@
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.kroy.entities.Entity;
-import com.kroy.game.Point;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kroy.screens.PauseScreen;
 import com.kroy.game.KROY;
 import org.junit.Before;
@@ -13,32 +11,76 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.junit.runner.RunWith;
-import org.junit.runners.model.InitializationError;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.powermock.api.mockito.PowerMockito;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import static com.badlogic.gdx.Gdx.graphics;
+import java.util.*;
+
 import static org.mockito.Mockito.*;
 
 
 @RunWith(MockitoJUnitRunner.class)
 public class PauseScreenTest {
 
+    List<Texture> mockedTextures;
+    KROY game;
+
     @Before
     public void setup() {
-        graphics = PowerMockito.mock(Graphics.class);
-        Gdx.gl20 = Mockito.mock(GL20.class);
+        mockedTextures = Arrays.asList(mock(Texture.class), mock(Texture.class), mock(Texture.class),
+                mock(Texture.class), mock(Texture.class));
+        Gdx.input = mock(Input.class);
+        Gdx.app = mock(Application.class);
+        game = new KROY();
+        game.batch = mock(SpriteBatch.class);
+        //doNothing().when(game.batch).begin();
     }
-    //Width - 1080, Button_Width = 175, Height = 900, Play_Button_Y = 175, Button_Height = 50,
+
+    @Test
+    public void pauseScreenIsPausedWhenCalled() {
+        PauseScreen p = new PauseScreen(true, mockedTextures);
+        p.pauseScreen(game);
+        Assertions.assertTrue(p.isPaused());
+    }
+
     @Test
     public void pauseScreenResumesWhenResumeButtonPressed() {
-        PauseScreen p = new PauseScreen();
-        when(Gdx.input.getX()).thenReturn(540);
-        when(Gdx.input.getY()).thenReturn(700);
-        when(Gdx.input.isTouched()).thenReturn(true);
+        PauseScreen p = new PauseScreen(true, mockedTextures);
+        lenient().when(Gdx.input.getX()).thenReturn(540);
+        lenient().when(Gdx.input.getY()).thenReturn(700);
+        lenient().when(Gdx.input.isTouched()).thenReturn(true);
+        p.pauseScreen(game);
+        Assertions.assertFalse(p.isPaused());
+    }
+
+    @Test
+    public void pauseScreenDoesNotResumeWhenElsewherePressed() {
+        PauseScreen p = new PauseScreen(true, mockedTextures);
+        lenient().when(Gdx.input.getX()).thenReturn(1000);
+        lenient().when(Gdx.input.getY()).thenReturn(1000);
+        lenient().when(Gdx.input.isTouched()).thenReturn(true);
+        p.pauseScreen(game);
+        Assertions.assertTrue(p.isPaused());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {239, 240, 280, 281})
+    public void pauseScreenOutsideBoundaryTest(int val) {
+        PauseScreen p = new PauseScreen(true, mockedTextures);
+        lenient().when(Gdx.input.getX()).thenReturn(val);
+        lenient().when(Gdx.input.getY()).thenReturn(700);
+        lenient().when(Gdx.input.isTouched()).thenReturn(true);
+        p.pauseScreen(game);
+        Assertions.assertTrue(p.isPaused());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {241, 279})
+    public void pauseScreenInsideBoundaryTest(int val) {
+        PauseScreen p = new PauseScreen(true, mockedTextures);
+        lenient().when(Gdx.input.getX()).thenReturn(val);
+        lenient().when(Gdx.input.getY()).thenReturn(700);
+        lenient().when(Gdx.input.isTouched()).thenReturn(true);
+        p.pauseScreen(game);
         Assertions.assertFalse(p.isPaused());
     }
 }

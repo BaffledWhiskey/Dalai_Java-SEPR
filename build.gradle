@@ -66,5 +66,6 @@ project(":core") {
         //testCompile 'org.powermock:powermock-module-junit4-rule-agent:1.7.1'
         //testCompile 'org.powermock:powermock-module-junit4-rule:1.7.1'
         testCompile 'org.powermock:powermock-module-junit4:2.0.2'
+        testCompile "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
     }
 }

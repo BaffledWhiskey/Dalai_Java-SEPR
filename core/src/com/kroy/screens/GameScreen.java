@@ -23,6 +23,8 @@ import com.kroy.game.Point;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -37,13 +39,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 public class GameScreen implements Screen, InputProcessor {
-
-    private Texture playAgainActive;
-    private Texture playAgainInactive;
-    private Texture exitButtonActive;
-    private Texture exitButtonInactive;
-    private Texture kroyLogo;
-    private Texture gameOverImage;
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -101,7 +96,15 @@ public class GameScreen implements Screen, InputProcessor {
     private final KROY game;
     private FPSLogger FPS;
 
-    PauseScreen pauseScreen = new PauseScreen();
+    Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
+    Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
+    Texture exitButtonActive = new Texture("PauseScreen/exitActive.png");
+    Texture exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
+    Texture kroyLogo = new Texture("KROY_logo.png");
+    private Texture gameOverImage;
+    List<Texture> pauseTextures = Arrays.asList(playAgainActive, playAgainInactive, exitButtonActive, exitButtonInactive, kroyLogo);
+
+    PauseScreen pauseScreen = new PauseScreen(false, pauseTextures);
 
     // Testing - Fire Statoin Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
@@ -119,7 +122,6 @@ public class GameScreen implements Screen, InputProcessor {
         pauseScreen.setPaused(false);
 
 
-
         //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/Map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / 2f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
@@ -129,14 +131,13 @@ public class GameScreen implements Screen, InputProcessor {
         // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
 
-        //loaded the test player model and drawing it onto the middle of the screen, section for defining the player characteristics
+        //Section for defining the player characteristics
         sb = new SpriteBatch();
-        fireEngineTexture = new Texture(Gdx.files.internal("Sprites/playerTest.png"));
         //Links to fire engine class
         Point p = new Point(830,220 );
-        engine1 = new FireEngine(50,200,50,100,p, fireEngineTexture); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 25, 50,p, fireEngineTexture); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 64,p, fireEngineTexture); // Instance Number 3
+        engine1 = new FireEngine(50,200,50,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 25, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 12, 64,p, new Texture(Gdx.files.internal("Sprites/playerTest.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -262,19 +263,19 @@ public class GameScreen implements Screen, InputProcessor {
             ////////ANIMATION //////////////////////////////////////////////////////////////////////
 
             //Plays explosion when clicked or space is hit for testing purposes
-            sb1.setProjectionMatrix(camera.combined);
-            elapseTime += Gdx.graphics.getDeltaTime();
-            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-                sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                sb1.end();
-            }
-
-            if (Gdx.input.isTouched()) {
-                sb1.begin();
-                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-                sb1.end();
-            }
+//            sb1.setProjectionMatrix(camera.combined);
+//            elapseTime += Gdx.graphics.getDeltaTime();
+//            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//                sb1.begin();
+//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+//                sb1.end();
+//            }
+//
+//            if (Gdx.input.isTouched()) {
+//                sb1.begin();
+//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
+//                sb1.end();
+//            }
 
 
             ////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -308,7 +309,7 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     /**
-     * Method that we used to find the co-oridnates of certain places
+     * Method that we used to find the co-oridnates of certain places. Testing Use Only
      */
     private void drawRect(){
         shape.setProjectionMatrix(camera.combined);
