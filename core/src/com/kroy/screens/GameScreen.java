@@ -257,6 +257,7 @@ public class GameScreen implements Screen, InputProcessor {
                 fortress.drawHealthBar(camera, shape);
             }
 
+            //Draws Hitboxes for testing
             for(HitBox box: hitBoxes){
                 box.drawBox(fireEngines,camera);
             }

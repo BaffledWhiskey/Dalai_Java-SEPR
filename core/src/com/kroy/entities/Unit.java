@@ -29,6 +29,12 @@ public class Unit extends Entity {
 
 
     //Added this so that we can move both the sprite and entity with the same method
+
+    /**
+     * Allows smooth movement of entities, supports hitboxes allowing movement to be restricted
+     * @param direction A string in all caps determining the direction (options are "UP "DOWN" "LEFT" "RIGHT")
+     * @param hitBoxes the arraylist of hitboxes you wish this entity to have collisions with
+     */
     public void updatePosition(String direction, ArrayList<HitBox> hitBoxes){
         if(direction=="UP"){
             this.drawable.translateY((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));

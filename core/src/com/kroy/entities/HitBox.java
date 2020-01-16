@@ -19,7 +19,13 @@ public class HitBox{
     public int WIDTH;
     public Point position;
 
-
+    /**
+     * A simple HitBox class to allow collisions by testing intersection with it
+     * @param HEIGHT the height of the hitbox
+     * @param WIDTH the width of the hitbox
+     * @param x the x coord - from the bottom left corner
+     * @param y the y coord - from the bottom left corner
+     */
     public HitBox(int HEIGHT, int WIDTH, int x, int y){
         this.HEIGHT = HEIGHT;
         this.WIDTH = WIDTH;
@@ -41,6 +47,7 @@ public class HitBox{
             return false;
         }
     }
+
 
     public void drawBox(ArrayList<FireEngine> target, OrthographicCamera camera) {
         ShapeRenderer shape = new ShapeRenderer();
