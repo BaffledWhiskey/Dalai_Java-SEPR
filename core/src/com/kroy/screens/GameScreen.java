@@ -20,6 +20,7 @@ import com.kroy.game.Point;
 
 
 import java.util.*;
+import java.util.zip.DeflaterInputStream;
 
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -87,6 +88,13 @@ public class GameScreen implements Screen, InputProcessor {
     private final KROY game;
     private FPSLogger FPS;
 
+    private ArrayList<HitBox> hitBoxes;
+    private HitBox box1;
+    private HitBox box2;
+    private HitBox box3;
+    private HitBox box4;
+    private HitBox box5;
+
     //Initialises textures for pause screen
     Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
     Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
@@ -138,7 +146,17 @@ public class GameScreen implements Screen, InputProcessor {
 
         //drawable.setOrigin(52,54);
 
+        //HitBoxes to allow collisions
 
+
+
+        box1 = new HitBox(475,100,270,GameScreen.HEIGHT - 750);
+        box2 = new HitBox(100, 400, 320, GameScreen.HEIGHT - 722 -100);
+
+
+        hitBoxes = new ArrayList<>();
+        hitBoxes.add(box1);
+        hitBoxes.add(box2);
         
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
@@ -239,6 +257,9 @@ public class GameScreen implements Screen, InputProcessor {
                 fortress.drawHealthBar(camera, shape);
             }
 
+            for(HitBox box: hitBoxes){
+                box.drawBox(fireEngines,camera);
+            }
 
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
@@ -323,6 +344,8 @@ public class GameScreen implements Screen, InputProcessor {
             fireEngines.removeAll(fireEnginesToDelete);
             fortressList.removeAll(fortressesToDelete);
         }
+        //System.out.println(engine1.position.x);
+        //System.out.println(engine1.position.y);
     }
 
     /**
@@ -354,22 +377,22 @@ public class GameScreen implements Screen, InputProcessor {
             if (((FireEngine)fireEngine).isActive) {
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        ((FireEngine) fireEngine).updatePosition("RIGHT");
+                        ((FireEngine) fireEngine).updatePosition("RIGHT",hitBoxes);
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        ((FireEngine) fireEngine).updatePosition("LEFT");
+                        ((FireEngine) fireEngine).updatePosition("LEFT",hitBoxes);
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        ((FireEngine) fireEngine).updatePosition("UP");
+                        ((FireEngine) fireEngine).updatePosition("UP",hitBoxes);
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                     if (((FireEngine)fireEngine).isActive) {
-                        ((FireEngine) fireEngine).updatePosition("DOWN");
+                        ((FireEngine) fireEngine).updatePosition("DOWN",hitBoxes);
                     }
                 }
             }
@@ -482,7 +505,8 @@ public class GameScreen implements Screen, InputProcessor {
                 System.out.println("Fire Engine State Changed:" +((FireEngine) fireEngine).isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }
-
+        System.out.println(screenX);
+        System.out.println(screenY);
         return false;
     }
 
