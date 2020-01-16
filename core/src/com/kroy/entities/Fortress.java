@@ -1,6 +1,9 @@
 package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.kroy.game.Point;
 
 public class Fortress extends Tower{
@@ -17,6 +20,23 @@ public class Fortress extends Tower{
 
     public int increaseHealth(){
         return health++;
+    }
+
+    public void destroy(Animation animation, float elapseTime){
+        if(!(this.health <= 0)){
+            try {
+                throw new Exception("can't destroy Entity with health greater than 0");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            SpriteBatch sb = new SpriteBatch();
+            sb.begin();
+            sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
+            sb.end();
+            sb.dispose();
+        }
     }
 
 

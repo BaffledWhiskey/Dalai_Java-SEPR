@@ -137,7 +137,7 @@ public class GameScreen implements Screen, InputProcessor {
         Point p = new Point(830,220 );
         engine1 = new FireEngine(50,200,50,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
         engine2 = new FireEngine(200, 500, 25, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 64,p, new Texture(Gdx.files.internal("Sprites/playerTest.png"))); // Instance Number 3
+        engine3 = new FireEngine(100, 300, 12, 64,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -282,6 +282,7 @@ public class GameScreen implements Screen, InputProcessor {
         //****************************************************************************************************************
 
             ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
+            ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
             for(Fortress fortress: fortressList){
                 for(FireEngine fireEngine: fireEngines){
 
@@ -296,15 +297,21 @@ public class GameScreen implements Screen, InputProcessor {
                         //Need a way of deleting this object properly but can't figure it out
                         fireEnginesToDelete.add(fireEngine);
                     }
-
+                }
+                if(fortress.getHealth() <= 0){
+                    fortress.destroy(animation,elapseTime);
+                    //Need a way of deleting this object properly but can't figure it out
+                    fortressesToDelete.add(fortress);
                 }
             }
             if(fireEngines.isEmpty()){
-                game.setScreen(new GameOverScreen(game));
+                game.setScreen(new GameOverScreen(game, "lose"));
+            }
+            if(fortressList.isEmpty()){
+                game.setScreen(new GameOverScreen(game, "win"));
             }
             fireEngines.removeAll(fireEnginesToDelete);
-
-
+            fortressList.removeAll(fortressesToDelete);
         }
     }
 

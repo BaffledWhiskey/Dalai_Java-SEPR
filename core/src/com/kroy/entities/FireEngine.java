@@ -42,8 +42,7 @@ public class FireEngine extends Unit{
      */
     public void attackFortress(Fortress fortress){
         //currently the DPS will be inversely proportional to movement speed
-        fortress.setHealth((fortress.getHealth() - (int)10/movementSpeed));
-
+        fortress.setHealth((fortress.getHealth() - (int)500/movementSpeed));
     }
 
 

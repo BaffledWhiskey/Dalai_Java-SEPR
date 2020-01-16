@@ -26,17 +26,24 @@ public class GameOverScreen implements Screen {
     Texture exitButtonInactive;
     Texture kroyLogo;
     Texture gameOverImage;
+    Texture loseText;
+    Texture winText;
+
+    String result;
 
     OrthographicCamera camera;
 
-    public GameOverScreen(KROY game){
+    public GameOverScreen(KROY game, String result){
         this.game = game;
+        this.result = result;
         playAgainActive = new Texture("GameOverScreen/playAgainActive.png");
         playAgainInactive = new Texture("GameOverScreen/playAgainInactive.png");
         exitButtonActive = new Texture("GameOverScreen/exitActive.png");
         exitButtonInactive = new Texture("GameOverScreen/exitInactive.png");
         kroyLogo = new Texture("KROY_logo.png");
         gameOverImage = new Texture("GameOverScreen/GameOver.png");
+        loseText = new Texture("GameOverScreen/Lose.png");
+        winText = new Texture("GameOverScreen/Win.png");
     }
 
 
@@ -54,6 +61,12 @@ public class GameOverScreen implements Screen {
 
         game.batch.begin();
         game.batch.draw(gameOverImage, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+        if (result == "lose") {
+            game.batch.draw(loseText, x - 116, 325, 233, 65);
+        }
+        else {
+            game.batch.draw(winText, x - 116, 325, 233, 65);
+        }
 
         if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
