@@ -34,15 +34,15 @@ public class FireEngineTest {
     public FireEngine f;
     public SpriteBatch mockBatch;
 
-
     @Before
     public void setup() throws Exception {
         mockedImg = mock(Texture.class);
         mockedAnimation = mock(Animation.class);
         when(mockedImg.getWidth()).thenReturn(0);
         when(mockedImg.getHeight()).thenReturn(0);
-        mockBatch = Mockito.mock(SpriteBatch.class);
-        whenNew(SpriteBatch.class).withAnyArguments().thenReturn(mockBatch);
+        PowerMockito.mockStatic(SpriteBatch.class);
+        //mockBatch = Mockito.mock(SpriteBatch.class);
+        PowerMockito.whenNew(SpriteBatch.class).withAnyArguments().thenReturn(mockBatch);
     }
 
     @Rule

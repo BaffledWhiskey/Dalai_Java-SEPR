@@ -32,11 +32,6 @@ public class UnitTest {
         when(Gdx.graphics.getDeltaTime()).thenReturn(1f);
     }
 
-    @Test
-    public void doesItWork() {
-        Assertions.assertEquals(Gdx.graphics.getDeltaTime(),1f);
-    }
-
 
     @Test
     public void pointShouldBeInRangeTest() {

@@ -36,14 +36,14 @@ public class PauseScreenTest {
     }
 
     @Test
-    public void pauseScreenIsPausedWhenCalled() {
+    public void pauseScreenShouldBePausedWhenCalled() {
         PauseScreen p = new PauseScreen(true, mockedTextures);
         p.pauseScreen(game);
         Assertions.assertTrue(p.isPaused());
     }
 
     @Test
-    public void pauseScreenResumesWhenResumeButtonPressed() {
+    public void pauseScreenShouldResumeWhenResumeButtonPressed() {
         PauseScreen p = new PauseScreen(true, mockedTextures);
         lenient().when(Gdx.input.getX()).thenReturn(540);
         lenient().when(Gdx.input.getY()).thenReturn(700);
@@ -53,7 +53,7 @@ public class PauseScreenTest {
     }
 
     @Test
-    public void pauseScreenDoesNotResumeWhenElsewherePressed() {
+    public void pauseScreenShouldNotResumeWhenElsewherePressed() {
         PauseScreen p = new PauseScreen(true, mockedTextures);
         lenient().when(Gdx.input.getX()).thenReturn(1000);
         lenient().when(Gdx.input.getY()).thenReturn(1000);

@@ -8,9 +8,9 @@ public class Tower extends Entity{
 
     /**
      *
-     * @param dimensions The size of the tower
+     * @param dimensions The height and width of the tower
      * @param health The current health of the tower
-     * @param range The maximun range of the tower
+     * @param range The maximum range of the tower
      * @param position The position of the tower on the map
      */
     public Tower(int[] dimensions, int health, int range, Point position, Texture img) {
