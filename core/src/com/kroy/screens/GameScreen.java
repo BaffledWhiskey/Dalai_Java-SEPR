@@ -273,7 +273,6 @@ public class GameScreen implements Screen, InputProcessor {
             ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
             for(final FireEngine fireEngine: fireEngines){
                 for(Fortress fortress: fortressList){
-
                     if(fireEngine.inRange(fortress)){
                         fireEngine.attackFortress(fortress);
                     }

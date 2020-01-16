@@ -146,6 +146,11 @@ public class Entity{
         shape.end();
     }
 
+    /**
+     * Draws the health bar for the given entity based on its current health
+     * @param camera The camera used to render the game screen
+     * @param shape The ShapeRenderer used to render the game screen
+     */
     public void drawHealthBar(OrthographicCamera camera, ShapeRenderer shape) {
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
