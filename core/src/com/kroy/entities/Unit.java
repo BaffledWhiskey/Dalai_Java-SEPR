@@ -37,11 +37,11 @@ public class Unit extends Entity {
         }
         else if(direction=="LEFT"){
             this.drawable.translateX((int) ((this.movementSpeed) * -Gdx.graphics.getDeltaTime()));
-            this.drawable.setRotation(270);
+            this.drawable.setRotation(90);
         }
         else if(direction=="RIGHT"){
             this.drawable.translateX((int) ((this.movementSpeed) * Gdx.graphics.getDeltaTime()));
-            this.drawable.setRotation(90);
+            this.drawable.setRotation(270);
         }
         this.position = new Point((int)(this.drawable.getX()+this.drawable.getWidth()/2),(int)(this.drawable.getY()+this.drawable.getHeight()/2));
 
