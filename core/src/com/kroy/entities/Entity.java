@@ -27,6 +27,7 @@ public class Entity{
     int width;
     public Point position;
     public Sprite drawable;
+    public int maxHealth; //The maximum amount of health a station can have. Equal to the initial health
 
 
     /**
@@ -43,6 +44,7 @@ public class Entity{
         this.width = img.getWidth();
         this.drawable = new Sprite(img);
         drawable.setPosition(position.x - drawable.getWidth()/2,position.y - drawable.getHeight()/2);
+        this.maxHealth = health;
     }
 
     public Entity(int health, int range, Point position){
@@ -141,6 +143,18 @@ public class Entity{
         shape.begin(ShapeType.Line);
         shape.setColor(Color.GREEN);
         shape.rect(position.x-(width/2), position.y-(height/2), width, height);
+        shape.end();
+    }
+
+    public void drawHealthBar(OrthographicCamera camera, ShapeRenderer shape) {
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeType.Line);
+        shape.setColor(Color.GREEN);
+        shape.rect(position.x - 50 , position.y + height + 10, 100, 10);
+        shape.end();
+        shape.begin(ShapeType.Filled);
+        shape.setColor(Color.GREEN);
+        shape.rect(position.x - 50 , position.y + height + 10, (health * 100/ maxHealth), 10);
         shape.end();
     }
 }

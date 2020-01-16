@@ -244,9 +244,11 @@ public class GameScreen implements Screen, InputProcessor {
             //Draws a range box - Testing Purposes
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+                fireEngine.drawHealthBar(camera, shape);
             }
             for(Fortress fortress: fortressList){
                 fortress.drawBox(fireEngines,camera,shape);
+                fortress.drawHealthBar(camera, shape);
             }
 
 
