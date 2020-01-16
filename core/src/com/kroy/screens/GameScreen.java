@@ -14,10 +14,7 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 import com.badlogic.gdx.math.Vector3;
 
-import com.kroy.entities.Entity;
-import com.kroy.entities.FireEngine;
-import com.kroy.entities.FireStation;
-import com.kroy.entities.Fortress;
+import com.kroy.entities.*;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
 
@@ -65,14 +62,10 @@ public class GameScreen implements Screen, InputProcessor {
     private static final int FORTRESS_3_WIDTH = 96;
     private static final int FORTRESS_3_HEIGHT = 176;
 
-
     private Texture fortressTexture;
     private Fortress fortress1;
     private Fortress fortress2;
     private Fortress fortress3;
-
-
-
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -94,15 +87,18 @@ public class GameScreen implements Screen, InputProcessor {
     private final KROY game;
     private FPSLogger FPS;
 
+    //Initialises textures for pause screen
     Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
     Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
     Texture exitButtonActive = new Texture("PauseScreen/exitActive.png");
     Texture exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
     Texture kroyLogo = new Texture("KROY_logo.png");
-    private Texture gameOverImage;
     List<Texture> pauseTextures = Arrays.asList(playAgainActive, playAgainInactive, exitButtonActive, exitButtonInactive, kroyLogo);
 
+    //Initialises pause screen
     PauseScreen pauseScreen = new PauseScreen(false, pauseTextures);
+
+    private Texture gameOverImage;
 
     // Testing - Fire Statoin Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
@@ -151,33 +147,25 @@ public class GameScreen implements Screen, InputProcessor {
 
         // FireStation
         fireStationTexture = new Texture("Sprites/FireStation.png");
-        int[] fireStationDimensions = new int[2];
-        fireStationDimensions[0] = FIRE_STATION_HEIGHT;
-        fireStationDimensions[1] = FIRE_STATION_WIDTH;
         Point fireStationPoint = new Point(FIRE_STATION_X, FIRE_STATION_Y);
+        Dimensions fireStationDimensions = new Dimensions(FIRE_STATION_WIDTH, FIRE_STATION_HEIGHT);
         fireStation = new FireStation(fireStationDimensions, 200, 100, fireStationPoint, fireStationTexture);
 
         //Fortress 1
         fortressTexture = new Texture("Sprites/Fortress1.png");
-        int[] fortress1Dimensions = new int[2];
-        fortress1Dimensions[0] = FORTRESS_1_WIDTH;
-        fortress1Dimensions[1] = FORTRESS_1_HEIGHT;
+        Dimensions fortress1Dimensions = new Dimensions(FORTRESS_1_WIDTH, FORTRESS_1_HEIGHT);
         Point fortress1Point = new Point(FORTRESS_1_X, FORTRESS_1_Y);
         fortress1 = new Fortress(fortress1Dimensions, 200, 100, fortress1Point, fortressTexture);
 
         //Fortress 2
         fortressTexture = new Texture("Sprites/Fortress2.png");
-        int[] fortress2Dimensions = new int[2];
-        fortress2Dimensions[0] = FORTRESS_2_WIDTH;
-        fortress2Dimensions[1] = FORTRESS_2_HEIGHT;
+        Dimensions fortress2Dimensions = new Dimensions(FORTRESS_2_WIDTH, FORTRESS_2_HEIGHT);
         Point fortress2Point = new Point(FORTRESS_2_X, FORTRESS_2_Y);
         fortress2 = new Fortress(fortress2Dimensions, 200, 100, fortress2Point, fortressTexture);
 
         //Fortress 3
         fortressTexture = new Texture("Sprites/Fortress3.png");
-        int[] fortress3Dimensions = new int[2];
-        fortress3Dimensions[0] = FORTRESS_3_WIDTH;
-        fortress3Dimensions[1] = FORTRESS_3_HEIGHT;
+        Dimensions fortress3Dimensions = new Dimensions(FORTRESS_3_WIDTH, FORTRESS_3_HEIGHT);
         Point fortress3Point = new Point(FORTRESS_3_X, FORTRESS_3_Y);
         fortress3 = new Fortress(fortress3Dimensions, 200, 100, fortress3Point, fortressTexture);
 

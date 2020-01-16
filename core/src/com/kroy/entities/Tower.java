@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
 public class Tower extends Entity{
-    int[] dimensions;
+    Dimensions dimensions;
 
     /**
      *
@@ -13,7 +13,7 @@ public class Tower extends Entity{
      * @param range The maximum range of the tower
      * @param position The position of the tower on the map
      */
-    public Tower(int[] dimensions, int health, int range, Point position, Texture img) {
+    public Tower(Dimensions dimensions, int health, int range, Point position, Texture img) {
         super(health, range, position, img);
         this.dimensions = dimensions;
     }

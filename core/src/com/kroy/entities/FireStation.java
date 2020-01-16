@@ -17,7 +17,7 @@ public class FireStation extends Tower {
      * @param position The position of the fire station on the map
      */
 
-    public FireStation(int[] dimensions, int health, int range, Point position, Texture img) {
+    public FireStation(Dimensions dimensions, int health, int range, Point position, Texture img) {
         super(dimensions,health,range,position, img);
     }
 
