@@ -22,9 +22,7 @@ import com.kroy.game.KROY;
 import com.kroy.game.Point;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -135,9 +133,9 @@ public class GameScreen implements Screen, InputProcessor {
         sb = new SpriteBatch();
         //Links to fire engine class
         Point p = new Point(830,220 );
-        engine1 = new FireEngine(50,200,50,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 25, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 12, 64,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
+        engine1 = new FireEngine(50,200,100,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 50, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 25, 64,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -283,8 +281,8 @@ public class GameScreen implements Screen, InputProcessor {
 
             ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
-            for(Fortress fortress: fortressList){
-                for(FireEngine fireEngine: fireEngines){
+            for(final FireEngine fireEngine: fireEngines){
+                for(Fortress fortress: fortressList){
 
                     if(fireEngine.inRange(fortress)){
                         fireEngine.attackFortress(fortress);
@@ -292,16 +290,39 @@ public class GameScreen implements Screen, InputProcessor {
                     if(fortress.inRange(fireEngine)){
                         fortress.attackFireEngine(fireEngine);
                     }
-                    if(fireEngine.getHealth() <= 0){
-                        fireEngine.destroy(animation,elapseTime);
+                    if(fortress.getHealth() <= 0){
+                        fortress.destroy(animation,elapseTime);
                         //Need a way of deleting this object properly but can't figure it out
-                        fireEnginesToDelete.add(fireEngine);
+                        fortressesToDelete.add(fortress);
                     }
                 }
-                if(fortress.getHealth() <= 0){
-                    fortress.destroy(animation,elapseTime);
+                if(fireEngine.getHealth() <= 0){
+                    fireEngine.destroy(animation,elapseTime);
                     //Need a way of deleting this object properly but can't figure it out
-                    fortressesToDelete.add(fortress);
+                    fireEnginesToDelete.add(fireEngine);
+                }
+
+                if(fireEngine.inRange(fireStation)){
+                    //Only calls when not already called, setting the token Boolean 'isBeingRepaired' to true when called
+                    if (fireEngine.isBeingRepaired == false) {
+                        fireEngine.isBeingRepaired = true;
+                        //Calls the 'repair' function at one-second intervals
+                        //until the fireEngine moves out of the range
+                        final Timer t = new Timer();
+                        t.scheduleAtFixedRate(new TimerTask() {
+                            @Override
+                            public void run() {
+                                if (!fireEngine.inRange(fireStation)) {
+                                    t.cancel();
+                                }
+                                fireStation.repair(fireEngine, 2);
+                            }
+                        }, 0, 1000);
+
+                    }
+                }
+                else {
+                    fireEngine.isBeingRepaired = false;
                 }
             }
             if(fireEngines.isEmpty()){

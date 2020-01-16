@@ -28,15 +28,12 @@ public class FireStation extends Tower {
      */
 
     public void repair(final FireEngine engine, final int healthChangePerSecond) {
-        Timer t = new Timer();
-        //Increases health every second whilst it is less than 100 and is in range
-        t.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (engine.health < 100 && inRange(engine)) {
-                    engine.health = engine.health + healthChangePerSecond;
-                }
+        //Increases health every second whilst it is less than the maximum amount of health and is in range
+        if (engine.health < engine.maxHealth && inRange(engine)) {
+            engine.health = engine.health + healthChangePerSecond;
+            if (engine.health > engine.maxHealth) {
+                engine.health = engine.maxHealth;
             }
-        }, 100, 0);
+        }
     }
 }
