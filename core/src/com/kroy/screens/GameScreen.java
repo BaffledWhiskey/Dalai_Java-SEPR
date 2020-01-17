@@ -33,7 +33,8 @@ import com.sun.javafx.scene.text.TextLayout;
 
 
 public class GameScreen implements Screen, InputProcessor {
-
+    // If true render hit boxes, else don't
+    boolean testMode = true;
     //Bullet
     public static final float SPEED = 300;
     ArrayList<Bullet> bullets;
@@ -322,19 +323,8 @@ public class GameScreen implements Screen, InputProcessor {
 
             sb.end();
 
-            //Draws a range box - Testing Purposes
-            for(FireEngine fireEngine: fireEngines){
-                fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
-                fireEngine.drawHealthBar(camera, shape);
-            }
-            for(Fortress fortress: fortressList){
-                fortress.drawBox(fireEngines,camera,shape);
-                fortress.drawHealthBar(camera, shape);
-            }
-
-            //Draws Hitboxes for testing
-            for(HitBox box: hitBoxes){
-                box.drawBox(fireEngines,camera);
+            if(this.testMode == true){
+                testboxRenderer();
             }
 
             //***********************************************************************************************************
@@ -438,7 +428,23 @@ public class GameScreen implements Screen, InputProcessor {
 
     }
 
+    private void testboxRenderer(){
+        //Draws a range box - Testing Purposes
+        for(FireEngine fireEngine: fireEngines){
+            fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+            fireEngine.drawHealthBar(camera, shape);
+        }
+        for(Fortress fortress: fortressList){
+            fortress.drawBox(fireEngines,camera,shape);
+            fortress.drawHealthBar(camera, shape);
+        }
 
+        //Draws Hitboxes for testing
+        for(HitBox box: hitBoxes){
+            box.drawBox(fireEngines,camera);
+        }
+
+    }
 
     /** This method is called whenever a new screen is rendered and gamePaused == false;
      * The method is responsible for the movement of each of the fire engines and checking which one should be moved by
