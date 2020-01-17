@@ -33,10 +33,17 @@ import com.sun.javafx.scene.text.TextLayout;
 
 
 public class GameScreen implements Screen, InputProcessor {
+    // If true render hit boxes, else don't
+    boolean testMode = true;
+    //Bullet
+    public static final float SPEED = 300;
 
     //Parameters for Bullet
     ArrayList<Bullet> bullets;
+    int x;
+    int y;
     public Point position;
+
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -86,6 +93,7 @@ public class GameScreen implements Screen, InputProcessor {
     public static int WIDTH = 1080;
     public static int HEIGHT = 900;
 
+
     private final KROY game;
     private FPSLogger FPS;
 
@@ -132,6 +140,7 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(final KROY game) {
         //bullet
         bullets = new ArrayList<Bullet>();
+
 
         this.game = game;
         FPS = new FPSLogger();
@@ -320,19 +329,8 @@ public class GameScreen implements Screen, InputProcessor {
 
             sb.end();
 
-            //Draws a range box - Testing Purposes
-            for(FireEngine fireEngine: fireEngines){
-                fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
-                fireEngine.drawHealthBar(camera, shape);
-            }
-            for(Fortress fortress: fortressList){
-                fortress.drawBox(fireEngines,camera,shape);
-                fortress.drawHealthBar(camera, shape);
-            }
-
-            //Draws Hitboxes for testing
-            for(HitBox box: hitBoxes){
-                box.drawBox(fireEngines,camera);
+            if(this.testMode == true){
+                testboxRenderer();
             }
 
             //***********************************************************************************************************
@@ -436,7 +434,23 @@ public class GameScreen implements Screen, InputProcessor {
 
     }
 
+    private void testboxRenderer(){
+        //Draws a range box - Testing Purposes
+        for(FireEngine fireEngine: fireEngines){
+            fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+            fireEngine.drawHealthBar(camera, shape);
+        }
+        for(Fortress fortress: fortressList){
+            fortress.drawBox(fireEngines,camera,shape);
+            fortress.drawHealthBar(camera, shape);
+        }
 
+        //Draws Hitboxes for testing
+        for(HitBox box: hitBoxes){
+            box.drawBox(fireEngines,camera);
+        }
+
+    }
 
     /** This method is called whenever a new screen is rendered and gamePaused == false;
      * The method is responsible for the movement of each of the fire engines and checking which one should be moved by
