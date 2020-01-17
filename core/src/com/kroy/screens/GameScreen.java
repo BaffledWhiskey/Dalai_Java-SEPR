@@ -109,6 +109,12 @@ public class GameScreen implements Screen, InputProcessor {
     private HitBox box12;
     private HitBox box13;
     private HitBox box14;
+    private HitBox box15;
+    private HitBox box16;
+    private HitBox box17;
+    private HitBox box18;
+    private HitBox box19;
+
 
     //Initialises textures for pause screen
     Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
@@ -180,7 +186,13 @@ public class GameScreen implements Screen, InputProcessor {
         box10 = new HitBox(450, 100, 1021, GameScreen.HEIGHT-435);
         box11 = new HitBox(215, 150, 844, GameScreen.HEIGHT-150);
         box12 = new HitBox(227, 181, 397, GameScreen.HEIGHT-246);
-        box13 = new HitBox(100, 220, 603, GameScreen.HEIGHT-149);
+        box13 = new HitBox(133, 214, 605, GameScreen.HEIGHT-152);
+        box14 = new HitBox(300, 200, 172, GameScreen.HEIGHT-246);
+        box15 = new HitBox(200, 1200, 1,GameScreen.HEIGHT- 6);
+        box16 = new HitBox(200, 400, 600,  GameScreen.HEIGHT - 1033);
+        box17 = new HitBox(200, 100, 958, GameScreen.HEIGHT - 850);
+        box18 = new HitBox(300, 50, -33, GameScreen.HEIGHT - 290);
+        box19 = new HitBox(300, 103, 44, GameScreen.HEIGHT- 246);
 
 
         hitBoxes = new ArrayList<>();
@@ -197,6 +209,12 @@ public class GameScreen implements Screen, InputProcessor {
         hitBoxes.add(box11);
         hitBoxes.add(box12);
         hitBoxes.add(box13);
+        hitBoxes.add(box14);
+        hitBoxes.add(box15);
+        hitBoxes.add(box16);
+        hitBoxes.add(box17);
+        hitBoxes.add(box18);
+        hitBoxes.add(box19);
         
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
@@ -333,9 +351,9 @@ public class GameScreen implements Screen, InputProcessor {
             }
 
             //Draws Hitboxes for testing
-            for(HitBox box: hitBoxes){
-                box.drawBox(fireEngines,camera);
-            }
+            //for(HitBox box: hitBoxes){
+                //box.drawBox(fireEngines,camera);
+            //}
 
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
