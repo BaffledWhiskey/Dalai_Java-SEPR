@@ -33,9 +33,12 @@ import com.sun.javafx.scene.text.TextLayout;
 
 
 public class GameScreen implements Screen, InputProcessor {
-
+    // If true render hit boxes, else don't
+    boolean testMode = true;
     //Bullet
     public static final float SPEED = 300;
+
+    //Parameters for Bullet
     ArrayList<Bullet> bullets;
     int x;
     int y;
@@ -215,7 +218,7 @@ public class GameScreen implements Screen, InputProcessor {
         hitBoxes.add(box17);
         hitBoxes.add(box18);
         hitBoxes.add(box19);
-        
+
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
         fireEngines.add(engine2);
@@ -271,25 +274,29 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta){
-
-        if (engine1.isActive && (engine1.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
-                bullets.add(new Bullet(engine1.position.x,engine1.position.y));
-
+        // shooting code
+        // add bullets to the ArrayList
+        // draw bullet at engine's position when space bar is pressed
+        if(engine1.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine1.position.x-24,engine1.position.y+10));
             }
 
-        if (engine2.isActive && (engine2.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
-                bullets.add(new Bullet(engine2.position.x, engine2.position.y));
+        if(engine2.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine2.position.x-24,engine2.position.y+10));
             }
 
-
-        if (engine3.isActive && (engine3.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
-                bullets.add(new Bullet(engine3.position.x, engine3.position.y));
+        if(engine3.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine3.position.x-24,engine3.position.y+10));
             }
 
-
+            // update bullet
+            // if bullet should be removed, we add them to the removed list
 
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-        for( Bullet bullet: bullets){
+        for(Bullet bullet: bullets){
             bullet.update(delta);
             if (bullet.remove)
                 bulletsToRemove.add(bullet);
@@ -340,20 +347,9 @@ public class GameScreen implements Screen, InputProcessor {
 
             sb.end();
 
-            //Draws a range box - Testing Purposes
-            for(FireEngine fireEngine: fireEngines){
-                fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
-                fireEngine.drawHealthBar(camera, shape);
+            if(this.testMode == true){
+                testboxRenderer();
             }
-            for(Fortress fortress: fortressList){
-                fortress.drawBox(fireEngines,camera,shape);
-                fortress.drawHealthBar(camera, shape);
-            }
-
-            //Draws Hitboxes for testing
-            //for(HitBox box: hitBoxes){
-                //box.drawBox(fireEngines,camera);
-            //}
 
             //***********************************************************************************************************
             // Only moves the fire engine if its currently selected. isActive == true;
@@ -456,7 +452,23 @@ public class GameScreen implements Screen, InputProcessor {
 
     }
 
+    private void testboxRenderer(){
+        //Draws a range box - Testing Purposes
+        for(FireEngine fireEngine: fireEngines){
+            fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
+            fireEngine.drawHealthBar(camera, shape);
+        }
+        for(Fortress fortress: fortressList){
+            fortress.drawBox(fireEngines,camera,shape);
+            fortress.drawHealthBar(camera, shape);
+        }
 
+        //Draws Hitboxes for testing
+        for(HitBox box: hitBoxes){
+            box.drawBox(fireEngines,camera);
+        }
+
+    }
 
     /** This method is called whenever a new screen is rendered and gamePaused == false;
      * The method is responsible for the movement of each of the fire engines and checking which one should be moved by

@@ -155,11 +155,11 @@ public class Entity{
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         shape.setColor(Color.GREEN);
-        shape.rect(position.x - 50 , position.y + height + 10, 100, 10);
+        shape.rect(position.x - 50 , position.y + height/2 + 10, 100, 10);
         shape.end();
         shape.begin(ShapeType.Filled);
         shape.setColor(Color.GREEN);
-        shape.rect(position.x - 50 , position.y + height + 10, (health * 100/ maxHealth), 10);
+        shape.rect(position.x - 50 , position.y + height/2 + 10, (health * 100/ maxHealth), 10);
         shape.end();
     }
 }

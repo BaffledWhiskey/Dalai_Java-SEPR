@@ -12,33 +12,34 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Bullet extends ApplicationAdapter {
-    public static final int SPEED =300;
-    private static Texture texture;
-    int x,y;
-    Point position;
+    public static final int SPEED =300;  //speed of bullet
+    private static Texture texture;      //create static object
+    float x,y;                           //x,y position of the bullet
 
+    public boolean remove = false;       //check if the object should be removed
 
-    public boolean remove = false;
-
-
-    public Bullet( int x, int y) {
+    public Bullet(float x, float y) {    //create a new bullet, start from (x,y)
         this.x = x;
         this.y = y;
 
 
         if (texture == null)
-            texture = new Texture("Sprites/waterball.png");
+            texture = new Texture("Sprites/playerTest.png");   //image of the bullet,
         }
 
+
+        // update the bullet position (go up)
         public void update (float deltaTime){
                 y += SPEED * deltaTime;
+
+            // and make sure the bullet doesn't leave the screen
+            // once bullet leave the screen, destroy the bullet
                 if (y >Gdx.graphics.getHeight()) {
                     remove = true;
                 }
-
-
     }
 
+    //draw the bullet
     public void render (SpriteBatch batch){
         batch.draw(texture,x,y);
     }
