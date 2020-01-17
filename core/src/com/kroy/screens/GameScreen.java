@@ -33,13 +33,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 public class GameScreen implements Screen, InputProcessor {
 
-    //Bullet
-    public static final float SPEED = 300;
+    //Parameters for Bullet
     ArrayList<Bullet> bullets;
-    int x;
-    int y;
     public Point position;
-
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -127,7 +123,6 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(final KROY game) {
         //bullet
         bullets = new ArrayList<Bullet>();
-
 
         this.game = game;
         FPS = new FPSLogger();
@@ -221,22 +216,29 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta){
+        // shooting code
+        // add bullets to the ArrayList
+        // draw bullet at engine's position when space bar is pressed
+        if(engine1.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine1.position.x-24,engine1.position.y+10));
+            }
 
-        //  draw bullet at engine's position
-        if((engine1.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
-                bullets.add(new Bullet(engine1.position.x,engine1.position.y));
-            };
+        if(engine2.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine2.position.x-24,engine2.position.y+10));
+            }
 
-        if((engine2.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
-            bullets.add(new Bullet(engine2.position.x,engine2.position.y));
-        };
+        if(engine3.isActive)
+            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                bullets.add(new Bullet(engine3.position.x-24,engine3.position.y+10));
+            }
 
-        if((engine3.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
-            bullets.add(new Bullet(engine3.position.x,engine3.position.y));
-        };
+            // update bullet
+            // if bullet should be removed, we add them to the removed list
 
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-        for( Bullet bullet: bullets){
+        for(Bullet bullet: bullets){
             bullet.update(delta);
             if (bullet.remove)
                 bulletsToRemove.add(bullet);
