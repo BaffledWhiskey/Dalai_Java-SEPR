@@ -1,4 +1,10 @@
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.headless.HeadlessApplication;
+import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kroy.entities.Dimensions;
 import com.kroy.entities.FireEngine;
@@ -25,8 +31,8 @@ public class FireEngineTest {
     @Mock
     public Texture mockedImg;
     public Animation mockedAnimation;
-    public FireEngine f;
     public SpriteBatch mockBatch;
+    private HeadlessApplicationConfiguration cfg;
 
     @Before
     public void setup() throws Exception {
@@ -34,9 +40,24 @@ public class FireEngineTest {
         mockedAnimation = mock(Animation.class);
         when(mockedImg.getWidth()).thenReturn(0);
         when(mockedImg.getHeight()).thenReturn(0);
-        PowerMockito.mockStatic(SpriteBatch.class);
-        //mockBatch = Mockito.mock(SpriteBatch.class);
-        PowerMockito.whenNew(SpriteBatch.class).withAnyArguments().thenReturn(mockBatch);
+        this.cfg = new HeadlessApplicationConfiguration();
+        new HeadlessApplication(new ApplicationListener() {
+            @Override
+            public void create() { }
+            @Override
+            public void resize(int width, int height) { }
+            @Override
+            public void render() { }
+            @Override
+            public void pause() { }
+            @Override
+            public void resume() { }
+            @Override
+            public void dispose() { }
+        }, cfg);
+        Gdx.gl = mock(GL20.class);
+        Gdx.gl20 = mock(GL20.class);
+        //PowerMockito.whenNew(DestroyAnimation.class).withAnyArguments().thenReturn();
     }
 
     @Rule
