@@ -24,7 +24,7 @@ public class Bullet extends ApplicationAdapter {
 
 
         if (texture == null)
-            texture = new Texture("Sprites/playerTest.png");   //image of the bullet,
+            texture = new Texture("Sprites/bubble.png");   //image of the bullet,
         }
 
 

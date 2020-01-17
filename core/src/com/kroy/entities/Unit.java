@@ -3,6 +3,7 @@ package com.kroy.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
+import com.kroy.screens.GameScreen;
 import com.sun.javafx.scene.text.TextLayout;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.y > hitBox.position.y && this.position.y < hitBox.position.y+hitBox.HEIGHT
                         && this.position.x >= hitBox.position.x  && this.position.x <= hitBox.position.x+hitBox.WIDTH){
-                    this.position.y = hitBox.position.y-8;
+                    this.position.y = hitBox.position.y-25;
                     this.drawable.setPosition(this.drawable.getX(), this.position.y);
                 }
             }
@@ -56,7 +57,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.y < hitBox.position.y+hitBox.HEIGHT && this.position.y > hitBox.position.y
                         && this.position.x >= hitBox.position.x && this.position.x <= hitBox.position.x+hitBox.WIDTH){
-                    this.position.y = hitBox.position.y+hitBox.HEIGHT+8;
+                    this.position.y = hitBox.position.y+hitBox.HEIGHT-8;
                     this.drawable.setPosition(this.drawable.getX(), this.position.y);
                 }
             }
