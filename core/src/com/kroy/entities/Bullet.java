@@ -3,12 +3,51 @@ package com.kroy.entities;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.kroy.game.Point;
+import com.badlogic.gdx.math.Vector2;
 
 
 public class Bullet extends ApplicationAdapter {
+    public static final int SPEED =300;
+    private static Texture texture;
+    int x,y;
+    Point position;
+
+
+    public boolean remove = false;
+
+
+    public Bullet( int x, int y) {
+        this.x = x;
+        this.y = y;
+
+
+        if (texture == null)
+            texture = new Texture("Sprites/waterball.png");
+        }
+
+        public void update (float deltaTime){
+                y += SPEED * deltaTime;
+                if (y >Gdx.graphics.getHeight()) {
+                    remove = true;
+                }
+
+
+    }
+
+    public void render (SpriteBatch batch){
+        batch.draw(texture,x,y);
+    }
+
+}
+
+
+
+    /*
     SpriteBatch batch;
     private TextureAtlas textureAtlas;
     private Animation animation;
@@ -44,6 +83,8 @@ public class Bullet extends ApplicationAdapter {
 
     }
 
+     */
 
-}
+
+
 

@@ -2,9 +2,7 @@ package com.kroy.screens;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,7 +18,6 @@ import com.kroy.game.Point;
 
 
 import java.util.*;
-import java.util.zip.DeflaterInputStream;
 
 
 //////////// ANIMATION //////////////////////////////////////////////////////////////////////
@@ -35,6 +32,14 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 
 
 public class GameScreen implements Screen, InputProcessor {
+
+    //Bullet
+    public static final float SPEED = 300;
+    ArrayList<Bullet> bullets;
+    int x;
+    int y;
+    public Point position;
+
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -111,18 +116,22 @@ public class GameScreen implements Screen, InputProcessor {
     // Testing - Fire Statoin Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
 
-    /////// ANIMATION ////////////////////////////
+    // ANIMATION
     Animation animation;
     float elapseTime = 0f;
     TextureAtlas textureAtlas;
     SpriteBatch sb1;
-    ////// ANIMATION ///////////////////////
+
+
 
     public GameScreen(final KROY game) {
+        //bullet
+        bullets = new ArrayList<Bullet>();
+
+
         this.game = game;
         FPS = new FPSLogger();
         pauseScreen.setPaused(false);
-
 
         //defining the camera and map characteristics
         map = new TmxMapLoader().load("maps/Map.tmx");
@@ -149,7 +158,6 @@ public class GameScreen implements Screen, InputProcessor {
         //HitBoxes to allow collisions
 
 
-
         box1 = new HitBox(475,100,270,GameScreen.HEIGHT - 750);
         box2 = new HitBox(100, 400, 320, GameScreen.HEIGHT - 722 -100);
 
@@ -162,6 +170,8 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines.add(engine1);
         fireEngines.add(engine2);
         fireEngines.add(engine3);
+
+
 
         // FireStation
         fireStationTexture = new Texture("Sprites/FireStation.png");
@@ -197,11 +207,14 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines.add(engine2);
         fireEngines.add(engine3);
 
-        ////////ANIMATION //////////////////////////////////////////////////////////////////////
+
+        //ANIMATION
         sb1 = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
         animation = new Animation(1f / 40f, textureAtlas.getRegions());
-        //////// ANIMATION //////////////////////////////////////////////////////////////////////
+
+
+
     }
 
 
@@ -209,9 +222,34 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta){
 
+        if (engine1.isActive && (engine1.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
+                bullets.add(new Bullet(engine1.position.x,engine1.position.y));
+
+            }
+
+        if (engine2.isActive && (engine2.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
+                bullets.add(new Bullet(engine2.position.x, engine2.position.y));
+            }
+
+
+        if (engine3.isActive && (engine3.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
+                bullets.add(new Bullet(engine3.position.x, engine3.position.y));
+            }
+
+
+
+        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+        for( Bullet bullet: bullets){
+            bullet.update(delta);
+            if (bullet.remove)
+                bulletsToRemove.add(bullet);
+        }
+        bullets.removeAll(bulletsToRemove);
+
+
+
         if(pauseScreen.isPaused()){
             pauseScreen.pauseScreen(game);
-
         }else {
 
             //Cheap and dirty way of moving the map around, doesn't need to be permanent
@@ -237,6 +275,10 @@ public class GameScreen implements Screen, InputProcessor {
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
 
+            for (Bullet bullet:bullets){
+                bullet.render(sb);
+            }
+
             fireStation.drawable.draw(sb);
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawable.draw(sb);
@@ -244,6 +286,7 @@ public class GameScreen implements Screen, InputProcessor {
             for(Fortress fortress: fortressList){
                 fortress.drawable.draw(sb);
             }
+
 
             sb.end();
 
@@ -311,6 +354,7 @@ public class GameScreen implements Screen, InputProcessor {
                     fireEngine.destroy(animation,elapseTime);
                     //Need a way of deleting this object properly but can't figure it out
                     fireEnginesToDelete.add(fireEngine);
+
                 }
 
                 if(fireEngine.inRange(fireStation)){
@@ -379,6 +423,7 @@ public class GameScreen implements Screen, InputProcessor {
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("RIGHT",hitBoxes);
+
                     }
                 }
                 if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
