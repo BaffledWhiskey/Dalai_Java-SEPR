@@ -60,7 +60,7 @@ public class FireEngine extends Unit{
      * @param animation death animation (use explosion)
      * @param elapseTime (time elapsed between frames)
      */
-    public void destroy(Animation animation, float elapseTime){
+    public void destroy(Animation animation, float elapseTime, SpriteBatch sb){
         if(!(this.health <= 0)){
             try {
                 throw new Exception("can't destroy Entity with health greater than 0");
@@ -69,11 +69,9 @@ public class FireEngine extends Unit{
             }
         }
         else{
-            SpriteBatch sb = new SpriteBatch();
             sb.begin();
-                sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
+            sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
             sb.end();
-            sb.dispose();
         }
     }
 

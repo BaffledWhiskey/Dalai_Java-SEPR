@@ -396,7 +396,7 @@ public class GameScreen implements Screen, InputProcessor {
                     }
                 }
                 if(fireEngine.getHealth() <= 0){
-                    fireEngine.destroy(animation,elapseTime);
+                    fireEngine.destroy(animation,elapseTime, sb);
                     //Need a way of deleting this object properly but can't figure it out
                     fireEnginesToDelete.add(fireEngine);
 

@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.internal.matchers.Null;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -40,24 +42,8 @@ public class FireEngineTest {
         mockedAnimation = mock(Animation.class);
         when(mockedImg.getWidth()).thenReturn(0);
         when(mockedImg.getHeight()).thenReturn(0);
-        this.cfg = new HeadlessApplicationConfiguration();
-        new HeadlessApplication(new ApplicationListener() {
-            @Override
-            public void create() { }
-            @Override
-            public void resize(int width, int height) { }
-            @Override
-            public void render() { }
-            @Override
-            public void pause() { }
-            @Override
-            public void resume() { }
-            @Override
-            public void dispose() { }
-        }, cfg);
-        Gdx.gl = mock(GL20.class);
-        Gdx.gl20 = mock(GL20.class);
-        //PowerMockito.whenNew(DestroyAnimation.class).withAnyArguments().thenReturn();
+        mockBatch = mock(SpriteBatch.class);
+        Mockito.doThrow(new NullPointerException()).when(mockBatch).end();
     }
 
     @Rule
@@ -66,13 +52,13 @@ public class FireEngineTest {
     @Test
     public void engineDoesNotDestroyWhenHealthyTest() throws Exception {
         FireEngine f = new FireEngine(1,1,100,1,new Point(1,1),mockedImg);
-        f.destroy(mockedAnimation,1f);
+        f.destroy(mockedAnimation,1f, mockBatch);
     }
 
-    @Test
-    public void engineShouldDestroyWhenHealthBelowZero() throws Exception {
+    @Test(expected=NullPointerException.class)
+    public void engineShouldDestroyWhenHealthBelowZero() {
         FireEngine f = new FireEngine(1,1,0,1,new Point(1,1),mockedImg);
-        f.destroy(mockedAnimation,1f);
+        f.destroy(mockedAnimation,1f, mockBatch);
     }
 
     @Test
