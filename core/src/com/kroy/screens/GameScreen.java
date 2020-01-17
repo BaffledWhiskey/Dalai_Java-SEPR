@@ -222,21 +222,18 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta){
 
-        if (engine1.isActive && (engine1.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
+        //  draw bullet at engine's position
+        if((engine1.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
                 bullets.add(new Bullet(engine1.position.x,engine1.position.y));
+            };
 
-            }
+        if((engine2.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
+            bullets.add(new Bullet(engine2.position.x,engine2.position.y));
+        };
 
-        if (engine2.isActive && (engine2.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
-                bullets.add(new Bullet(engine2.position.x, engine2.position.y));
-            }
-
-
-        if (engine3.isActive && (engine3.inRange(fortress1)||engine1.inRange(fortress2)||engine1.inRange(fortress3))) {
-                bullets.add(new Bullet(engine3.position.x, engine3.position.y));
-            }
-
-
+        if((engine3.isActive && Gdx.input.isKeyPressed(Input.Keys.SPACE))){
+            bullets.add(new Bullet(engine3.position.x,engine3.position.y));
+        };
 
         ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
         for( Bullet bullet: bullets){
