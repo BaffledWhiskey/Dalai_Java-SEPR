@@ -85,7 +85,6 @@ public class GameScreen implements Screen, InputProcessor {
     public static int WIDTH = 1080;
     public static int HEIGHT = 900;
 
-
     private final KROY game;
     private FPSLogger FPS;
 
