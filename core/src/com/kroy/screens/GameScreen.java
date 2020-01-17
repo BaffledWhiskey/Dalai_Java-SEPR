@@ -332,16 +332,15 @@ public class GameScreen implements Screen, InputProcessor {
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
 
-            for (Bullet bullet:bullets){
-                bullet.render(sb);
-            }
-
             fireStation.drawable.draw(sb);
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawable.draw(sb);
             }
             for(Fortress fortress: fortressList){
                 fortress.drawable.draw(sb);
+            }
+            for (Bullet bullet:bullets){
+                bullet.render(sb);
             }
 
 
