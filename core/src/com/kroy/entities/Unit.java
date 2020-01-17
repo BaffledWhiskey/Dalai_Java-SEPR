@@ -43,7 +43,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.y > hitBox.position.y && this.position.y < hitBox.position.y+hitBox.HEIGHT
                         && this.position.x >= hitBox.position.x  && this.position.x <= hitBox.position.x+hitBox.WIDTH){
-                    this.position.y = hitBox.position.y-5;
+                    this.position.y = hitBox.position.y-8;
                     this.drawable.setPosition(this.drawable.getX(), this.position.y);
                 }
             }
@@ -56,7 +56,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.y < hitBox.position.y+hitBox.HEIGHT && this.position.y > hitBox.position.y
                         && this.position.x >= hitBox.position.x && this.position.x <= hitBox.position.x+hitBox.WIDTH){
-                    this.position.y = hitBox.position.y+hitBox.HEIGHT+5;
+                    this.position.y = hitBox.position.y+hitBox.HEIGHT+8;
                     this.drawable.setPosition(this.drawable.getX(), this.position.y);
                 }
             }
@@ -68,7 +68,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.x < hitBox.position.x+hitBox.WIDTH && this.position.x > hitBox.position.x
                        && this.position.y >= hitBox.position.y && this.position.y <= hitBox.position.y+hitBox.HEIGHT){
-                    this.position.x = hitBox.position.x+hitBox.WIDTH+5;
+                    this.position.x = hitBox.position.x+hitBox.WIDTH+8;
                     this.drawable.setPosition(this.position.x, this.drawable.getY());
                 }
             }
@@ -80,7 +80,7 @@ public class Unit extends Entity {
             for(HitBox hitBox: hitBoxes){
                 if(this.position.x > hitBox.position.x && this.position.x < hitBox.position.x+hitBox.WIDTH
                         && this.position.y >= hitBox.position.y && this.position.y <= hitBox.position.y+hitBox.HEIGHT){
-                    this.position.x = hitBox.position.x-5;
+                    this.position.x = hitBox.position.x-8;
                     this.drawable.setPosition(this.position.x, this.drawable.getY());
                 }
             }

@@ -29,6 +29,7 @@ import com.badlogic.gdx.Input;
 
 // Testing - FireStation Co-Ords
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.sun.javafx.scene.text.TextLayout;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -99,6 +100,15 @@ public class GameScreen implements Screen, InputProcessor {
     private HitBox box3;
     private HitBox box4;
     private HitBox box5;
+    private HitBox box6;
+    private HitBox box7;
+    private HitBox box8;
+    private HitBox box9;
+    private HitBox box10;
+    private HitBox box11;
+    private HitBox box12;
+    private HitBox box13;
+    private HitBox box14;
 
     //Initialises textures for pause screen
     Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
@@ -158,13 +168,35 @@ public class GameScreen implements Screen, InputProcessor {
         //HitBoxes to allow collisions
 
 
-        box1 = new HitBox(475,100,270,GameScreen.HEIGHT - 750);
-        box2 = new HitBox(100, 400, 320, GameScreen.HEIGHT - 722 -100);
+        box1 = new HitBox(475,358,13,GameScreen.HEIGHT - 750);
+        box2 = new HitBox(130, 388, 320, GameScreen.HEIGHT - 852);
+        box3 = new HitBox(262, 420, 400, GameScreen.HEIGHT- 680);
+        box4 = new HitBox(30,310,397, GameScreen.HEIGHT-693);
+        box5 = new HitBox(117,183,397,GameScreen.HEIGHT-390);
+        box6 = new HitBox(117,215, 605, GameScreen.HEIGHT-390);
+        box7 = new HitBox(72, 214, 606, GameScreen.HEIGHT-248);
+        box8 = new HitBox(262, 220, 845, GameScreen.HEIGHT-679);
+        box9 = new HitBox(215, 150, 845, GameScreen.HEIGHT-392);
+        box10 = new HitBox(450, 100, 1021, GameScreen.HEIGHT-435);
+        box11 = new HitBox(215, 150, 844, GameScreen.HEIGHT-150);
+        box12 = new HitBox(227, 181, 397, GameScreen.HEIGHT-246);
+        box13 = new HitBox(100, 220, 603, GameScreen.HEIGHT-149);
 
 
         hitBoxes = new ArrayList<>();
         hitBoxes.add(box1);
         hitBoxes.add(box2);
+        hitBoxes.add(box3);
+        hitBoxes.add(box4);
+        hitBoxes.add(box5);
+        hitBoxes.add(box6);
+        hitBoxes.add(box7);
+        hitBoxes.add(box8);
+        hitBoxes.add(box9);
+        hitBoxes.add(box10);
+        hitBoxes.add(box11);
+        hitBoxes.add(box12);
+        hitBoxes.add(box13);
         
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
@@ -426,17 +458,17 @@ public class GameScreen implements Screen, InputProcessor {
 
                     }
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("LEFT",hitBoxes);
                     }
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("UP",hitBoxes);
                     }
                 }
-                if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("DOWN",hitBoxes);
                     }
