@@ -80,7 +80,6 @@ public class GameScreen implements Screen, InputProcessor {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-    private Texture fireEngineTexture;
     private SpriteBatch sb;
     private FireEngine engine1;
     private FireEngine engine2;
@@ -117,6 +116,8 @@ public class GameScreen implements Screen, InputProcessor {
     private HitBox box17;
     private HitBox box18;
     private HitBox box19;
+
+    int mouseOffset;
 
 
     //Initialises textures for pause screen
@@ -219,6 +220,8 @@ public class GameScreen implements Screen, InputProcessor {
         hitBoxes.add(box18);
         hitBoxes.add(box19);
 
+
+
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
         fireEngines.add(engine2);
@@ -266,7 +269,7 @@ public class GameScreen implements Screen, InputProcessor {
         textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
         animation = new Animation(1f / 40f, textureAtlas.getRegions());
 
-
+        mouseOffset = 0;
 
     }
 
@@ -277,6 +280,16 @@ public class GameScreen implements Screen, InputProcessor {
         // shooting code
         // add bullets to the ArrayList
         // draw bullet at engine's position when space bar is pressed
+
+
+        for(FireEngine fireEngine: fireEngines){
+            if(fireEngine.isActive){
+                if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10));
+                }
+            }
+        }
+        /**
         if(engine1.isActive)
             if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                 bullets.add(new Bullet(engine1.position.x-24,engine1.position.y+10));
@@ -291,7 +304,7 @@ public class GameScreen implements Screen, InputProcessor {
             if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                 bullets.add(new Bullet(engine3.position.x-24,engine3.position.y+10));
             }
-
+        **/
             // update bullet
             // if bullet should be removed, we add them to the removed list
 
@@ -313,9 +326,11 @@ public class GameScreen implements Screen, InputProcessor {
             //*********************************
             if (Gdx.input.isTouched()) {
                 //float x = Gdx.input.getDeltaX(); commented out and changed the camera alterations to adjust for map scaling
-                float y = Gdx.input.getDeltaY();
+                int y = Gdx.input.getDeltaY();
                 camera.position.add(0, y, 0);
                 camera.update();
+                mouseOffset += y;
+
             }
             //*********************************
             FPS.log(); // Prints FPS to Console
@@ -608,6 +623,7 @@ public class GameScreen implements Screen, InputProcessor {
         // If you click on a fire Engine change the isActive State
         // Iterates through all drawn fireEngines on the screen and checks weather the mouse is over the current fireEngine
         // If it is all FireEngines are changed to inActive and the one clicked then changed to Active.
+        screenY -= mouseOffset;
         for(Entity fireEngine: fireEngines){
             if(screenX > fireEngine.position.x - fireEngine.drawable.getWidth()/2 && screenX < fireEngine.position.x
                 + fireEngine.drawable.getWidth()/2 && GameScreen.HEIGHT - screenY > fireEngine.position.y - fireEngine.drawable.getHeight()/2
@@ -649,8 +665,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        //This should work to zoom the map in and out with scroll wheel, the mouse input is a bit off though
 
+
+        //This should work to zoom the map in and out with scroll wheel, the mouse input is a bit off though
+        /**
         Vector3 screenCoords = new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0);
         Vector3 worldCoordsBefore = camera.unproject(new Vector3(screenCoords));
         camera.zoom += amount * camera.zoom * 0.1f;
@@ -660,7 +678,8 @@ public class GameScreen implements Screen, InputProcessor {
         camera.position.sub(diff);
         camera.update();
         return true;
-
+         **/
+        return false;
 
     }
 }
