@@ -342,6 +342,12 @@ public class GameScreen implements Screen, InputProcessor {
             for (Bullet bullet:bullets){
                 bullet.render(sb);
             }
+            for(FireEngine fireEngine: fireEngines){
+                fireEngine.drawHealthBar(camera, shape);
+            }
+            for(Fortress fortress: fortressList){
+                fortress.drawHealthBar(camera, shape);
+            }
 
 
             sb.end();
@@ -462,11 +468,11 @@ public class GameScreen implements Screen, InputProcessor {
         //Draws a range box - Testing Purposes
         for(FireEngine fireEngine: fireEngines){
             fireEngine.drawBox(fortressList, camera,fireEngine.drawable,shape);
-            fireEngine.drawHealthBar(camera, shape);
+
         }
         for(Fortress fortress: fortressList){
             fortress.drawBox(fireEngines,camera,shape);
-            fortress.drawHealthBar(camera, shape);
+
         }
 
         //Draws Hitboxes for testing
