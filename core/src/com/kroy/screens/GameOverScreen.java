@@ -66,7 +66,7 @@ public class GameOverScreen implements Screen {
             game.batch.draw(loseText, x - 116, 325, 233, 65);
         }
         else {
-            game.batch.draw(winText, x - 116, 325, 233, 65);
+            game.batch.draw(winText, x - 466/2, GameScreen.HEIGHT- 450, 466, 130);
         }
 
         if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
