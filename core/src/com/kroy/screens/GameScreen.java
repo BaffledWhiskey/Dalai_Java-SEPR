@@ -34,7 +34,7 @@ import com.sun.javafx.scene.text.TextLayout;
 
 public class GameScreen implements Screen, InputProcessor {
     // If true render hit boxes, else don't
-    boolean testMode = true;
+    boolean testMode = false;
     //Bullet
     public static final float SPEED = 300;
 
@@ -433,6 +433,13 @@ public class GameScreen implements Screen, InputProcessor {
             }
             fireEngines.removeAll(fireEnginesToDelete);
             fortressList.removeAll(fortressesToDelete);
+
+            //Moves fire engines off the map - temp fix for bullets drawing on death
+            for(FireEngine fireEngine : fireEnginesToDelete){
+                fireEngine.position = new Point(5000,5000);
+                fireEngine.drawable.setPosition(5000,5000);
+            }
+
         }
         //System.out.println(engine1.position.x);
         //System.out.println(engine1.position.y);
