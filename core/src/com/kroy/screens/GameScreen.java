@@ -122,8 +122,8 @@ public class GameScreen implements Screen, InputProcessor {
     //Initialises textures for pause screen
     Texture playAgainActive = new Texture("PauseScreen/ResumeActive.png");
     Texture playAgainInactive = new Texture("PauseScreen/ResumeInactive.png");
-    Texture exitButtonActive = new Texture("PauseScreen/exitActive.png");
-    Texture exitButtonInactive = new Texture("PauseScreen/exitInactive.png");
+    Texture exitButtonActive = new Texture("PauseScreen/ExitActive.png");
+    Texture exitButtonInactive = new Texture("PauseScreen/ExitInactive.png");
     Texture kroyLogo = new Texture("KROY_logo.png");
     List<Texture> pauseTextures = Arrays.asList(playAgainActive, playAgainInactive, exitButtonActive, exitButtonInactive, kroyLogo);
 
