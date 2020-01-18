@@ -354,6 +354,8 @@ public class GameScreen implements Screen, InputProcessor {
             for(Fortress fortress: fortressList){
                 fortress.drawable.draw(sb);
             }
+            sb.end();
+            sb.begin();
             for (Bullet bullet:bullets){
                 bullet.render(sb);
             }

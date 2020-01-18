@@ -13,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Bullet extends ApplicationAdapter {
     public static final int SPEED =300;  //speed of bullet
-    private static Texture texture;      //create static object
+    public Texture texture;      //create static object
     float x,y;                           //x,y position of the bullet
 
     public boolean remove = false;       //check if the object should be removed
@@ -23,20 +23,20 @@ public class Bullet extends ApplicationAdapter {
         this.y = y;
 
 
-        if (texture == null)
+        if (texture == null) {
             texture = new Texture("Sprites/bubble.png");   //image of the bullet,
         }
+    }
 
+    // update the bullet position (go up)
+    public void update (float deltaTime) {
+        y += SPEED * deltaTime;
 
-        // update the bullet position (go up)
-        public void update (float deltaTime){
-                y += SPEED * deltaTime;
-
-            // and make sure the bullet doesn't leave the screen
-            // once bullet leave the screen, destroy the bullet
-                if (y >Gdx.graphics.getHeight()) {
-                    remove = true;
-                }
+        // and make sure the bullet doesn't leave the screen
+        // once bullet leave the screen, destroy the bullet
+        if (y > Gdx.graphics.getHeight()) {
+            remove = true;
+        }
     }
 
     //draw the bullet

@@ -22,6 +22,10 @@ public class Fortress extends Tower{
         return health++;
     }
 
+    public void render (SpriteBatch batch){
+        batch.draw(drawable,position.x,position.y);
+    }
+
     public void destroy(Animation animation, float elapseTime){
         if(!(this.health <= 0)){
             try {
