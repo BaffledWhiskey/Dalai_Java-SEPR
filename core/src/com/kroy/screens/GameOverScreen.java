@@ -36,10 +36,10 @@ public class GameOverScreen implements Screen {
     public GameOverScreen(KROY game, String result){
         this.game = game;
         this.result = result;
-        playAgainActive = new Texture("GameOverScreen/playAgainActive.png");
-        playAgainInactive = new Texture("GameOverScreen/playAgainInactive.png");
-        exitButtonActive = new Texture("GameOverScreen/exitActive.png");
-        exitButtonInactive = new Texture("GameOverScreen/exitInactive.png");
+        playAgainActive = new Texture("GameOverScreen/PlayAgainActive.png");
+        playAgainInactive = new Texture("GameOverScreen/PlayAgainInactive.png");
+        exitButtonActive = new Texture("GameOverScreen/ExitActive.png");
+        exitButtonInactive = new Texture("GameOverScreen/ExitInactive.png");
         kroyLogo = new Texture("KROY_logo.png");
         gameOverImage = new Texture("GameOverScreen/GameOver.png");
         loseText = new Texture("GameOverScreen/Lose.png");
@@ -60,8 +60,9 @@ public class GameOverScreen implements Screen {
 
 
         game.batch.begin();
-        game.batch.draw(gameOverImage, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
+
         if (result == "lose") {
+            game.batch.draw(gameOverImage, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
             game.batch.draw(loseText, x - 116, 325, 233, 65);
         }
         else {
