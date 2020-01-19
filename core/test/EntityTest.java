@@ -26,27 +26,6 @@ public class EntityTest {
          when(mockedImg.getHeight()).thenReturn(5);
      }
 
-
-     /*@Test
-     public void doesAnyOfMyCodeWork() {
-         Assertions.assertEquals(mockedImg.getHeight(),5);
-     }*/
-
-    @ParameterizedTest
-    @ValueSource(ints = {11,12})
-    public void insideBoundaryTest(int val) {
-        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
-        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(val,5), mockedImg)));
-        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(5,val), mockedImg)));
-    }
-
-     @Test
-     public void outsideBoundaryTest() {
-         Entity e = new Entity(0,5, new Point(5,5), mockedImg);
-         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(13,5), mockedImg)));
-         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(5,13), mockedImg)));
-     }
-
     @Test
     public void pointShouldBeInRangeTest() {
         Entity e = new Entity(0,5, new Point(5,5));
@@ -57,5 +36,20 @@ public class EntityTest {
     public void pointShouldNotBeInRangeTest() {
         Entity e = new Entity(0,5, new Point(5,5));
         Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(15,15), mockedImg)));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {11,12})
+    public void insideBoundaryInRangeTest(int val) {
+        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
+        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(val,5), mockedImg)));
+        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(5,val), mockedImg)));
+    }
+
+    @Test
+    public void outsideBoundaryInRangeTest() {
+        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
+        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(13,5), mockedImg)));
+        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(5,13), mockedImg)));
     }
 }

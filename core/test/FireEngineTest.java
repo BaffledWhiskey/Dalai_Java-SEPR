@@ -50,13 +50,13 @@ public class FireEngineTest {
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Test
-    public void engineDoesNotDestroyWhenHealthyTest() throws Exception {
+    public void engineShouldNotDestroyWhenHealthyTest() throws Exception {
         FireEngine f = new FireEngine(1,1,100,1,new Point(1,1),mockedImg);
         f.destroy(mockedAnimation,1f, mockBatch);
     }
 
     @Test(expected=NullPointerException.class)
-    public void engineShouldDestroyWhenHealthBelowZero() {
+    public void engineShouldDestroyWhenHealthBelowZeroTest() {
         FireEngine f = new FireEngine(1,1,0,1,new Point(1,1),mockedImg);
         f.destroy(mockedAnimation,1f, mockBatch);
     }
