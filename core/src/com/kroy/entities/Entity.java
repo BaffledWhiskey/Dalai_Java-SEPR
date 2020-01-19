@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class Entity{
     int health;
-    int range;
+    public int range;
     int height;
     int width;
     public Point position;

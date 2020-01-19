@@ -22,13 +22,15 @@ public class Bullet extends ApplicationAdapter {
 
     Point initialPosition;
     public Point position;
+    public int range;
 
     public boolean remove = false;       //check if the object should be removed
 
-    public Bullet(float x, float y, Texture texture) {    //create a new bullet, start from (x,y)
+    public Bullet(float x, float y, Texture texture, int range) {    //create a new bullet, start from (x,y)
         this.initialPosition = new Point((int)x, (int)y);
-        this.position = this.initialPosition;
+        this.position = new Point((int)x, (int) y);
         this.texture = texture;
+        this.range = range;
 
         Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY()) - y);
         System.out.println("shoot");
@@ -55,7 +57,10 @@ public class Bullet extends ApplicationAdapter {
 
         // and make sure the bullet doesn't leave the screen
         // once bullet leave the screen, destroy the bullet
-        if (position.y > Gdx.graphics.getHeight()) {
+        System.out.println(position.x);
+        System.out.println("init"+Integer.toString(this.initialPosition.x+range));
+        if (position.x > initialPosition.x + range || position.x < initialPosition.x - range
+        || position.y > initialPosition.y + range || position.y < initialPosition.y -range) {
             remove = true;
         }
     }

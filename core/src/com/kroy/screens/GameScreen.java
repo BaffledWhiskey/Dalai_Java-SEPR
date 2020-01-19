@@ -281,7 +281,7 @@ public class GameScreen implements Screen, InputProcessor {
                 *of the active Fire Engine, and the volume of water of the engine is decreased*/
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && fireEngine.getVolumeOfWater() > 0){
                     bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10,
-                            new Texture("Sprites/bubble.png")));
+                            new Texture("Sprites/bubble.png"), fireEngine.range));
                     fireEngine.lowerVolumeOfwater();
                 }
                 ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
