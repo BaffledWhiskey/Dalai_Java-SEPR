@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.kroy.game.Point;
 import com.badlogic.gdx.math.Vector2;
+import com.kroy.screens.GameScreen;
 
 /** A Bullet is drawn from a target towards its enemy, and either hits the enemy (hence reducing its health)
  * or misses the enemy, leaving the screen*/
@@ -29,13 +30,13 @@ public class Bullet extends ApplicationAdapter {
         this.position = this.initialPosition;
         this.texture = texture;
 
-        Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, Gdx.input.getY() - y);
+        Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY()) - y);
         System.out.println("shoot");
         // Add Random varience to the bullet directipon
         //directionCalc.x *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
         //directionCalc.y *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
-        directionCalc.nor();
 
+        directionCalc.nor();
         this.direction = directionCalc;
 
 
@@ -49,8 +50,8 @@ public class Bullet extends ApplicationAdapter {
      * @param deltaTime A factor used to determine how far the bullet must travel
      */
     public void update (float deltaTime) {
-        position.y += direction.y * SPEED * deltaTime;
-        position.x += direction.x * SPEED * deltaTime;
+        position.y += (SPEED * deltaTime) * direction.y;
+        position.x += (SPEED * deltaTime) * direction.x;
 
         // and make sure the bullet doesn't leave the screen
         // once bullet leave the screen, destroy the bullet
