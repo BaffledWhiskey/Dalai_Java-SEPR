@@ -1,9 +1,12 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.kroy.game.Point;
 
 /**
@@ -87,6 +90,18 @@ public class FireEngine extends Unit{
             sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
             sb.end();
         }
+    }
+
+    public void drawWaterBar(OrthographicCamera camera, ShapeRenderer shape) {
+        shape.setProjectionMatrix(camera.combined);
+        shape.begin(ShapeRenderer.ShapeType.Line);
+        shape.setColor(Color.CYAN);
+        shape.rect(position.x - 50 , position.y + height/2 + 30, 100, 10);
+        shape.end();
+        shape.begin(ShapeRenderer.ShapeType.Filled);
+        shape.setColor(Color.CYAN);
+        shape.rect(position.x - 50 , position.y + height/2 + 30, (volumeOfWater * 100/ maxVolume), 10);
+        shape.end();
     }
 
 }

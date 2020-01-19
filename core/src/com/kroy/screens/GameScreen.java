@@ -368,6 +368,7 @@ public class GameScreen implements Screen, InputProcessor {
             }
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawHealthBar(camera, shape);
+                fireEngine.drawWaterBar(camera,shape);
             }
             for(Fortress fortress: fortressList){
                 fortress.drawHealthBar(camera, shape);

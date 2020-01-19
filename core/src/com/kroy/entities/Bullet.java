@@ -18,7 +18,7 @@ public class Bullet extends ApplicationAdapter {
     private Vector2 direction;
 
     Point initialPosition;
-    Point position;
+    public Point position;
 
     public boolean remove = false;       //check if the object should be removed
 

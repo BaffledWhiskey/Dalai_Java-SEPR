@@ -36,7 +36,7 @@ public class BulletTest {
         Bullet b = new Bullet(5f,5f, mockedImg);
         when(Gdx.graphics.getHeight()).thenReturn(400);
         b.update(1f);
-        Assertions.assertEquals(b.y, 305f);
+        Assertions.assertEquals(b.position.y, 305f);
     }
 
     @Test

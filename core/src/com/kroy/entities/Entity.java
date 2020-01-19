@@ -146,6 +146,7 @@ public class Entity{
         shape.end();
     }
 
+
     /**
      * Draws the health bar for the given entity based on its current health
      * @param camera The camera used to render the game screen
