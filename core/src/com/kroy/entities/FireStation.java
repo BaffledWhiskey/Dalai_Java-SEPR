@@ -35,5 +35,8 @@ public class FireStation extends Tower {
                 engine.health = engine.maxHealth;
             }
         }
+        if (engine.getVolumeOfWater() < engine.maxVolume && inRange(engine)){
+            engine.increaseVolumeOfWater();
+        }
     }
 }

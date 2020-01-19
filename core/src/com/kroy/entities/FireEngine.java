@@ -16,11 +16,13 @@ public class FireEngine extends Unit{
     public boolean isBeingRepaired;
     private static int counter = 0; // Acts as counter for how many FireEngine class instances exist
     public int instanceNum; // What number fire engine is this. Mainly for Debugging
+    public int maxVolume;
 
 
     public FireEngine(int volumeOfWater, int movementSpeed, int health, int range, Point position, Texture img){
         super(movementSpeed, health, range, position,img);
         this.volumeOfWater = volumeOfWater;
+        this.maxVolume = volumeOfWater;
         counter++;
         instanceNum = this.getNumberOfInstances();
         isBeingRepaired = false;
@@ -28,6 +30,18 @@ public class FireEngine extends Unit{
 
     public int getNumberOfInstances(){
         return counter;
+    }
+
+    public int getVolumeOfWater(){
+        return volumeOfWater;
+    }
+
+    public void lowerVolumeOfwater(){
+        this.volumeOfWater --;
+    }
+
+    public void increaseVolumeOfWater() {
+        this.volumeOfWater+= 10;
     }
 
     public String toString(){

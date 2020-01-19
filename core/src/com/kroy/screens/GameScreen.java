@@ -10,8 +10,6 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
-import com.badlogic.gdx.math.Vector3;
-
 import com.kroy.entities.*;
 import com.kroy.game.KROY;
 import com.kroy.game.Point;
@@ -29,7 +27,6 @@ import com.badlogic.gdx.Input;
 
 // Testing - FireStation Co-Ords
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.sun.javafx.scene.text.TextLayout;
 
 
 public class GameScreen implements Screen, InputProcessor {
@@ -279,13 +276,16 @@ public class GameScreen implements Screen, InputProcessor {
         // shooting code
         // add bullets to the ArrayList
         // draw bullet at engine's position when space bar is pressed
-
+        // Checks for a hit and if true, remove bullet do damage to fortress.
         for(FireEngine fireEngine: fireEngines){
             if(fireEngine.isActive){
-                if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
+                if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && fireEngine.getVolumeOfWater() > 0){
+
                     bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png")));
+                    fireEngine.lowerVolumeOfwater();
                 }
                 ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+                // Checks each bullet against each fortress for a collision
                 for(Bullet bullet: bullets){
                     for (Tower fort: fortressList){
                         boolean hit =  bullet.isHit(fort);
@@ -294,7 +294,7 @@ public class GameScreen implements Screen, InputProcessor {
                             bulletsToRemove.add(bullet);
                         }
                     }
-                    // Collisions
+                    // If bullet goes off screen remove it
                     bullet.update(delta);
                     if (bullet.remove)
                         bulletsToRemove.add(bullet);
@@ -318,8 +318,7 @@ public class GameScreen implements Screen, InputProcessor {
                 bullets.add(new Bullet(engine3.position.x-24,engine3.position.y+10));
             }
         **/
-            // update bullet
-            // if bullet should be removed, we add them to the removed list
+
 
 
 
