@@ -467,26 +467,26 @@ public class GameScreen implements Screen, InputProcessor {
             //Only move the Fire Engine if it is active
             if (((FireEngine)fireEngine).isActive) {
                 //If the right arrow key is being pressed, move the engine to the right
-                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("RIGHT",hitBoxes);
 
                     }
                 }
                 //If the left arrow key is being pressed, move the engine to the left
-                else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("LEFT",hitBoxes);
                     }
                 }
                 //If the up arrow key is being pressed, move the engine up
-                else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("UP",hitBoxes);
                     }
                 }
                 //If the down arrow key is being pressed, move the engine down
-                else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("DOWN",hitBoxes);
                     }
