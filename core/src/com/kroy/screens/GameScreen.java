@@ -380,7 +380,7 @@ public class GameScreen implements Screen, InputProcessor {
                     }
                     //If fortress' health is 0, remove it from the list of fortresses
                     if(fortress.getHealth() <= 0){
-                        fortress.destroy(animation,elapseTime);
+                        fortress.destroy(animation,elapseTime, sb);
                         //Need a way of deleting this object properly but can't figure it out
                         fortressesToDelete.add(fortress);
                     }

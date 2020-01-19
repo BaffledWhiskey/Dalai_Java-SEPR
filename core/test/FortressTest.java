@@ -42,8 +42,8 @@ public class FortressTest {
     }
 
     @Test(expected=NullPointerException.class)
-    public void engineShouldDestroyWhenHealthBelowZero() {
-        FireEngine f = new FireEngine(1,1,0,1,new Point(1,1),mockedImg);
+    public void fortressShouldDestroyWhenHealthBelowZero() {
+        Fortress f = new Fortress(new Dimensions(1,1),0,1,new Point(1,1),mockedImg);
         f.destroy(mockedAnimation,1f, mockBatch);
     }
 }
