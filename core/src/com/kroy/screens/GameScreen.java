@@ -280,11 +280,10 @@ public class GameScreen implements Screen, InputProcessor {
         // add bullets to the ArrayList
         // draw bullet at engine's position when space bar is pressed
 
-
         for(FireEngine fireEngine: fireEngines){
             if(fireEngine.isActive){
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png")));
+                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png"), 270.00));
                 }
             }
         }
