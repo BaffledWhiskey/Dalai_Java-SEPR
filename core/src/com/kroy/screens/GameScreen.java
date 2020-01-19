@@ -160,10 +160,11 @@ public class GameScreen implements Screen, InputProcessor {
         //Section for defining the player characteristics
         sb = new SpriteBatch();
         //Links to fire engine class
-        Point p = new Point(830,220 );
-        engine1 = new FireEngine(50,200,100,100,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 50, 50,p, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 25, 64,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
+        Point p1 = new Point(780,160 );
+        Point p2 = new Point(880,160 );
+        engine1 = new FireEngine(50,200,100,100,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 50, 50,p2, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        //engine3 = new FireEngine(100, 300, 25, 64,p, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -256,7 +257,7 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
         fireEngines.add(engine2);
-        fireEngines.add(engine3);
+        //fireEngines.add(engine3);
 
 
         //Creates animation for explosion upon destruction
@@ -281,7 +282,7 @@ public class GameScreen implements Screen, InputProcessor {
                 *of the active Fire Engine, and the volume of water of the engine is decreased*/
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && fireEngine.getVolumeOfWater() > 0){
                     bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10,
-                            new Texture("Sprites/bubble.png")));
+                            new Texture("Sprites/bubble.png"), fireEngine.range));
                     fireEngine.lowerVolumeOfwater();
                 }
                 ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
@@ -380,7 +381,7 @@ public class GameScreen implements Screen, InputProcessor {
 
                     //If fortress' health is 0, remove it from the list of fortresses
                     if(fortress.getHealth() <= 0){
-                        fortress.destroy(animation,elapseTime);
+                        fortress.destroy(animation,elapseTime, sb);
                         //Need a way of deleting this object properly but can't figure it out
                         fortressesToDelete.add(fortress);
                     }

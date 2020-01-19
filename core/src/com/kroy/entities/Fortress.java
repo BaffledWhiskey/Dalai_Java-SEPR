@@ -34,7 +34,7 @@ public class Fortress extends Tower{
      * @param animation The animation which indicates destruction
      * @param elapseTime The amount of time taken to destroy the fortress
      */
-    public void destroy(Animation animation, float elapseTime){
+    public void destroy(Animation animation, float elapseTime, SpriteBatch sb){
         if(!(this.health <= 0)){
             try {
                 throw new Exception("can't destroy Entity with health greater than 0");
@@ -43,11 +43,9 @@ public class Fortress extends Tower{
             }
         }
         else{
-            SpriteBatch sb = new SpriteBatch();
             sb.begin();
             sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
             sb.end();
-            sb.dispose();
         }
     }
 

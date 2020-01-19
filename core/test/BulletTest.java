@@ -40,7 +40,7 @@ public class BulletTest {
     }
 
     @Test
-    public void bulletShouldBeRemovedWhenOffScreen() {
+    public void bulletShouldBeRemovedWhenOffScreenTest() {
         Bullet b = new Bullet(5f,5f, mockedImg);
         when(Gdx.graphics.getHeight()).thenReturn(100);
         b.update(1f);
