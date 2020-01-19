@@ -35,15 +35,14 @@ import com.sun.javafx.scene.text.TextLayout;
 public class GameScreen implements Screen, InputProcessor {
     // If true render hit boxes, else don't
     boolean testMode = false;
-    //Bullet
-    public static final float SPEED = 300;
+
 
     //Parameters for Bullet
     ArrayList<Bullet> bullets;
     int x;
     int y;
     public Point position;
-
+    public static final float SPEED = 300;
 
     //Parameters for Firestation
     private static final int FIRE_STATION_X = 832;
@@ -239,7 +238,7 @@ public class GameScreen implements Screen, InputProcessor {
         fortressTexture = new Texture("Sprites/Fortress1.png");
         Dimensions fortress1Dimensions = new Dimensions(FORTRESS_1_WIDTH, FORTRESS_1_HEIGHT);
         Point fortress1Point = new Point(FORTRESS_1_X, FORTRESS_1_Y);
-        fortress1 = new Fortress(fortress1Dimensions, 200, 100, fortress1Point, fortressTexture);
+        fortress1 = new Fortress(fortress1Dimensions, 200, 90, fortress1Point, fortressTexture);
 
         //Fortress 2
         fortressTexture = new Texture("Sprites/Fortress2.png");
@@ -251,7 +250,7 @@ public class GameScreen implements Screen, InputProcessor {
         fortressTexture = new Texture("Sprites/Fortress3.png");
         Dimensions fortress3Dimensions = new Dimensions(FORTRESS_3_WIDTH, FORTRESS_3_HEIGHT);
         Point fortress3Point = new Point(FORTRESS_3_X, FORTRESS_3_Y);
-        fortress3 = new Fortress(fortress3Dimensions, 200, 100, fortress3Point, fortressTexture);
+        fortress3 = new Fortress(fortress3Dimensions, 200, 110, fortress3Point, fortressTexture);
 
         fortressList = new ArrayList<>();
         fortressList.add(fortress1);
