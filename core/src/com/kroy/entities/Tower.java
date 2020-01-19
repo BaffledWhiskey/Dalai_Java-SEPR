@@ -3,6 +3,9 @@ package com.kroy.entities;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
 
+/**
+ * A Tower cannot move but can perform special actions when an entity is in range of it
+ */
 public class Tower extends Entity{
     Dimensions dimensions;
 

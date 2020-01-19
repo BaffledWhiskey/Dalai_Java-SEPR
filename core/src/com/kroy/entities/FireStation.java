@@ -7,7 +7,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-
+/**
+ * The Fire Station is used to refill and repair Fire Engines
+ */
 public class FireStation extends Tower {
     /**
      *

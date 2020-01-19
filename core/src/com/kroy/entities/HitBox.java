@@ -14,6 +14,9 @@ import java.util.List;
 
 import static com.kroy.screens.GameScreen.HEIGHT;
 
+/**
+ * A HitBox is defined as a rectangle which the Fire Enigne cannot enter
+ */
 public class HitBox{
     public int HEIGHT;
     public int WIDTH;
@@ -33,10 +36,13 @@ public class HitBox{
 
     }
 
+    /**
+     * Determines whether a given entity is in range
+     * @param target The Entity which may or may not be in range
+     * @return true if the entity is in range, false otherwise
+     */
     public boolean inRange(Entity target) {
-        //Initialising square for the shooter
         List<Integer> rangeBox = Arrays.asList(position.x+WIDTH/2, WIDTH/2, position.y+HEIGHT/2, HEIGHT/2);
-        //Initialising square for the target
         List<Integer> targetBox = Arrays.asList(target.position.x, target.width / 2, target.position.y, target.height / 2);
         if (targetBox.get(0) - targetBox.get(1) < rangeBox.get(0) + rangeBox.get(1)
                 && rangeBox.get(0) - rangeBox.get(1) < targetBox.get(0) + targetBox.get(1)

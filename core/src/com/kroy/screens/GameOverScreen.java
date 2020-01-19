@@ -6,7 +6,9 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.KROY;
-
+/**
+ * The game over screen is shown when the game has either been won or lost
+ */
 public class GameOverScreen implements Screen {
 
     private static final int BUTTON_WIDTH = 175;
@@ -53,6 +55,10 @@ public class GameOverScreen implements Screen {
 
     }
 
+    /**
+     * Displays the Game Over screen
+     * @param delta a parameter used to render the screen
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0.5f, 0.25f, 0.25f, 1);
@@ -60,34 +66,42 @@ public class GameOverScreen implements Screen {
 
 
         game.batch.begin();
-
+        //If the game has been lost, display the 'lose' screen
         if (result == "lose") {
             game.batch.draw(gameOverImage, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
             game.batch.draw(loseText, x - 116, 325, 233, 65);
         }
+        //If the game has been won, display the 'win' screen
         else {
             game.batch.draw(winText, x - 466/2, GameScreen.HEIGHT- 450, 466, 130);
         }
 
+        //If the 'play again' button is scrolled over, display the 'active' sprite
         if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playAgainActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            //If it is clicked, begin another game
             if(Gdx.input.isTouched()){
                 game.setScreen(new GameScreen(game));
             }
-        }else {
+        }
+        //Else display the 'inactive' sprite
+        else {
             game.batch.draw(playAgainInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
-
+        //If the 'exit' button is scrolled over, display the 'active' sprite
         if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            //If it is clicked, leave the app
             if(Gdx.input.isTouched()){
                 Gdx.app.exit();
             }
-        }else {
+        }
+        //Else display the 'inactive' sprite
+        else {
             game.batch.draw(exitButtonInactive, (x) - BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
         game.batch.end();
@@ -109,6 +123,9 @@ public class GameOverScreen implements Screen {
         this.dispose();
     }
 
+    /**
+     * Disposes of the screen when it is no longer needed
+     */
     @Override
     public void dispose() {
         Gdx.gl.glClearColor(0,0,0,1);

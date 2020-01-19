@@ -33,7 +33,6 @@ public class GameScreen implements Screen, InputProcessor {
     // If true render hit boxes, else don't
     boolean testMode = false;
 
-
     //Parameters for Bullet
     ArrayList<Bullet> bullets;
     int x;
@@ -129,10 +128,10 @@ public class GameScreen implements Screen, InputProcessor {
 
     private Texture gameOverImage;
 
-    // Testing - Fire Statoin Co-Ords
+    // Testing - Fire Station Co-Ords
     ShapeRenderer shape = new ShapeRenderer();
 
-    // ANIMATION
+    //
     Animation animation;
     float elapseTime = 0f;
     TextureAtlas textureAtlas;
@@ -260,7 +259,7 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines.add(engine3);
 
 
-        //ANIMATION
+        //Creates animation for explosion upon destruction
         sb1 = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheets/JetSprites.atlas"));
         animation = new Animation(1f / 40f, textureAtlas.getRegions());
@@ -270,82 +269,61 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
 
-
+    /**
+     * Renders the bullet at its required position
+     * @param delta The offset to update the bullet by
+     */
     @Override
     public void render(float delta){
-        // shooting code
-        // add bullets to the ArrayList
-        // draw bullet at engine's position when space bar is pressed
-        // Checks for a hit and if true, remove bullet do damage to fortress.
         for(FireEngine fireEngine: fireEngines){
             if(fireEngine.isActive){
+                /*If space key is pressed and fire engine has water, a bullet is created at a position relative to that
+                *of the active Fire Engine, and the volume of water of the engine is decreased*/
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE) && fireEngine.getVolumeOfWater() > 0){
-
-                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png")));
+                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10,
+                            new Texture("Sprites/bubble.png")));
                     fireEngine.lowerVolumeOfwater();
                 }
                 ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
                 // Checks each bullet against each fortress for a collision
                 for(Bullet bullet: bullets){
                     for (Tower fort: fortressList){
+                        /*If bullet hits fortress, lower the fortress' health by the given damage per second and delete
+                        the bullet.*/
                         boolean hit =  bullet.isHit(fort);
                         if(hit) {
                             fort.setHealth(fort.getHealth()-(int)500/fireEngine.movementSpeed);
                             bulletsToRemove.add(bullet);
                         }
                     }
-                    // If bullet goes off screen remove it
+                    //Update the position of the bullet
                     bullet.update(delta);
+                    // If bullet goes off screen remove it
                     if (bullet.remove)
                         bulletsToRemove.add(bullet);
                 }
                 bullets.removeAll(bulletsToRemove);
             }
         }
-        /**
-        if(engine1.isActive)
-            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                bullets.add(new Bullet(engine1.position.x-24,engine1.position.y+10));
-            }
 
-        if(engine2.isActive)
-            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                bullets.add(new Bullet(engine2.position.x-24,engine2.position.y+10));
-            }
-
-        if(engine3.isActive)
-            if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                bullets.add(new Bullet(engine3.position.x-24,engine3.position.y+10));
-            }
-        **/
-
-
-
-
-
-
-
-        if(pauseScreen.isPaused()){
+        //If the game is paused, show the pause screen
+        if (pauseScreen.isPaused()){
             pauseScreen.pauseScreen(game);
-        }else {
-
-            //Cheap and dirty way of moving the map around, doesn't need to be permanent
-            //*********************************
+        }
+        else {
+            //Moves the map around when the input is touched
             if (Gdx.input.isTouched()) {
-                //float x = Gdx.input.getDeltaX(); commented out and changed the camera alterations to adjust for map scaling
                 int y = Gdx.input.getDeltaY();
                 camera.position.add(0, y, 0);
                 camera.update();
                 mouseOffset += y;
-
             }
-            //*********************************
             FPS.log(); // Prints FPS to Console
 
             Gdx.gl.glClearColor(19/355f , 103/255f, 44/255f, 1);
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+            //Renders the map
             renderer.setMap(map);
             renderer.setView(camera);
             renderer.render();
@@ -354,22 +332,27 @@ public class GameScreen implements Screen, InputProcessor {
             sb.setProjectionMatrix(camera.combined);
             sb.begin();
 
+            //Draws each (alive) fire engine
             fireStation.drawable.draw(sb);
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawable.draw(sb);
             }
+            //Draws each (alive) fortress
             for(Fortress fortress: fortressList){
                 fortress.drawable.draw(sb);
             }
             sb.end();
             sb.begin();
+            //Draws each active bullet
             for (Bullet bullet:bullets){
                 bullet.render(sb);
             }
+            //Draws health bar and water bar for each (alive) fire engine
             for(FireEngine fireEngine: fireEngines){
                 fireEngine.drawHealthBar(camera, shape);
                 fireEngine.drawWaterBar(camera,shape);
             }
+            //Draws health bar for each (living) fortress
             for(Fortress fortress: fortressList){
                 fortress.drawHealthBar(camera, shape);
             }
@@ -381,34 +364,9 @@ public class GameScreen implements Screen, InputProcessor {
                 testboxRenderer();
             }
 
-            //***********************************************************************************************************
-            // Only moves the fire engine if its currently selected. isActive == true;
+
+            //Moves the Fire Engine if it is active
             fireEngineMovement();
-
-
-            //TESTING - FINDING Co-Ords for Fire Station
-            drawRect();
-
-            ////////ANIMATION //////////////////////////////////////////////////////////////////////
-
-            //Plays explosion when clicked or space is hit for testing purposes
-//            sb1.setProjectionMatrix(camera.combined);
-//            elapseTime += Gdx.graphics.getDeltaTime();
-//            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-//                sb1.begin();
-//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-//                sb1.end();
-//            }
-//
-//            if (Gdx.input.isTouched()) {
-//                sb1.begin();
-//                sb1.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), 0, 0, 20, 20, 80, 80, 1, 1, 9, true);
-//                sb1.end();
-//            }
-
-
-            ////// ANIMATION //////////////////////////////////////////////////////////////////////
-        //****************************************************************************************************************
 
             ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
@@ -420,12 +378,14 @@ public class GameScreen implements Screen, InputProcessor {
                     if(fortress.inRange(fireEngine)){
                         fortress.attackFireEngine(fireEngine);
                     }
+                    //If fortress' health is 0, remove it from the list of fortresses
                     if(fortress.getHealth() <= 0){
                         fortress.destroy(animation,elapseTime);
                         //Need a way of deleting this object properly but can't figure it out
                         fortressesToDelete.add(fortress);
                     }
                 }
+                //If engine's health is 0, remove it from the list of fire engines
                 if(fireEngine.getHealth() <= 0){
                     fireEngine.destroy(animation,elapseTime, sb);
                     //Need a way of deleting this object properly but can't figure it out
@@ -456,9 +416,11 @@ public class GameScreen implements Screen, InputProcessor {
                     fireEngine.isBeingRepaired = false;
                 }
             }
+            //If there are no alive fire stations, move to the 'lose' screen
             if(fireEngines.isEmpty()){
                 game.setScreen(new GameOverScreen(game, "lose"));
             }
+            //If there are no alive fortresses, move to the 'win' screen
             if(fortressList.isEmpty()){
                 game.setScreen(new GameOverScreen(game, "win"));
             }
@@ -472,21 +434,6 @@ public class GameScreen implements Screen, InputProcessor {
             }
 
         }
-        //System.out.println(engine1.position.x);
-        //System.out.println(engine1.position.y);
-    }
-
-    /**
-     * Method that we used to find the co-oridnates of certain places. Testing Use Only
-     */
-    private void drawRect(){
-        shape.setProjectionMatrix(camera.combined);
-        shape.begin(ShapeType.Line);
-        shape.setColor(Color.RED);
-        shape.rect(48, 702, 96, 176);
-        shape.end();
-
-
     }
 
     private void testboxRenderer(){
@@ -516,25 +463,29 @@ public class GameScreen implements Screen, InputProcessor {
      * Once added it wil also change which fireEngine fireEngineTexture is needed based on the direction that it is traveling in.
      */
     private void fireEngineMovement(){
-        //why is Entity used as the type for fire engine? - if you set it as fire engine you don't need to cast it later
         for (Entity fireEngine : fireEngines) {
+            //Only move the Fire Engine if it is active
             if (((FireEngine)fireEngine).isActive) {
+                //If the right arrow key is being pressed, move the engine to the right
                 if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("RIGHT",hitBoxes);
 
                     }
                 }
+                //If the left arrow key is being pressed, move the engine to the left
                 else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("LEFT",hitBoxes);
                     }
                 }
+                //If the up arrow key is being pressed, move the engine up
                 else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("UP",hitBoxes);
                     }
                 }
+                //If the down arrow key is being pressed, move the engine down
                 else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                     if (((FireEngine)fireEngine).isActive) {
                         ((FireEngine) fireEngine).updatePosition("DOWN",hitBoxes);
@@ -544,6 +495,12 @@ public class GameScreen implements Screen, InputProcessor {
         }
 
     }
+
+    /**
+     * Resizes the screen if it has been adjusted
+     * @param width The new width to resize to
+     * @param height The new height to resize to
+     */
     @Override
     public void resize(int width, int height) {
         camera.viewportWidth = width;
@@ -565,18 +522,19 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void pause(){
+        //Signals that the game has been paused
         pauseScreen.setPaused(true);
-        System.out.println("Pause Method Called");
     }
 
     @Override
     public void resume(){
+        //Signals that the game has been resumed
         pauseScreen.setPaused(false);
-        System.out.println("Resume Method Called");
     }
 
     @Override
     public void dispose(){
+        //Disposes of the map, render and pause screen
         map.dispose();
         renderer.dispose();
         pauseScreen.dispose();

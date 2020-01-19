@@ -17,8 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- *
+/** The Entity class stores any object on the screen which can attack or be attacked
  */
 public class Entity{
     int health;
@@ -75,7 +74,6 @@ public class Entity{
             return false;
         }
     }
-
 
 
     public void drawBox(ArrayList<FireEngine> target, OrthographicCamera camera, ShapeRenderer shape) {
@@ -153,11 +151,13 @@ public class Entity{
      * @param shape The ShapeRenderer used to render the game screen
      */
     public void drawHealthBar(OrthographicCamera camera, ShapeRenderer shape) {
+        //Draws the outline bar to show how much water has been lost
         shape.setProjectionMatrix(camera.combined);
         shape.begin(ShapeType.Line);
         shape.setColor(Color.GREEN);
         shape.rect(position.x - 50 , position.y + height/2 + 10, 100, 10);
         shape.end();
+        //Draws a filled bar to indicate how much water is remaining
         shape.begin(ShapeType.Filled);
         shape.setColor(Color.GREEN);
         shape.rect(position.x - 50 , position.y + height/2 + 10, (health * 100/ maxHealth), 10);

@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.kroy.game.Point;
 
+/**
+ * A Fortress does not move but can attack fire engines within range, as well as be attacked
+ */
 public class Fortress extends Tower{
     /**
      * @param dimensions The size of the tower
@@ -18,14 +21,19 @@ public class Fortress extends Tower{
         super(dimensions, health, range, position, img);
     }
 
-    public int increaseHealth(){
-        return health++;
+    /**
+     * Increases the health of the fortress
+     * @return
+     */
+    public void increaseHealth(){
+        this.health++;
     }
 
-    public void render (SpriteBatch batch){
-        batch.draw(drawable,position.x,position.y);
-    }
-
+    /**
+     * Destroys the fortress
+     * @param animation The animation which indicates destruction
+     * @param elapseTime The amount of time taken to destroy the fortress
+     */
     public void destroy(Animation animation, float elapseTime){
         if(!(this.health <= 0)){
             try {
@@ -44,7 +52,10 @@ public class Fortress extends Tower{
     }
 
 
-
+    /**
+     * Reduces the health of a given Fire Engine
+     * @param engine The Fire Engine which is being attacked
+     */
     public void attackFireEngine(FireEngine engine){
         engine.setHealth(engine.getHealth() - 1);
     }

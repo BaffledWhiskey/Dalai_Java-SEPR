@@ -5,12 +5,14 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.kroy.game.Point;
 import com.badlogic.gdx.math.Vector2;
 
-
+/** A Bullet is drawn from a target towards its enemy, and either hits the enemy (hence reducing its health)
+ * or misses the enemy, leaving the screen*/
 public class Bullet extends ApplicationAdapter {
     public static final int SPEED =300;  //speed of bullet
     public Texture texture;      //create static object
@@ -38,11 +40,14 @@ public class Bullet extends ApplicationAdapter {
 
 
         if (texture == null) {
-            texture = new Texture("Sprites/bubble.png");   //image of the bullet,
+            texture = new Texture("Sprites/bubble.png");   //image of the bullet
         }
     }
 
-    // update the bullet position (go up)
+    /**
+     * Updates the bullet position by the given direction
+     * @param deltaTime A factor used to determine how far the bullet must travel
+     */
     public void update (float deltaTime) {
         position.y += direction.y * SPEED * deltaTime;
         position.x += direction.x * SPEED * deltaTime;
@@ -53,6 +58,12 @@ public class Bullet extends ApplicationAdapter {
             remove = true;
         }
     }
+
+    /**
+     * Determines whether the bullet has hit a given target
+     * @param target The target which should be tested
+     * @return true if the bullet has hit the given target, false otherwise
+     */
     public boolean isHit(Tower target){
         if (this.position.x > target.position.x - target.dimensions.width/2 && this.position.x < target.position.x + target.dimensions.width/2
                 && this.position.y > target.position.y - target.dimensions.height/2 && this.position.y > target.position.y + target.dimensions.height/2) {
@@ -61,12 +72,21 @@ public class Bullet extends ApplicationAdapter {
         }
         return false;
     }
+
+    /**
+     * Reduces the target's heath if hit
+     * @param target The target to reduce the health of
+     * @return The reduced health of the target
+     */
     public int onHit(Entity target){
         target.setHealth(target.getHealth());
         return target.health;
     }
 
-    //draw the bullet
+    /**
+     * Draws the bullet on the screen
+     * @param batch The SpriteBatch required to draw the bullet
+     */
     public void render (SpriteBatch batch){
         batch.draw(texture,position.x ,position.y);
     }

@@ -7,7 +7,9 @@ import com.kroy.entities.Entity;
 import com.kroy.screens.MainMenuScreen;
 import java.util.ArrayList;
 
-
+/**
+ * The KROY class sets out the preliminaries for the game
+ */
 public class KROY extends Game {
 
     public SpriteBatch batch;

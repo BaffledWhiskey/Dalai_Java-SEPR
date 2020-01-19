@@ -6,6 +6,10 @@ import com.kroy.game.KROY;
 
 import java.util.List;
 
+/**
+ * This screen is shown when the user 'pauses' the game, i.e. by clicking the 'esc' button
+ */
+
 public class PauseScreen {
 
     // Parameters for Pause Screen
@@ -43,22 +47,28 @@ public class PauseScreen {
         return this.paused;
     }
 
-    /** This method is called whenever a new screen is rendered and gamePaused == true;.
+    /**
+     * This method is called whenever a new screen is rendered and gamePaused == true;.
      * The method draws the required textures to the screen over the top of the game state. No changes to the game are
      * possible whilst this method is being called
+     * @param game The game which is currently being played
      */
     public void pauseScreen(KROY game){
         game.batch.begin();
         game.batch.draw(kroyLogo, GameScreen.WIDTH/2-LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
 
+        //If the user scrolls over the 'resume' button, switch to the 'active' state
         if(Gdx.input.getX() < GameScreen.WIDTH/2 + BUTTON_WIDTH/2 && Gdx.input.getX() > GameScreen.WIDTH/2 - BUTTON_WIDTH/2 && GameScreen.HEIGHT
                 - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > PLAY_BUTTON_Y){
             game.batch.draw(playAgainActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2 , PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            //If it is clicked, resume the game
             if(Gdx.input.isTouched()) {
                 setPaused(false);
             }
-        }else {
+        }
+        //Else display the 'inactive' sprite
+        else {
             game.batch.draw(playAgainInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
 
@@ -66,16 +76,22 @@ public class PauseScreen {
                 - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
                 && GameScreen.HEIGHT - Gdx.input.getY() > EXIT_BUTTON_Y){
             game.batch.draw(exitButtonActive, GameScreen.WIDTH/2-BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
+            //If it is clicked, exit the app
             if(Gdx.input.isTouched()){
                 Gdx.app.exit();
             }
-        }else {
+        }
+        //Else display the 'inactive' sprite
+        else {
             game.batch.draw(exitButtonInactive, GameScreen.WIDTH/2-BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
         }
         game.batch.end();
 
     }
 
+    /**
+     * Disposes of the Pause screen assets
+     */
     public void dispose() {
         //Pause Screen
         playAgainActive.dispose();
