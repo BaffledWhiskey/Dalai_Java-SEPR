@@ -33,8 +33,8 @@ public class Bullet extends ApplicationAdapter {
         Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY()) - y);
         System.out.println("shoot");
         // Add Random varience to the bullet directipon
-        //directionCalc.x *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
-        //directionCalc.y *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
+        directionCalc.x *= Math.random() * (((1.05 - 0.95) + 1) + 0.95);
+        directionCalc.y *= Math.random() * (((1.05 - 0.95) + 1) + 0.95);
 
         directionCalc.nor();
         this.direction = directionCalc;

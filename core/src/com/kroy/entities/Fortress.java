@@ -56,8 +56,8 @@ public class Fortress extends Tower{
      * Reduces the health of a given Fire Engine
      * @param engine The Fire Engine which is being attacked
      */
-    public void attackFireEngine(FireEngine engine){
-        engine.setHealth(engine.getHealth() - 1);
+    public void attackFireEngine(FireEngine engine, int damage){
+        engine.setHealth(engine.getHealth() - damage);
     }
 
 }

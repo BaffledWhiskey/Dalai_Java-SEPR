@@ -137,7 +137,7 @@ public class GameScreen implements Screen, InputProcessor {
     TextureAtlas textureAtlas;
     SpriteBatch sb1;
 
-
+    int fortressRangeCount = 0;
 
     public GameScreen(final KROY game) {
         //bullet
@@ -371,13 +371,13 @@ public class GameScreen implements Screen, InputProcessor {
             ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
             for(final FireEngine fireEngine: fireEngines){
-                for(Fortress fortress: fortressList){
-                    if(fireEngine.inRange(fortress)){
-                        fireEngine.attackFortress(fortress);
+                for(final Fortress fortress: fortressList){
+
+                    if(fortressRangeCount % 60 == 0 && fortress.inRange(fireEngine)) {
+                        fortress.attackFireEngine(fireEngine, 2);
                     }
-                    if(fortress.inRange(fireEngine)){
-                        fortress.attackFireEngine(fireEngine);
-                    }
+                    fortressRangeCount++;
+
                     //If fortress' health is 0, remove it from the list of fortresses
                     if(fortress.getHealth() <= 0){
                         fortress.destroy(animation,elapseTime);
@@ -609,8 +609,8 @@ public class GameScreen implements Screen, InputProcessor {
                 System.out.println("Fire Engine State Changed:" +((FireEngine) fireEngine).isActive+"\n FireEngine "+ fireEngine + " Is active");
             }
         }
-        System.out.println(screenX);
-        System.out.println(screenY);
+        System.out.println("X: "+screenX);
+        System.out.println("Y: "+screenY);
         return false;
     }
 
