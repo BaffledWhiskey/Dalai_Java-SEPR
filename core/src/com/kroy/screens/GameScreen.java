@@ -285,6 +285,21 @@ public class GameScreen implements Screen, InputProcessor {
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
                     bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png")));
                 }
+                ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
+                for(Bullet bullet: bullets){
+                    for (Tower fort: fortressList){
+                        boolean hit =  bullet.isHit(fort);
+                        if(hit) {
+                            fort.setHealth(fort.getHealth()-(int)500/fireEngine.movementSpeed);
+                            bulletsToRemove.add(bullet);
+                        }
+                    }
+                    // Collisions
+                    bullet.update(delta);
+                    if (bullet.remove)
+                        bulletsToRemove.add(bullet);
+                }
+                bullets.removeAll(bulletsToRemove);
             }
         }
         /**
@@ -306,13 +321,8 @@ public class GameScreen implements Screen, InputProcessor {
             // update bullet
             // if bullet should be removed, we add them to the removed list
 
-        ArrayList<Bullet> bulletsToRemove = new ArrayList<Bullet>();
-        for(Bullet bullet: bullets){
-            bullet.update(delta);
-            if (bullet.remove)
-                bulletsToRemove.add(bullet);
-        }
-        bullets.removeAll(bulletsToRemove);
+
+
 
 
 

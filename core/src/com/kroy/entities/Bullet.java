@@ -53,7 +53,14 @@ public class Bullet extends ApplicationAdapter {
             remove = true;
         }
     }
-
+    public boolean isHit(Tower target){
+        if (this.position.x > target.position.x - target.dimensions.width/2 && this.position.x < target.position.x + target.dimensions.width/2
+                && this.position.y > target.position.y - target.dimensions.height/2 && this.position.y > target.position.y + target.dimensions.height/2) {
+            System.out.println("HIT");
+            return true;
+        }
+        return false;
+    }
     public int onHit(Entity target){
         target.setHealth(target.getHealth());
         return target.health;
