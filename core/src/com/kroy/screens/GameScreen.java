@@ -285,7 +285,7 @@ public class GameScreen implements Screen, InputProcessor {
         for(FireEngine fireEngine: fireEngines){
             if(fireEngine.isActive){
                 if(Gdx.input.isKeyPressed(Input.Keys.SPACE)){
-                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10));
+                    bullets.add(new Bullet(fireEngine.position.x-24,fireEngine.position.y+10, new Texture("Sprites/bubble.png")));
                 }
             }
         }

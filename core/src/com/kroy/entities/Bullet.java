@@ -14,13 +14,14 @@ import com.badlogic.gdx.math.Vector2;
 public class Bullet extends ApplicationAdapter {
     public static final int SPEED =300;  //speed of bullet
     public Texture texture;      //create static object
-    float x,y;                           //x,y position of the bullet
+    public float x,y;                           //x,y position of the bullet
 
     public boolean remove = false;       //check if the object should be removed
 
-    public Bullet(float x, float y) {    //create a new bullet, start from (x,y)
+    public Bullet(float x, float y, Texture texture) {    //create a new bullet, start from (x,y)
         this.x = x;
         this.y = y;
+        this.texture = texture;
 
 
         if (texture == null) {
