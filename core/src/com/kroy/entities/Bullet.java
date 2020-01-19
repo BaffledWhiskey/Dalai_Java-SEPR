@@ -33,7 +33,6 @@ public class Bullet extends ApplicationAdapter {
         this.range = range;
 
         Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY()) - y);
-        System.out.println("shoot");
         // Add Random varience to the bullet directipon
         //directionCalc.x *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
         //directionCalc.y *= Math.random() * (((1.2 - 0.8) + 1) + 0.8);
@@ -57,8 +56,6 @@ public class Bullet extends ApplicationAdapter {
 
         // and make sure the bullet doesn't leave the screen
         // once bullet leave the screen, destroy the bullet
-        System.out.println(position.x);
-        System.out.println("init"+Integer.toString(this.initialPosition.x+range));
         if (position.x > initialPosition.x + range || position.x < initialPosition.x - range
         || position.y > initialPosition.y + range || position.y < initialPosition.y -range) {
             remove = true;
