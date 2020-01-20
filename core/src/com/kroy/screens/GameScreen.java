@@ -374,7 +374,7 @@ public class GameScreen implements Screen, InputProcessor {
             for(final FireEngine fireEngine: fireEngines){
                 for(final Fortress fortress: fortressList){
 
-                    if(fortressRangeCount % 60 == 0 && fortress.inRange(fireEngine)) {
+                    if(fortressRangeCount % 61 == 0 && fortress.inRange(fireEngine)) {
                         fortress.attackFireEngine(fireEngine, 2);
                     }
                     fortressRangeCount++;

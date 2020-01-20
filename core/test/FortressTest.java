@@ -37,7 +37,7 @@ public class FortressTest {
     public void fortressShouldDecreaseHealthOfEngineTest() {
         FireEngine e = new FireEngine(5,5,100,5, new Point(5,5),mockedImg);
         Fortress f = new Fortress(new Dimensions(5,5), 5,5, new Point(5,5), mockedImg);
-        f.attackFireEngine(e);
+        f.attackFireEngine(e, 1);
         Assertions.assertEquals(e.getHealth(),99);
     }
 
