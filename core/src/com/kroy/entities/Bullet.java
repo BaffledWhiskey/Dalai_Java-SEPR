@@ -26,13 +26,13 @@ public class Bullet extends ApplicationAdapter {
 
     public boolean remove = false;       //check if the object should be removed
 
-    public Bullet(float x, float y, Texture texture, int range) {    //create a new bullet, start from (x,y)
+    public Bullet(float x, float y, Texture texture, int range, int mouseOffset) {    //create a new bullet, start from (x,y)
         this.initialPosition = new Point((int)x, (int)y);
         this.position = new Point((int)x, (int) y);
         this.texture = texture;
         this.range = range;
 
-        Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY()) - y);
+        Vector2 directionCalc  = new Vector2(Gdx.input.getX() - x, (GameScreen.HEIGHT - Gdx.input.getY() + mouseOffset) - y);
         // Add Random varience to the bullet directipon
         directionCalc.x *= Math.random() * (((1.05 - 0.95) + 1) + 0.95);
         directionCalc.y *= Math.random() * (((1.05 - 0.95) + 1) + 0.95);
