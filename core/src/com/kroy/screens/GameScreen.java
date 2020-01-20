@@ -162,9 +162,9 @@ public class GameScreen implements Screen, InputProcessor {
         //Links to fire engine class
         Point p1 = new Point(780,160 );
         Point p2 = new Point(880,160 );
-        engine1 = new FireEngine(50,200,100,100,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 50, 50,p2, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 25, 64,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
+        engine1 = new FireEngine(50,200,100,150,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 50, 75,p2, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        engine3 = new FireEngine(100, 300, 25, 96,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -235,19 +235,19 @@ public class GameScreen implements Screen, InputProcessor {
         fortressTexture = new Texture("Sprites/Fortress1.png");
         Dimensions fortress1Dimensions = new Dimensions(FORTRESS_1_WIDTH, FORTRESS_1_HEIGHT);
         Point fortress1Point = new Point(FORTRESS_1_X, FORTRESS_1_Y);
-        fortress1 = new Fortress(fortress1Dimensions, 200, 90, fortress1Point, fortressTexture);
+        fortress1 = new Fortress(fortress1Dimensions, 200, 135, fortress1Point, fortressTexture);
 
         //Fortress 2
         fortressTexture = new Texture("Sprites/Fortress2.png");
         Dimensions fortress2Dimensions = new Dimensions(FORTRESS_2_WIDTH, FORTRESS_2_HEIGHT);
         Point fortress2Point = new Point(FORTRESS_2_X, FORTRESS_2_Y);
-        fortress2 = new Fortress(fortress2Dimensions, 200, 100, fortress2Point, fortressTexture);
+        fortress2 = new Fortress(fortress2Dimensions, 200, 150, fortress2Point, fortressTexture);
 
         //Fortress 3
         fortressTexture = new Texture("Sprites/Fortress3.png");
         Dimensions fortress3Dimensions = new Dimensions(FORTRESS_3_WIDTH, FORTRESS_3_HEIGHT);
         Point fortress3Point = new Point(FORTRESS_3_X, FORTRESS_3_Y);
-        fortress3 = new Fortress(fortress3Dimensions, 200, 110, fortress3Point, fortressTexture);
+        fortress3 = new Fortress(fortress3Dimensions, 200, 165, fortress3Point, fortressTexture);
 
         fortressList = new ArrayList<>();
         fortressList.add(fortress1);
@@ -428,11 +428,6 @@ public class GameScreen implements Screen, InputProcessor {
             fireEngines.removeAll(fireEnginesToDelete);
             fortressList.removeAll(fortressesToDelete);
 
-            //Moves fire engines off the map - temp fix for bullets drawing on death
-            for(FireEngine fireEngine : fireEnginesToDelete){
-                fireEngine.position = new Point(5000,5000);
-                fireEngine.drawable.setPosition(5000,5000);
-            }
 
         }
     }
