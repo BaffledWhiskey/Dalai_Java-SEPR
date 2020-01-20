@@ -68,8 +68,10 @@ public class Bullet extends ApplicationAdapter {
      * @return true if the bullet has hit the given target, false otherwise
      */
     public boolean isHit(Tower target){
-        if (this.position.x > target.position.x - target.dimensions.width/2 && this.position.x < target.position.x + target.dimensions.width/2
-                && this.position.y > target.position.y - target.dimensions.height/2 && this.position.y > target.position.y + target.dimensions.height/2) {
+        if (this.position.x > target.position.x - target.dimensions.width/2
+                && this.position.x < target.position.x + target.dimensions.width/2
+                && this.position.y > target.position.y - target.dimensions.height/2
+                && this.position.y < target.position.y + target.dimensions.height/2) {
             System.out.println("HIT");
             return true;
         }

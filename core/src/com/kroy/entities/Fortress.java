@@ -16,7 +16,6 @@ public class Fortress extends Tower{
      * @param range      The maximun range of the tower
      * @param position   The position of the tower on the map
      */
-
     public Fortress(Dimensions dimensions, int health, int range, Point position, Texture img) {
         super(dimensions, health, range, position, img);
     }
