@@ -162,9 +162,9 @@ public class GameScreen implements Screen, InputProcessor {
         //Links to fire engine class
         Point p1 = new Point(780,160 );
         Point p2 = new Point(880,160 );
-        engine1 = new FireEngine(50,200,100,150,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
-        engine2 = new FireEngine(200, 500, 50, 75,p2, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
-        engine3 = new FireEngine(100, 300, 25, 96,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
+        engine1 = new FireEngine(50,200,50,150,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 1
+        engine2 = new FireEngine(200, 500, 25, 75,p2, new Texture(Gdx.files.internal("Sprites/FireEngine2.png"))); // Instance Number 2
+        //engine3 = new FireEngine(100, 300, 25, 96,p1, new Texture(Gdx.files.internal("Sprites/FireEngine1.png"))); // Instance Number 3
 
         //((FireEngine) engine1).toggleState(); // Sets to active for testing
         //Sprite drawable = engine1.drawable;
@@ -218,10 +218,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 
 
-        fireEngines = new ArrayList<>();
-        fireEngines.add(engine1);
-        fireEngines.add(engine2);
-        fireEngines.add(engine3);
+
 
 
 
@@ -257,7 +254,7 @@ public class GameScreen implements Screen, InputProcessor {
         fireEngines = new ArrayList<>();
         fireEngines.add(engine1);
         fireEngines.add(engine2);
-        fireEngines.add(engine3);
+        //fireEngines.add(engine3);
 
 
         //Creates animation for explosion upon destruction
@@ -372,7 +369,7 @@ public class GameScreen implements Screen, InputProcessor {
             ArrayList<FireEngine> fireEnginesToDelete = new ArrayList<>();
             ArrayList<Fortress> fortressesToDelete = new ArrayList<>();
             for(final FireEngine fireEngine: fireEngines){
-                for(final Fortress fortress: fortressList){
+                for(Fortress fortress: fortressList){
 
                     if(fortressRangeCount % 61 == 0 && fortress.inRange(fireEngine)) {
                         fortress.attackFireEngine(fireEngine, 2);
