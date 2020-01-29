@@ -3,8 +3,6 @@ package com.kroy.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.kroy.game.Point;
-import com.kroy.screens.GameScreen;
-import com.sun.javafx.scene.text.TextLayout;
 
 import java.util.ArrayList;
 
