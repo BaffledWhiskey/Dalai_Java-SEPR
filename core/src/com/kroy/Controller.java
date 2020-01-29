@@ -1,4 +1,4 @@
-package com.kroy.game;
+package com.kroy;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Camera;
@@ -14,9 +14,7 @@ import java.util.ArrayList;
 /**
  * The KROY class sets out the preliminaries for the game
  */
-public class Kroy extends Game {
-
-
+public class Controller extends Game {
 
     public void create() {
         this.setScreen(new MainMenuScreen(this));

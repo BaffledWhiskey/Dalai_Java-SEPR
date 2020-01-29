@@ -2,12 +2,18 @@ package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.kroy.screens.GameScreen;
+import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.screens.Kroy;
 
 public class Fortress extends Unit {
 
-    public Fortress(GameScreen gameScreen, Vector2 position, Vector2 dimension, Sprite sprite, float health) {
-        super(gameScreen, position, dimension, sprite, health);
+    public Fortress(Kroy gameScreen, Vector2 position, float size, Sprite sprite, float health) {
+        super(gameScreen, position, size, sprite, health);
     }
 
+    /**
+     * Builds a Fortress from a JsonValue object. */
+    public Fortress(Kroy gameScreen, JsonValue json) {
+        super(gameScreen, json);
+    }
 }

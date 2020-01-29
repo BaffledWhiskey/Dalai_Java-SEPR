@@ -1,0 +1,51 @@
+{
+  "mapFile": "maps/Map.tmx",
+  "entities": {
+    "FireEngine": [
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 100,
+        "img": "Sprites/FireEngine1.png",
+        "health": 100,
+        "movementSpeed": 10,
+        "water": 200
+      },
+      {
+        "position": {"x": 300, "y": 100},
+        "size": 100,
+        "img": "Sprites/FireEngine1.png",
+        "health": 100,
+        "movementSpeed": 10,
+        "water": 200
+      }
+    ],
+
+    "FireStation": [
+      {
+        "position": {"x": 500, "y": 200},
+        "size": 100,
+        "img": "Sprites/FireStation.png",
+        "health": 100
+      }
+    ],
+
+    "Fortress": [
+      {
+        "position": {"x": 100, "y": 400},
+        "size": 100,
+        "img": "Sprites/Fortress1.png",
+        "health": 100
+      }
+    ],
+
+    "Alien": [
+      {
+        "position": {"x": 1000, "y": 100},
+        "size": 100,
+        "img": "Sprites/Alien.png",
+        "health": 100,
+        "movementSpeed":  100
+      }
+    ]
+  }
+}

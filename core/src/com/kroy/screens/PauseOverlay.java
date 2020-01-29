@@ -1,22 +1,16 @@
 package com.kroy.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.kroy.game.Kroy;
-
-import java.util.List;
-
 /**
  * This screen is shown when the user 'pauses' the game, i.e. by clicking the 'esc' button
  */
 
 public class PauseOverlay {
 
-    GameScreen gameScreen;
+    Kroy gameScreen;
 
     private boolean paused;
 
-    public PauseOverlay(GameScreen gameScreen) {
+    public PauseOverlay(Kroy gameScreen) {
         this.gameScreen = gameScreen;
     }
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.kroy.game.Kroy;
+import com.kroy.Controller;
 /**
  * The game over screen is shown when the game has either been won or lost
  */
@@ -20,7 +20,7 @@ public class GameOverScreen implements Screen {
     private static final int LOGO_WIDTH = 600;
     private static final int LOGO_HEIGHT = 300;
 
-    final Kroy game;
+    final Controller game;
 
     Texture playAgainActive;
     Texture playAgainInactive;
@@ -35,7 +35,7 @@ public class GameOverScreen implements Screen {
 
     OrthographicCamera camera;
 
-    public GameOverScreen(Kroy game, String result){
+    public GameOverScreen(Controller game, String result){
         this.game = game;
         this.result = result;
         playAgainActive = new Texture("GameOverScreen/PlayAgainActive.png");

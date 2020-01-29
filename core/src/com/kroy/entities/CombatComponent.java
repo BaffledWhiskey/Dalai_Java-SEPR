@@ -2,7 +2,7 @@ package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.kroy.screens.GameScreen;
+import com.kroy.screens.Kroy;
 
 public class CombatComponent {
 
@@ -22,12 +22,16 @@ public class CombatComponent {
     public void attack(Unit target) {
         if (!isInRange(target))
             return;
-        GameScreen gameScreen = entity.gameScreen;
-        Projectile projectile = new Projectile(gameScreen, entity.position.cpy(), new Vector2(10, 10), projectileSprite, -1, 10.0f, target, damage);
+        Kroy gameScreen = entity.gameScreen;
+        Projectile projectile = new Projectile(gameScreen, entity.position.cpy(), 10, projectileSprite, -1, 10.0f, target, damage);
         gameScreen.addEntity(projectile);
     }
 
     public boolean isInRange(Unit target) {
         return entity.position.dst2(target.position) <= range * range;
+    }
+
+    public Entity getEntity() {
+        return entity;
     }
 }

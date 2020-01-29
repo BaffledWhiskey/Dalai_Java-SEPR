@@ -4,7 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.kroy.screens.PauseOverlay;
-import com.kroy.game.Kroy;
+import com.kroy.Controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class PauseScreenTest {
 
     List<Texture> mockedTextures;
-    Kroy game;
+    Controller game;
 
     @Before
     public void setup() {
@@ -30,7 +30,7 @@ public class PauseScreenTest {
                 mock(Texture.class), mock(Texture.class));
         Gdx.input = mock(Input.class);
         Gdx.app = mock(Application.class);
-        game = new Kroy();
+        game = new Controller();
         game.batch = mock(SpriteBatch.class);
         //doNothing().when(game.batch).begin();
     }

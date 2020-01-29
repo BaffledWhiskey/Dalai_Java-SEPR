@@ -11,40 +11,47 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.Tools;
 import com.kroy.entities.*;
-import com.kroy.game.Kroy;
+import com.kroy.Controller;
+
+import java.io.Reader;
+import java.nio.file.Paths;
 import java.util.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-public class GameScreen implements Screen, InputProcessor {
+public class Kroy implements Screen, InputProcessor {
 
-    private Kroy kroy;
+    private Controller controller;
     private PauseOverlay pauseOverlay;
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
     private ArrayList<Entity> entities;
+    private FireEngine selectedFireEngine;
+    private HashMap<Class, ArrayList<Entity>> entityTypes;
     private AssetManager assetManager;
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
 
-    public GameScreen(final Kroy kroy) {
-        this.kroy = kroy;
+    public Kroy(final Controller controller) {
+        this.controller = controller;
         pauseOverlay = new PauseOverlay(this);
         camera = new OrthographicCamera();
+        camera.position.set(500f, 500f, 1f);
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         font = new BitmapFont();
         entities = new ArrayList<Entity>();
+        entityTypes = new HashMap<>();
         assetManager = new AssetManager();
-
-        //defining the camera and map characteristics
-        map = new TmxMapLoader().load("maps/Map.tmx");
-        mapRenderer = new OrthogonalTiledMapRenderer(map, 1f); //second parameter is the unit scale (defaulted to 1), 1 pixel = 1 world unit/
     }
 
     /**
@@ -52,6 +59,15 @@ public class GameScreen implements Screen, InputProcessor {
      * @param entity The Entity that is to be added */
     public void addEntity(Entity entity) {
         entities.add(entity);
+        if (!entityTypes.containsKey(entity.getClass()))
+            entityTypes.put(entity.getClass(), new ArrayList<Entity>());
+        entityTypes.get(entity.getClass()).add(entity);
+    }
+
+    /**
+     * Returns all Entites of a certain class. */
+    public ArrayList<Entity> getEntitiesOfType(Class type) {
+        return entityTypes.get(type);
     }
 
     /**
@@ -67,15 +83,58 @@ public class GameScreen implements Screen, InputProcessor {
     }
 
     /**
+     * Load a level from a JSON file. */
+    public void loadLevel(String levelFile) {
+        Reader reader = Gdx.files.internal(Paths.get(levelFile).toString()).reader();
+        JsonValue levelJson = new JsonReader().parse(reader);
+
+        // Load the map from the according .tmx file
+        map = new TmxMapLoader().load(levelJson.getString("mapFile"));
+        mapRenderer = new OrthogonalTiledMapRenderer(map, 1f);
+
+        // Lead all entities from the level file
+        JsonValue entityJsonObj = levelJson.get("entities");
+
+        JsonValue fireEngineJsonArray = entityJsonObj.get("FireEngine");
+        for (JsonValue json : fireEngineJsonArray) {
+            FireEngine entity = new FireEngine(this, json);
+            addEntity(entity);
+        }
+
+        JsonValue fireStationJsonArray = entityJsonObj.get("FireStation");
+        for (JsonValue json : fireStationJsonArray) {
+            FireStation entity = new FireStation(this, json);
+            addEntity(entity);
+        }
+
+        JsonValue alienJsonArray = entityJsonObj.get("Alien");
+        for (JsonValue json : alienJsonArray) {
+            Alien entity = new Alien(this, json);
+            addEntity(entity);
+        }
+
+        JsonValue fortressJsonArray = entityJsonObj.get("Fortress");
+        for (JsonValue json : fortressJsonArray) {
+            Fortress entity = new Fortress(this, json);
+            addEntity(entity);
+        }
+    }
+
+    /**
      * Renders the bullet at its required position
      * @param deltaTime The offset to update the bullet by
      */
     @Override
     public void render(float deltaTime){
-        mapRenderer.setView(camera);
-        mapRenderer.render();
+        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
+
+        handleWASDInput();
+
+        mapRenderer.setView(camera);
+        mapRenderer.render();
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -86,6 +145,24 @@ public class GameScreen implements Screen, InputProcessor {
 
         shapeRenderer.end();
         batch.end();
+    }
+
+    private void handleWASDInput() {
+        if (selectedFireEngine == null)
+            return;
+
+        float x = 0;
+        float y = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.W))
+            y += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D))
+            x += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S))
+            y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A))
+            x -= 1;
+
+        selectedFireEngine.setVelocity(new Vector2(x, y));
     }
 
     /**
@@ -105,8 +182,7 @@ public class GameScreen implements Screen, InputProcessor {
         // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
 
-        FireEngine fe = new FireEngine(this, new Vector2(100, 100), new Vector2(100, 100), getSprite("Sprites/FireEngine1.png"), 100, 10);
-        addEntity(fe);
+        loadLevel("levels/level1.json");
     }
 
 
@@ -129,15 +205,8 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.ESCAPE && pauseOverlay.isPaused()){
-            this.resume();
-        }
-        else if(keycode == Input.Keys.ESCAPE){
-            this.pause();
-        }
         return true;
     }
-
 
     @Override
     public boolean keyUp(int keycode) {
@@ -156,10 +225,20 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // If you click on a fire Engine change the isActive State
-        // Iterates through all drawn fireEngines on the screen and checks weather the mouse is over the current fireEngine
-        // If it is all FireEngines are changed to inActive and the one clicked then changed to Active.
-        return false;
+        // If you click on a fire Engine, set the selectedFireEngine to the according FireEngine.
+        // If no fire engine is selected, set selectedFireEngine to null.
+        Ray pickRay = camera.getPickRay(screenX, screenY);
+        Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
+
+        selectedFireEngine = null;
+        for (Entity entity : getEntitiesOfType(FireEngine.class)) {
+            FireEngine fireEngine = (FireEngine) entity;
+            if (fireEngine.collides(pos)) {
+                selectedFireEngine = fireEngine;
+                break;
+            }
+        }
+        return true;
     }
 
     @Override

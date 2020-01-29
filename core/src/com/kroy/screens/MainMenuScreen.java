@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.kroy.game.Kroy;
+import com.kroy.Controller;
 
 /**
  * This screen is shown when the user first enters the app
@@ -22,7 +22,7 @@ public class MainMenuScreen implements Screen {
     private static final int LOGO_WIDTH = 600;
     private static final int LOGO_HEIGHT = 300;
 
-    Kroy game;
+    Controller game;
     SpriteBatch spriteBatch;
 
     Texture playButtonActive;
@@ -32,7 +32,7 @@ public class MainMenuScreen implements Screen {
     Texture kroyLogo;
     OrthographicCamera camera;
 
-    public MainMenuScreen(Kroy game){
+    public MainMenuScreen(Controller game){
         this.game = game;
         spriteBatch = new SpriteBatch();
         playButtonActive = new Texture("MainMenuScreen/playButtonActive.png");
@@ -69,7 +69,7 @@ public class MainMenuScreen implements Screen {
             spriteBatch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
             //If the button is clicked, begin a game
             if(Gdx.input.isTouched()){
-                game.setScreen(new GameScreen(game));
+                game.setScreen(new Kroy(game));
             }
         }
         //Else display the 'inactive' sprite
