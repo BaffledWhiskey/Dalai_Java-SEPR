@@ -27,7 +27,8 @@ public abstract class Moveable extends Unit {
 
     @Override
     public void update(float timeDelta) {
-        rotation = velocity.angle();
+        Vector2 currVelRotation = new Vector2(movementSpeed * 0.8f, 0).rotate(rotation);
+        rotation = currVelRotation.add(velocity).angle();
         position.add(velocity);
         super.update(timeDelta);
     }
