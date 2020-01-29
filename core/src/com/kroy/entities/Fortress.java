@@ -1,60 +1,13 @@
 package com.kroy.entities;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.kroy.game.Point;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.kroy.screens.GameScreen;
 
-/**
- * A Fortress does not move but can attack fire engines within range, as well as be attacked
- */
-public class Fortress extends Tower{
-    /**
-     * @param dimensions The size of the tower
-     * @param health     The current health of the tower
-     * @param range      The maximun range of the tower
-     * @param position   The position of the tower on the map
-     */
-    public Fortress(Dimensions dimensions, int health, int range, Point position, Texture img) {
-        super(dimensions, health, range, position, img);
-    }
+public class Fortress extends Unit {
 
-    /**
-     * Increases the health of the fortress
-     * @return
-     */
-    public void increaseHealth(){
-        this.health++;
-    }
-
-    /**
-     * Destroys the fortress
-     * @param animation The animation which indicates destruction
-     * @param elapseTime The amount of time taken to destroy the fortress
-     */
-    public void destroy(Animation animation, float elapseTime, SpriteBatch sb){
-        if(!(this.health <= 0)){
-            try {
-                throw new Exception("can't destroy Entity with health greater than 0");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else{
-            sb.begin();
-            sb.draw((TextureRegion) animation.getKeyFrame(elapseTime, true), this.position.x, this.position.y, 0, 0, 80, 80, 1, 1, 9, true);
-            sb.end();
-        }
-    }
-
-
-    /**
-     * Reduces the health of a given Fire Engine
-     * @param engine The Fire Engine which is being attacked
-     */
-    public void attackFireEngine(FireEngine engine, int damage){
-        engine.setHealth(engine.getHealth() - damage);
+    public Fortress(GameScreen gameScreen, Vector2 position, Vector2 dimension, Sprite sprite, float health) {
+        super(gameScreen, position, dimension, sprite, health);
     }
 
 }

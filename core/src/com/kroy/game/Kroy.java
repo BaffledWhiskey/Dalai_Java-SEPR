@@ -1,8 +1,12 @@
 package com.kroy.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.kroy.entities.Entity;
 import com.kroy.screens.MainMenuScreen;
 import java.util.ArrayList;
@@ -10,17 +14,11 @@ import java.util.ArrayList;
 /**
  * The KROY class sets out the preliminaries for the game
  */
-public class KROY extends Game {
+public class Kroy extends Game {
 
-    public SpriteBatch batch;
-    public BitmapFont font;
-
-    public ArrayList<Entity> entities;
 
 
     public void create() {
-        batch = new SpriteBatch();
-        font = new BitmapFont();
         this.setScreen(new MainMenuScreen(this));
     }
 
@@ -28,9 +26,5 @@ public class KROY extends Game {
         super.render();
     }
 
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
-    }
-
+    public void dispose() {}
 }
