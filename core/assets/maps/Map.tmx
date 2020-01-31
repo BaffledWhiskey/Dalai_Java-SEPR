@@ -76,31 +76,4 @@
 39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,39,20,29,29
 </data>
  </layer>
- <objectgroup id="3" name="Object Layer 1">
-  <object id="1" x="-3" y="-4" width="717" height="236"/>
-  <object id="3" x="715" y="10" width="1458" height="53"/>
-  <object id="4" x="2080" y="56" width="88" height="1186"/>
-  <object id="5" x="1740" y="1242" width="422" height="464"/>
-  <object id="6" x="1950" y="1712" width="216" height="354"/>
-  <object id="7" x="10" y="2068" width="2154" height="98"/>
-  <object id="8" x="12" y="958" width="694" height="1090"/>
-  <object id="9" x="736" y="1852" width="648" height="198"/>
-  <object id="10" x="8" y="256" width="12" height="692"/>
-  <object id="11" x="120" y="344" width="150" height="494"/>
-  <object id="12" x="376" y="342" width="338" height="494"/>
-  <object id="13" x="836" y="184" width="298" height="146"/>
-  <object id="14" x="1246" y="178" width="708" height="158"/>
-  <object id="15" x="1238" y="430" width="378" height="228"/>
-  <object id="16" x="1724" y="336" width="230" height="306"/>
-  <object id="17" x="1722" y="758" width="244" height="364"/>
-  <object id="18" x="1224" y="750" width="398" height="102"/>
-  <object id="19" x="1240" y="948" width="368" height="186"/>
-  <object id="20" x="826" y="432" width="312" height="410"/>
-  <object id="21" x="820" y="952" width="308" height="172"/>
-  <object id="22" x="834" y="1238" width="768" height="462"/>
-  <object id="23" x="814" y="1740" width="598" height="20"/>
-  <object id="24" x="2302" y="1122"/>
-  <object id="25" x="1476" y="1802" width="378" height="170"/>
-  <object id="26" x="834" y="1238" width="768" height="462"/>
- </objectgroup>
 </map>

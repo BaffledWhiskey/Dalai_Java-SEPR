@@ -1,6 +1,6 @@
 package com.kroy.entities;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -29,18 +29,27 @@ public abstract class Unit extends Entity {
         maxHealth = health;
     }
 
-    /**
-     */
-    public void move(Vector2 delta){
-
+    public void drawShapes() {
+        super.drawShapes();
+        drawHealthBar();
     }
 
     /**
      * Draws the health bar for the given entity based on its current health
-     * @param camera The camera used to render the game screen
-     * @param shape The ShapeRenderer used to render the game screen
      */
-    public void drawHealthBar(OrthographicCamera camera, ShapeRenderer shape) {
+    public void drawHealthBar() {
+        ShapeRenderer shapeRenderer = kroy.getShapeRenderer();
 
+        Vector2 healthBarPosition = position.cpy().add(size * -0.5f, size * 0.5f);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, 100, 10);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, 100 * health / maxHealth, 10);
+        shapeRenderer.end();
     }
 }

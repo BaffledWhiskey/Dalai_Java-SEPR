@@ -1,21 +1,21 @@
 {
-  "mapFile": "maps/Map.tmx",
+  "mapFile": "maps/newMap.tmx",
   "entities": {
     "FireEngine": [
       {
-        "position": {"x": 100, "y": 100},
+        "position": {"x": 1000, "y": 200},
         "size": 100,
         "img": "Sprites/FireEngine1.png",
         "health": 100,
-        "movementSpeed": 10,
+        "movementSpeed": 500,
         "water": 200
       },
       {
-        "position": {"x": 300, "y": 100},
+        "position": {"x": 1500, "y": 200},
         "size": 100,
         "img": "Sprites/FireEngine1.png",
         "health": 100,
-        "movementSpeed": 10,
+        "movementSpeed": 500,
         "water": 200
       }
     ],

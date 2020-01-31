@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.kroy.screens.Kroy;
 
-public class Projectile extends Moveable {
+public class Projectile extends Movable {
 
     Unit target;
     float damage;

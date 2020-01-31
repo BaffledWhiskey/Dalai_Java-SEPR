@@ -1,7 +1,6 @@
 package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector2;
 import com.kroy.screens.Kroy;
 
 public class CombatComponent {
@@ -22,7 +21,7 @@ public class CombatComponent {
     public void attack(Unit target) {
         if (!isInRange(target))
             return;
-        Kroy gameScreen = entity.gameScreen;
+        Kroy gameScreen = entity.kroy;
         Projectile projectile = new Projectile(gameScreen, entity.position.cpy(), 10, projectileSprite, -1, 10.0f, target, damage);
         gameScreen.addEntity(projectile);
     }
