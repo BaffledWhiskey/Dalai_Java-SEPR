@@ -110,7 +110,7 @@
         "position": {"x": 2000, "y": 100},
         "size": 100,
         "img": "Sprites/Alien.png",
-        "health": 100,
+        "health": 500,
         "movementSpeed":  100
       }
     ]

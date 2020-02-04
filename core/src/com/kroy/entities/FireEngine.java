@@ -1,5 +1,7 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -14,6 +16,7 @@ public class FireEngine extends Movable implements Combatant {
     private float water;
     float originalMovementSpeed;
     private CombatComponent combatComponent;
+    private boolean attack;
 
     public FireEngine(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, float water, CombatComponent combatComponent) {
         super(gameScreen, position, size, sprite, health, movementSpeed);
@@ -21,6 +24,7 @@ public class FireEngine extends Movable implements Combatant {
         this.water = water;
         this.maxWater = water;
         this.combatComponent = combatComponent;
+        attack = false;
     }
 
     /**
@@ -31,15 +35,45 @@ public class FireEngine extends Movable implements Combatant {
         originalMovementSpeed = json.getFloat("movementSpeed");
         water = maxWater;
         combatComponent = new CombatComponent(this, json.get("combat"));
+        attack = false;
     }
 
     public void update(float timeDelta) {
+        if (isSelected())
+            handleUserInput();
+        if (attack)
+            attackNearestEnemy();
 
         TiledMapTile tile = kroy.getTile(position);
         float speedFactor = tile.getProperties().get("speedFactor", Float.class);
         movementSpeed = originalMovementSpeed * speedFactor;
 
         super.update(timeDelta);
+    }
+
+    private void handleUserInput() {
+        getKroy().getTile(getPosition());
+        float x = 0;
+        float y = 0;
+        if (Gdx.input.isKeyPressed(Input.Keys.W))
+            y += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.D))
+            x += 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.S))
+            y -= 1;
+        if (Gdx.input.isKeyPressed(Input.Keys.A))
+            x -= 1;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE))
+            setAttack(true);
+        else
+            setAttack(false);
+
+        setVelocity(new Vector2(x, y));
+    }
+
+    private void attackNearestEnemy() {
+        combatComponent.attack(closestEnemy());
     }
 
     public void drawShapes() {
@@ -72,6 +106,23 @@ public class FireEngine extends Movable implements Combatant {
         return combatComponent;
     }
 
+    public Unit closestEnemy() {
+        Unit closest = null;
+        float closestDistance = Float.POSITIVE_INFINITY;
+
+        for (Class klass : new Class[]{Alien.class, Fortress.class})
+            for (Entity entity : getKroy().getEntitiesOfType(klass)) {
+                Unit unit = (Unit) entity;
+                float dst2 = unit.position.dst2(getPosition());
+                if (dst2 < closestDistance) {
+                    closest = unit;
+                    closestDistance = dst2;
+                }
+            }
+
+        return closest;
+    }
+
     @Override
     public void onAttack(Projectile projectile) {
         water -= Math.max(0, projectile.damage);
@@ -79,6 +130,16 @@ public class FireEngine extends Movable implements Combatant {
 
     @Override
     public float attackStrength(Unit target) {
-        return Math.min(water, combatComponent.getDamage());
+        if (attack)
+            return Math.min(water, combatComponent.getDamage());
+        return 0;
+    }
+
+    public void setAttack(boolean attack) {
+        this.attack = attack;
+    }
+
+    public boolean isSelected() {
+        return getKroy().getSelectedFireEngine() == this;
     }
 }
