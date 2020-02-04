@@ -45,18 +45,20 @@ public abstract class Unit extends Entity {
      * Draws the health bar for the given entity based on its current health
      */
     public void drawHealthBar() {
+        final float maxHealthBarWidth = 100;
+        final float maxHealthBarHeight = 10;
         ShapeRenderer shapeRenderer = kroy.getShapeRenderer();
 
-        Vector2 healthBarPosition = position.cpy().add(size * -0.5f, size * 0.5f);
+        Vector2 healthBarPosition = position.cpy().add(-0.5f * maxHealthBarWidth, size * 0.5f);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, 100, 10);
+        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, maxHealthBarWidth, maxHealthBarHeight);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, 100 * health / maxHealth, 10);
+        shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, maxHealthBarWidth * health / maxHealth, maxHealthBarHeight);
         shapeRenderer.end();
     }
 

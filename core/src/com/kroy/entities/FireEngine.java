@@ -51,18 +51,20 @@ public class FireEngine extends Movable implements Combatant {
      * Draws the health bar for the given entity based on its current health
      */
     public void drawWaterBar() {
+        final float maxWaterBarWidth = 100;
+        final float maxWaterBarHeight = 10;
         ShapeRenderer shapeRenderer = kroy.getShapeRenderer();
 
-        Vector2 waterBarPosition = position.cpy().add(size * -0.5f, size * 0.5f + 15);
+        Vector2 waterBarPosition = position.cpy().add(-0.5f * maxWaterBarWidth, size * 0.5f + 1.5f * maxWaterBarHeight);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.BLACK);
-        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, 100, 10);
+        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, maxWaterBarWidth, maxWaterBarHeight);
         shapeRenderer.end();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(Color.BLUE);
-        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, 100 * water / maxWater, 10);
+        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, maxWaterBarWidth * water / maxWater, maxWaterBarHeight);
         shapeRenderer.end();
     }
 
