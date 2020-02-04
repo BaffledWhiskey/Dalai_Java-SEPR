@@ -136,13 +136,11 @@ public class Kroy implements Screen, InputProcessor {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
-        // Follow the selected FireTruck
+        // Let the camera follow the selected FireTruck
         if (selectedFireEngine != null) {
             Vector2 fireEnginePosition = selectedFireEngine.getPosition().cpy();
             Vector2 cameraPosition = new Vector2(camera.position.x, camera.position.y);
-
-            cameraPosition.add(fireEnginePosition.sub(cameraPosition).scl(deltaTime));
-
+            cameraPosition.add(fireEnginePosition.sub(cameraPosition).scl(deltaTime * 2f));
             camera.position.set(cameraPosition.x, cameraPosition.y, camera.position.z);
         }
 
@@ -291,11 +289,11 @@ public class Kroy implements Screen, InputProcessor {
         Ray pickRay = camera.getPickRay(screenX, screenY);
         Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
 
-        selectedFireEngine = null;
+        setSelectedFireEngine(null);
         for (Entity entity : getEntitiesOfType(FireEngine.class)) {
             FireEngine fireEngine = (FireEngine) entity;
             if (fireEngine.collides(pos)) {
-                selectedFireEngine = fireEngine;
+                setSelectedFireEngine(fireEngine);
                 break;
             }
         }
@@ -339,5 +337,4 @@ public class Kroy implements Screen, InputProcessor {
             selectedFireEngine.setVelocity(new Vector2(0, 0));
         selectedFireEngine = fireEngine;
     }
-
 }
