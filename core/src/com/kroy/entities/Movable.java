@@ -30,16 +30,16 @@ public abstract class Movable extends Unit {
     public void update(float timeDelta) {
         Vector2 adjustedVelocity = getAdjustedVelocity(timeDelta);
 
-        float velocityLength = velocity.len();
+        // Set the correct rotation based on the Movable's velocity
+        float velocityLength = adjustedVelocity.len();
         if (velocityLength != 0) {
             Vector2 rotationVector = new Vector2(velocity.len(), 0).rotate(rotation);
             rotation = rotationVector.add(velocity).angle();
         }
 
+        // Check for collisions on the tile map
         Vector2 nextPosition = position.cpy().add(adjustedVelocity);
-
         TiledMapTile nextPositionTile = kroy.getTile(nextPosition);
-
         if (!(nextPositionTile == null || nextPositionTile.getProperties().get("blocked", Boolean.class)))
             position = nextPosition;
 
@@ -49,7 +49,7 @@ public abstract class Movable extends Unit {
     /**
      * Returns the position that the Movable will have in the next tick given its current velocity. */
     Vector2 getAdjustedVelocity(float timeDelta) {
-        return velocity.cpy().scl(timeDelta * movementSpeed);
+        return velocity.cpy().setLength(timeDelta * movementSpeed);
     }
 
     public void setVelocity(Vector2 velocity) {

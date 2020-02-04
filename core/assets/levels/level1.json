@@ -8,15 +8,25 @@
         "img": "Sprites/FireEngine1.png",
         "health": 100,
         "movementSpeed": 500,
-        "water": 200
+        "water": 200,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300
+        }
       },
       {
         "position": {"x": 1500, "y": 200},
         "size": 100,
         "img": "Sprites/FireEngine1.png",
+        "water": 200,
         "health": 100,
         "movementSpeed": 500,
-        "water": 200
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300
+        }
       }
     ],
 
@@ -34,13 +44,18 @@
         "position": {"x": 100, "y": 400},
         "size": 100,
         "img": "Sprites/Fortress1.png",
-        "health": 100
+        "health": 100,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300
+        }
       }
     ],
 
     "Alien": [
       {
-        "position": {"x": 1000, "y": 100},
+        "position": {"x": 2000, "y": 100},
         "size": 100,
         "img": "Sprites/Alien.png",
         "health": 100,

@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.entities.*;
@@ -67,6 +68,23 @@ public class Kroy implements Screen, InputProcessor {
         if (!entityTypes.containsKey(entity.getClass()))
             entityTypes.put(entity.getClass(), new ArrayList<Entity>());
         entityTypes.get(entity.getClass()).add(entity);
+    }
+
+    /**
+     * Removes all entites that have the isToBeRemoved flag set. */
+    public void collectGarbageEntites() {
+        // Collect all entites with the isToBeRemoved flag
+        ArrayList<Entity> toBeRemoved = new ArrayList<Entity>();
+        for (Entity entity : entities)
+            if (entity.isToBeRemoved())
+                toBeRemoved.add(entity);
+
+        entities.removeAll(toBeRemoved);
+
+        for (Class klass : entityTypes.keySet()) {
+            ArrayList<Entity> arrayList = entityTypes.get(klass);
+            arrayList.removeAll(toBeRemoved);
+        }
     }
 
     /**
@@ -154,13 +172,20 @@ public class Kroy implements Screen, InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
+        for (Entity entity : entities)
+            entity.update(deltaTime);
+        collectGarbageEntites();
 
         batch.begin();
-        for (Entity entity : entities) {
-            entity.update(deltaTime);
+        for (Entity entity : entities)
             entity.render();
-        }
         batch.end();
+
+        for (Entity entity : getEntitiesOfType(FireEngine.class)) {
+            FireEngine fireEngine = (FireEngine) entity;
+            if (!getEntitiesOfType(Alien.class).isEmpty())
+                fireEngine.getCombatComponent().attack((Unit) getEntitiesOfType(Alien.class).get(0));
+        }
 
         // We need to draw all shapes outside the batch.begin context, see:
         // https://stackoverflow.com/questions/30894456/how-to-use-spritebatch-and-shaperenderer-in-one-screen

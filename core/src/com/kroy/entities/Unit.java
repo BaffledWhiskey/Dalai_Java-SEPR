@@ -12,8 +12,8 @@ import com.kroy.screens.Kroy;
  */
 public abstract class Unit extends Entity {
 
-    protected float health;
-    protected float maxHealth;
+    private float health;
+    private float maxHealth;
 
     public Unit(Kroy gameScreen, Vector2 position, float size, Sprite sprite, float health){
         super(gameScreen, position, size, sprite);
@@ -29,9 +29,16 @@ public abstract class Unit extends Entity {
         maxHealth = health;
     }
 
+    public void update(float deltaTime) {
+        super.update(deltaTime);
+        if (health == 0)
+            removeSelf();
+    }
+
     public void drawShapes() {
         super.drawShapes();
-        drawHealthBar();
+        if (health != -1)
+            drawHealthBar();
     }
 
     /**
@@ -51,5 +58,13 @@ public abstract class Unit extends Entity {
         shapeRenderer.setColor(Color.RED);
         shapeRenderer.rect(healthBarPosition.x, healthBarPosition.y, 100 * health / maxHealth, 10);
         shapeRenderer.end();
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = Math.max(0, Math.min(health, maxHealth));
     }
 }

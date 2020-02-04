@@ -16,6 +16,7 @@ public abstract class Entity{
     Vector2 position;
     float rotation;
     Sprite sprite;
+    private boolean toBeRemoved;
 
     /**
      * @param position The current position of the Entity
@@ -60,6 +61,10 @@ public abstract class Entity{
 
     }
 
+    public void removeSelf() {
+        toBeRemoved = true;
+    }
+
     /**
      * Returns whether a Vector is inside, i.e. collides with the entity.
      * @param v The vector */
@@ -69,5 +74,13 @@ public abstract class Entity{
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public Kroy getKroy() {
+        return kroy;
+    }
+
+    public boolean isToBeRemoved() {
+        return toBeRemoved;
     }
 }

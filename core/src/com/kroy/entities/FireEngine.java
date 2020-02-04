@@ -1,22 +1,26 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.screens.Kroy;
 
-public class FireEngine extends Movable {
+public class FireEngine extends Movable implements Combatant {
 
     private float maxWater;
     private float water;
     float originalMovementSpeed;
+    private CombatComponent combatComponent;
 
-    public FireEngine(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, float water) {
+    public FireEngine(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, float water, CombatComponent combatComponent) {
         super(gameScreen, position, size, sprite, health, movementSpeed);
         this.originalMovementSpeed = movementSpeed;
         this.water = water;
         this.maxWater = water;
+        this.combatComponent = combatComponent;
     }
 
     /**
@@ -26,6 +30,7 @@ public class FireEngine extends Movable {
         maxWater = json.getFloat("water");
         originalMovementSpeed = json.getFloat("movementSpeed");
         water = maxWater;
+        combatComponent = new CombatComponent(this, json.get("combat"));
     }
 
     public void update(float timeDelta) {
@@ -35,5 +40,43 @@ public class FireEngine extends Movable {
         movementSpeed = originalMovementSpeed * speedFactor;
 
         super.update(timeDelta);
+    }
+
+    public void drawShapes() {
+        super.drawShapes();
+        drawWaterBar();
+    }
+
+    /**
+     * Draws the health bar for the given entity based on its current health
+     */
+    public void drawWaterBar() {
+        ShapeRenderer shapeRenderer = kroy.getShapeRenderer();
+
+        Vector2 waterBarPosition = position.cpy().add(size * -0.5f, size * 0.5f + 15);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, 100, 10);
+        shapeRenderer.end();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.rect(waterBarPosition.x, waterBarPosition.y, 100 * water / maxWater, 10);
+        shapeRenderer.end();
+    }
+
+    public CombatComponent getCombatComponent() {
+        return combatComponent;
+    }
+
+    @Override
+    public void onAttack(Projectile projectile) {
+        water -= Math.max(0, projectile.damage);
+    }
+
+    @Override
+    public float attackStrength(Unit target) {
+        return Math.min(water, combatComponent.getDamage());
     }
 }
