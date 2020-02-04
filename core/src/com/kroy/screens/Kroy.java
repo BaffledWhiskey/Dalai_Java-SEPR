@@ -83,8 +83,11 @@ public class Kroy implements Screen, InputProcessor {
         // Collect all entites with the isToBeRemoved flag
         ArrayList<Entity> toBeRemoved = new ArrayList<Entity>();
         for (Entity entity : entities)
-            if (entity.isToBeRemoved())
+            if (entity.isToBeRemoved()) {
                 toBeRemoved.add(entity);
+                if (entity == selectedFireEngine)
+                    setSelectedFireEngine(null);
+            }
 
         entities.removeAll(toBeRemoved);
 

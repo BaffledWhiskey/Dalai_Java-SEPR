@@ -73,7 +73,7 @@ public class FireEngine extends Movable implements Combatant {
     }
 
     private void attackNearestEnemy() {
-        combatComponent.attack(closestEnemy());
+        combatComponent.attack(getClosestOfTypes(new Class[]{Alien.class, Fortress.class}));
     }
 
     public void drawShapes() {
@@ -106,30 +106,13 @@ public class FireEngine extends Movable implements Combatant {
         return combatComponent;
     }
 
-    public Unit closestEnemy() {
-        Unit closest = null;
-        float closestDistance = Float.POSITIVE_INFINITY;
-
-        for (Class klass : new Class[]{Alien.class, Fortress.class})
-            for (Entity entity : getKroy().getEntitiesOfType(klass)) {
-                Unit unit = (Unit) entity;
-                float dst2 = unit.position.dst2(getPosition());
-                if (dst2 < closestDistance) {
-                    closest = unit;
-                    closestDistance = dst2;
-                }
-            }
-
-        return closest;
-    }
-
     @Override
     public void onAttack(Projectile projectile) {
         water -= Math.max(0, projectile.damage);
     }
 
     @Override
-    public float attackStrength(Unit target) {
+    public float attackDamage(Unit target) {
         if (attack)
             return Math.min(water, combatComponent.getDamage());
         return 0;

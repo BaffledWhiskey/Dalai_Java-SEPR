@@ -21,6 +21,16 @@ public class Fortress extends Unit implements Combatant {
         combatComponent = new CombatComponent((Combatant) this, json.get("combat"));
     }
 
+    public void update(float deltaTime) {
+        attackNearestEnemy();
+
+        super.update(deltaTime);
+    }
+
+    private void attackNearestEnemy() {
+        combatComponent.attack(getClosestOfTypes(new Class[]{FireEngine.class}));
+    }
+
     public CombatComponent getCombatComponent() {
         return combatComponent;
     }
@@ -31,7 +41,7 @@ public class Fortress extends Unit implements Combatant {
     }
 
     @Override
-    public float attackStrength(Unit target) {
+    public float attackDamage(Unit target) {
         return combatComponent.getDamage();
     }
 }

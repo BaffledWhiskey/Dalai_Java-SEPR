@@ -62,6 +62,26 @@ public abstract class Unit extends Entity {
         shapeRenderer.end();
     }
 
+    /**
+     * Returns the unit that is the closest to this Unit and is of one of the given types.
+     * @param types The types that are allowed */
+    public Unit getClosestOfTypes(Class[] types) {
+        Unit closest = null;
+        float closestDistance = Float.POSITIVE_INFINITY;
+
+        for (Class klass : types)
+            for (Entity entity : getKroy().getEntitiesOfType(klass)) {
+                Unit unit = (Unit) entity;
+                float dst2 = unit.position.dst2(getPosition());
+                if (dst2 < closestDistance) {
+                    closest = unit;
+                    closestDistance = dst2;
+                }
+            }
+
+        return closest;
+    }
+
     public float getHealth() {
         return health;
     }

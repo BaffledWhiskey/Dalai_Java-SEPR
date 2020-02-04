@@ -16,5 +16,4 @@ public class Alien extends Movable {
     public Alien(Kroy gameScreen, JsonValue json) {
         super(gameScreen, json);
     }
-
 }

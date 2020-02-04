@@ -19,6 +19,9 @@ public class CombatComponent {
         this.enabled = true;
     }
 
+
+    /**
+     * Builds a CombatComponent from a JsonValue object. */
     public CombatComponent(Combatant entity, JsonValue json) {
         // Initialize the combat component
         this.entity = entity;
@@ -28,13 +31,19 @@ public class CombatComponent {
         projectileSprite = getEntity().getKroy().getSprite(img);
     }
 
+    /**
+     * Attack a given target. All tests will be run to check whether the target is valid.
+     * @param target The Unit that is to be attacked*/
     public void attack(Unit target) {
-        float attackStrength = entity.attackStrength(target);
+        float attackStrength = entity.attackDamage(target);
+        // Check if target is valid
         if (!isInRange(target) || attackStrength <= 0)
             return;
-        Kroy gameScreen = entity.getKroy();
-        Projectile projectile = new Projectile(gameScreen, entity.getPosition().cpy(), 10 * attackStrength, projectileSprite, -1, 500.0f, target, attackStrength);
-        gameScreen.addEntity(projectile);
+
+        Kroy kroy = entity.getKroy();
+        // Spawn a new projectile
+        Projectile projectile = new Projectile(kroy, entity.getPosition().cpy(), 10 * attackStrength, projectileSprite, -1, 500.0f, target, attackStrength);
+        kroy.addEntity(projectile);
         entity.onAttack(projectile);
     }
 
