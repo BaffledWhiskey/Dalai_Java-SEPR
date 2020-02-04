@@ -44,6 +44,8 @@ public class FireEngine extends Movable implements Combatant {
         if (attack)
             attackNearestEnemy();
 
+        combatComponent.update(timeDelta);
+
         TiledMapTile tile = kroy.getTile(position);
         float speedFactor = tile.getProperties().get("speedFactor", Float.class);
         movementSpeed = originalMovementSpeed * speedFactor;

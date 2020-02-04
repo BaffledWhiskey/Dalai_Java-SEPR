@@ -18,12 +18,12 @@ public class Fortress extends Unit implements Combatant {
      * Builds a Fortress from a JsonValue object. */
     public Fortress(Kroy gameScreen, JsonValue json) {
         super(gameScreen, json);
-        combatComponent = new CombatComponent((Combatant) this, json.get("combat"));
+        combatComponent = new CombatComponent(this, json.get("combat"));
     }
 
     public void update(float deltaTime) {
+        combatComponent.update(deltaTime);
         attackNearestEnemy();
-
         super.update(deltaTime);
     }
 
