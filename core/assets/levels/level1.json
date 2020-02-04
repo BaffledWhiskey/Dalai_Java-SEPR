@@ -7,15 +7,47 @@
         "size": 100,
         "img": "Sprites/FireEngine1.png",
         "health": 100,
-        "movementSpeed": 500,
+        "movementSpeed": 300,
         "water": 200
       },
       {
         "position": {"x": 1500, "y": 200},
         "size": 100,
-        "img": "Sprites/FireEngine1.png",
+        "img": "Sprites/FireEngine2.png",
+        "health": 100,
+        "movementSpeed": 400,
+        "water": 200
+      },
+      {
+        "position": {"x":  2000, "y":  200},
+        "size": 75,
+        "img": "Sprites/FireEngine3.png",
         "health": 100,
         "movementSpeed": 500,
+        "water": 200
+      },
+      {
+        "position": {"x":  2500, "y":  200},
+        "size": 100,
+        "img": "Sprites/FireEngine4.png",
+        "health": 100,
+        "movementSpeed": 400,
+        "water": 200
+      },
+      {
+        "position": {"x":  3250, "y":  200},
+        "size": 300,
+        "img": "Sprites/FireEngine5.png",
+        "health": 100,
+        "movementSpeed": 200,
+        "water": 200
+      },
+      {
+        "position": {"x":  3500, "y":  200},
+        "size": 300,
+        "img": "Sprites/FireEngine6.png",
+        "health": 100,
+        "movementSpeed": 250,
         "water": 200
       }
     ],
