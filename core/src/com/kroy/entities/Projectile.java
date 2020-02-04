@@ -10,8 +10,8 @@ public class Projectile extends Movable {
     float damage;
     float originalMovementSpeed;
 
-    public Projectile(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, Unit target, float damage) {
-        super(gameScreen, position, size, sprite, health, movementSpeed);
+    public Projectile(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, Unit target, float damage) {
+        super(gameScreen, position, size, sprite, health, movementSpeed, checkCollisions);
         this.target = target;
         this.damage = damage;
         originalMovementSpeed = movementSpeed;

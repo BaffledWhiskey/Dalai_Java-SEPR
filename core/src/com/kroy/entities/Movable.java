@@ -10,11 +10,13 @@ public abstract class Movable extends Unit {
 
     float movementSpeed;
     Vector2 velocity;
+    boolean checkCollisions;
 
-    public Movable(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed) {
+    public Movable(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions) {
         super(gameScreen, position, size, sprite, health);
         this.movementSpeed = movementSpeed;
         this.velocity = new Vector2(0, 0);
+        this.checkCollisions = checkCollisions;
     }
 
     /**
@@ -22,9 +24,9 @@ public abstract class Movable extends Unit {
     public Movable(Kroy gameScreen, JsonValue json) {
         super(gameScreen, json);
         movementSpeed = json.getFloat("movementSpeed");
+        checkCollisions = true;
         this.velocity = new Vector2(0, 0);
     }
-
 
     @Override
     public void update(float timeDelta) {
@@ -40,7 +42,7 @@ public abstract class Movable extends Unit {
         // Check for collisions on the tile map
         Vector2 nextPosition = position.cpy().add(adjustedVelocity);
         TiledMapTile nextPositionTile = kroy.getTile(nextPosition);
-        if (!(nextPositionTile == null || nextPositionTile.getProperties().get("blocked", Boolean.class)))
+        if (!checkCollisions || !(nextPositionTile == null || nextPositionTile.getProperties().get("blocked", Boolean.class)))
             position = nextPosition;
 
         super.update(timeDelta);

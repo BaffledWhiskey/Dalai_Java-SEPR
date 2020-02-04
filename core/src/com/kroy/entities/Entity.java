@@ -36,30 +36,31 @@ public abstract class Entity{
     public Entity(Kroy kroy, JsonValue json) {
         this.kroy = kroy;
         position = Tools.vector2fromJson(json.get("position"));
-        size = json.getFloat("size");
+        if (json.has("size"))
+            size = json.getFloat("size");
+        else
+            size = json.getInt("sizeInTiles") * 32f * Tools.MAP_UNIT_SCALE;
         String imgPath = json.getString("img");
         sprite = kroy.getSprite(imgPath);
         rotation = 0;
     }
 
     /**
-     * The update method that is called with every tick of the game. */
+     * The update method that is called with every tick of the game. It will be overwritten by one of its subclasses. */
     public void update(float timeDelta) {}
 
     public void render() {
         SpriteBatch batch = kroy.getBatch();
-        sprite.setPosition(position.x, position.y);
         sprite.setOriginCenter();
+        sprite.setPosition(position.x, position.y);
         float shortSide = Math.min(sprite.getHeight(), sprite.getWidth());
-        float scalar = 0.5f * size / shortSide;
+        float scalar = size / shortSide;
         sprite.setScale(scalar);
         sprite.setRotation(rotation);
         sprite.draw(batch);
     }
 
-    public void drawShapes() {
-
-    }
+    public void drawShapes() {}
 
     public void removeSelf() {
         toBeRemoved = true;

@@ -18,8 +18,8 @@ public class FireEngine extends Movable implements Combatant {
     private CombatComponent combatComponent;
     private boolean attack;
 
-    public FireEngine(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, float water, CombatComponent combatComponent) {
-        super(gameScreen, position, size, sprite, health, movementSpeed);
+    public FireEngine(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, float water, CombatComponent combatComponent) {
+        super(gameScreen, position, size, sprite, health, movementSpeed, checkCollisions);
         this.originalMovementSpeed = movementSpeed;
         this.water = water;
         this.maxWater = water;

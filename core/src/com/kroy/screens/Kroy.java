@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.Tools;
 import com.kroy.entities.*;
 import com.kroy.Controller;
 
@@ -43,7 +44,6 @@ public class Kroy implements Screen, InputProcessor {
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private final float mapUnitScale = 4f;
 
 
 
@@ -51,7 +51,7 @@ public class Kroy implements Screen, InputProcessor {
         this.controller = controller;
         pauseOverlay = new PauseOverlay(this);
         camera = new OrthographicCamera();
-        camera.position.set(500f, 500f, 1f);
+        camera.position.set(0f, 0f, 1f);
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
@@ -88,7 +88,6 @@ public class Kroy implements Screen, InputProcessor {
                 if (entity == selectedFireEngine)
                     setSelectedFireEngine(null);
             }
-
         entities.removeAll(toBeRemoved);
 
         for (Class klass : entityTypes.keySet()) {
@@ -123,7 +122,7 @@ public class Kroy implements Screen, InputProcessor {
 
         // Load the map from the according .tmx file
         map = new TmxMapLoader().load(levelJson.getString("mapFile"));
-        mapRenderer = new OrthogonalTiledMapRenderer(map, mapUnitScale);
+        mapRenderer = new OrthogonalTiledMapRenderer(map, Tools.MAP_UNIT_SCALE);
 
         // Lead all entities from the level file. This could be made more generic, but for the sake of simplicity we
         // keep it as is.
@@ -152,6 +151,9 @@ public class Kroy implements Screen, InputProcessor {
             Fortress entity = new Fortress(this, json);
             addEntity(entity);
         }
+
+        if (!getEntitiesOfType(FireEngine.class).isEmpty())
+            setSelectedFireEngine((FireEngine) getEntitiesOfType(FireEngine.class).get(0));
     }
 
     /**
@@ -168,7 +170,9 @@ public class Kroy implements Screen, InputProcessor {
         if (selectedFireEngine != null) {
             Vector2 fireEnginePosition = selectedFireEngine.getPosition().cpy();
             Vector2 cameraPosition = new Vector2(camera.position.x, camera.position.y);
-            cameraPosition.add(fireEnginePosition.sub(cameraPosition).scl(deltaTime * 2f));
+            Vector2 delta = fireEnginePosition.sub(cameraPosition);
+            float length = deltaTime * delta.len2() * 0.005f;
+            cameraPosition.add(delta.setLength(length));
             camera.position.set(cameraPosition.x, cameraPosition.y, camera.position.z);
         }
 
@@ -228,16 +232,11 @@ public class Kroy implements Screen, InputProcessor {
         loadLevel("levels/level1.json");
     }
 
-    public void printStats(int x, int y) {
-        boolean blocked = getTile(x, y).getProperties().get("blocked", Boolean.class);
-        System.out.println(blocked);
-    }
-
     public TiledMapTile getTile(Vector2 pos) {
         // There is probably a better way of getting the tile but whatever :)
         TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        int x = (int) (pos.x / (tiledMapTileLayer.getTileWidth() * mapUnitScale) - tiledMapTileLayer.getOffsetX());
-        int y = (int) (pos.y / (tiledMapTileLayer.getTileHeight() * mapUnitScale) - tiledMapTileLayer.getOffsetY());
+        int x = (int) (pos.x / (tiledMapTileLayer.getTileWidth() * Tools.MAP_UNIT_SCALE) - tiledMapTileLayer.getOffsetX());
+        int y = (int) (pos.y / (tiledMapTileLayer.getTileHeight() * Tools.MAP_UNIT_SCALE) - tiledMapTileLayer.getOffsetY());
         TiledMapTileLayer.Cell cell = tiledMapTileLayer.getCell(x, y);
         if (cell == null)
             return null;

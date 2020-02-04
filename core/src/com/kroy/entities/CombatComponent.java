@@ -51,7 +51,7 @@ public class CombatComponent {
 
         Kroy kroy = entity.getKroy();
         // Spawn a new projectile
-        Projectile projectile = new Projectile(kroy, entity.getPosition().cpy(), 10 * attackStrength, projectileSprite, -1, 500.0f, target, attackStrength);
+        Projectile projectile = new Projectile(kroy, entity.getPosition().cpy(), 10 * attackStrength, projectileSprite, -1, 500.0f, false, target, attackStrength);
         kroy.addEntity(projectile);
         reloadCountdown = reloadTime;
         entity.onAttack(projectile);
