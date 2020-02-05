@@ -110,7 +110,7 @@ public class FireEngine extends Movable implements Combatant {
 
     @Override
     public void onAttack(Projectile projectile) {
-        water -= Math.max(0, projectile.damage);
+        addWater(-Math.max(0, projectile.damage));
     }
 
     @Override
@@ -126,5 +126,13 @@ public class FireEngine extends Movable implements Combatant {
 
     public boolean isSelected() {
         return getKroy().getSelectedFireEngine() == this;
+    }
+
+    public void setWater(float water) {
+        this.water = Math.max(0, Math.min(water, maxWater));
+    }
+
+    public void addWater(float delta) {
+        setWater(water + delta);
     }
 }

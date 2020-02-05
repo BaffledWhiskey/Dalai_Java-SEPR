@@ -13,14 +13,12 @@ public class Tools {
             float y = json.getFloat("y");
             return new Vector2(x, y);
         }
-        int row = json.getInt("row");
-        int column = json.getInt("column");
+        float row = json.getFloat("row");
+        float column = json.getFloat("column");
         return toVector2(row, column);
     }
 
-    public static Vector2 toVector2(int row, int column) {
-        float r = (float) row;
-        float c = (float) column;
-        return new Vector2((r + 0.25f) * 32f * MAP_UNIT_SCALE, (c + 0.25f) * 32f * MAP_UNIT_SCALE);
+    public static Vector2 toVector2(float row, float column) {
+        return new Vector2(row * 32f * MAP_UNIT_SCALE, column * 32f * MAP_UNIT_SCALE);
     }
 }

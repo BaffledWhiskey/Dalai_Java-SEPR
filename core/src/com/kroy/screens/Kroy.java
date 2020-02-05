@@ -151,9 +151,6 @@ public class Kroy implements Screen, InputProcessor {
             Fortress entity = new Fortress(this, json);
             addEntity(entity);
         }
-
-        if (!getEntitiesOfType(FireEngine.class).isEmpty())
-            setSelectedFireEngine((FireEngine) getEntitiesOfType(FireEngine.class).get(0));
     }
 
     /**
@@ -164,7 +161,6 @@ public class Kroy implements Screen, InputProcessor {
     public void render(float deltaTime){
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
 
         // Let the camera follow the selected FireTruck
         if (selectedFireEngine != null) {
@@ -228,8 +224,9 @@ public class Kroy implements Screen, InputProcessor {
     public void show(){
         // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
-
+        // Load level from JSON file
         loadLevel("levels/level1.json");
+        selectNextFireEngine();
     }
 
     public TiledMapTile getTile(Vector2 pos) {
@@ -241,11 +238,6 @@ public class Kroy implements Screen, InputProcessor {
         if (cell == null)
             return null;
         return cell.getTile();
-    }
-
-    public TiledMapTile getTile(int x, int y) {
-        TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        return tiledMapTileLayer.getCell(x, y).getTile();
     }
 
     @Override
@@ -273,22 +265,25 @@ public class Kroy implements Screen, InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         if (keycode == Input.Keys.SHIFT_LEFT) {
-            ArrayList<Entity> fireEngines = getEntitiesOfType(FireEngine.class);
-
-            if (selectedFireEngine == null)
-                setSelectedFireEngine((FireEngine) fireEngines.get(0));
-            else {
-                // Select the next fire engine
-                for (int i = 0; i < fireEngines.size(); i++) {
-                    FireEngine fireEngine = (FireEngine) fireEngines.get(i);
-                    if (fireEngine.equals(selectedFireEngine)) {
-                        setSelectedFireEngine((FireEngine)fireEngines.get((i + 1) % fireEngines.size()));
-                        break;
-                    }
-                }
-            }
+            selectNextFireEngine();
+            return true;
         }
         return false;
+    }
+
+    private void selectNextFireEngine() {
+        ArrayList<Entity> fireEngines = getEntitiesOfType(FireEngine.class);
+        if (selectedFireEngine == null) {
+            setSelectedFireEngine((FireEngine) fireEngines.get(0));
+            return;
+        }
+        for (int i = 0; i < fireEngines.size(); i++) {
+            FireEngine fireEngine = (FireEngine) fireEngines.get(i);
+            if (fireEngine.equals(selectedFireEngine)) {
+                setSelectedFireEngine((FireEngine)fireEngines.get((i + 1) % fireEngines.size()));
+                break;
+            }
+        }
     }
 
     @Override
@@ -308,7 +303,6 @@ public class Kroy implements Screen, InputProcessor {
         Ray pickRay = camera.getPickRay(screenX, screenY);
         Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
 
-        setSelectedFireEngine(null);
         for (Entity entity : getEntitiesOfType(FireEngine.class)) {
             FireEngine fireEngine = (FireEngine) entity;
             if (fireEngine.collides(pos)) {

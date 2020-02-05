@@ -13,7 +13,7 @@
           "img": "Sprites/bubble.png",
           "damage": 10,
           "range": 300,
-          "reloadTime": 1
+          "reloadTime": 0.1
         }
       },
       {
@@ -91,15 +91,18 @@
     "FireStation": [
       {
         "position": {"x": 500, "y": 200},
-        "size": 50,
+        "size": 200,
         "img": "Sprites/FireStation.png",
-        "health": 100
+        "health": 100,
+        "repairRange": 500,
+        "repairRate": 100,
+        "refillRate": 100
       }
     ],
 
     "Fortress": [
       {
-        "position": {"row": 6, "column": 12},
+        "position": {"row": 6.5, "column": 12.5},
         "sizeInTiles": 3,
         "img": "Sprites/Fortress1.png",
         "health": 100,
@@ -114,10 +117,63 @@
 
     "Alien": [
       {
-        "position": {"x": 2000, "y": 100},
-        "size": 50,
+        "position": {"x": 100, "y": 100},
+        "size": 80,
         "img": "Sprites/Alien.png",
-        "health": 500,
+        "health": 50,
+        "movementSpeed":  100
+      },
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },
+      {
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },{
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },{
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
+        "movementSpeed":  100
+      },{
+        "position": {"x": 100, "y": 100},
+        "size": 80,
+        "img": "Sprites/Alien.png",
+        "health": 50,
         "movementSpeed":  100
       }
     ]

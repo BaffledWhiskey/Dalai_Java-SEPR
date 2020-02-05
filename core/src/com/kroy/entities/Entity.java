@@ -1,7 +1,9 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.Tools;
@@ -51,16 +53,15 @@ public abstract class Entity{
 
     public void render() {
         SpriteBatch batch = kroy.getBatch();
-        sprite.setOriginCenter();
-        sprite.setPosition(position.x, position.y);
-        float shortSide = Math.min(sprite.getHeight(), sprite.getWidth());
+        float shortSide = Math.min(sprite.getWidth(), sprite.getHeight());
         float scalar = size / shortSide;
-        sprite.setScale(scalar);
+        sprite.setPosition(position.x - sprite.getWidth() * 0.5f, position.y - sprite.getHeight() * 0.5f);
         sprite.setRotation(rotation);
+        sprite.setScale(scalar);
         sprite.draw(batch);
     }
 
-    public void drawShapes() {}
+    public void drawShapes() { }
 
     public void removeSelf() {
         toBeRemoved = true;

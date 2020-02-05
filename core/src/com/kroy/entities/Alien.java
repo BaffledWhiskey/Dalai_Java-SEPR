@@ -15,5 +15,13 @@ public class Alien extends Movable {
      * Builds an Alien from a JsonValue object. */
     public Alien(Kroy gameScreen, JsonValue json) {
         super(gameScreen, json);
+        setVelocity(new Vector2(movementSpeed, 0));
+    }
+
+    public void update(float deltaTime) {
+
+        setVelocity(getVelocity().rotate((float) (Math.random() * 10f - 5f)));
+
+        super.update(deltaTime);
     }
 }

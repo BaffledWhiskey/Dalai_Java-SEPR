@@ -41,9 +41,10 @@ public abstract class Movable extends Unit {
 
         // Check for collisions on the tile map
         Vector2 nextPosition = position.cpy().add(adjustedVelocity);
-        TiledMapTile nextPositionTile = kroy.getTile(nextPosition);
-        if (!checkCollisions || !(nextPositionTile == null || nextPositionTile.getProperties().get("blocked", Boolean.class)))
+
+        if (isValidPosition(nextPosition)) {
             position = nextPosition;
+        }
 
         super.update(timeDelta);
     }
@@ -52,6 +53,15 @@ public abstract class Movable extends Unit {
      * Returns the position that the Movable will have in the next tick given its current velocity. */
     Vector2 getAdjustedVelocity(float timeDelta) {
         return velocity.cpy().setLength(timeDelta * movementSpeed);
+    }
+
+    private boolean isValidPosition(Vector2 pos) {
+        if (pos.x < 0 || pos.y < 0)
+            return false;
+        if (!checkCollisions)
+            return true;
+        TiledMapTile nextPositionTile = kroy.getTile(pos);
+        return !nextPositionTile.getProperties().get("blocked", Boolean.class);
     }
 
     public void setVelocity(Vector2 velocity) {

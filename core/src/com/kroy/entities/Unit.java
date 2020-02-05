@@ -89,4 +89,8 @@ public abstract class Unit extends Entity {
     public void setHealth(float health) {
         this.health = Math.max(0, Math.min(health, maxHealth));
     }
+
+    public void addHealth(float delta) {
+        setHealth(health + delta);
+    }
 }

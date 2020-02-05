@@ -32,7 +32,7 @@ public class Projectile extends Movable {
     }
 
     void impact() {
-        target.setHealth(target.getHealth() - damage);
+        target.addHealth(-damage);
         removeSelf();
     }
 }
