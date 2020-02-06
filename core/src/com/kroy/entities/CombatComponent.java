@@ -1,36 +1,77 @@
 package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.screens.Kroy;
 
 public class CombatComponent {
 
-    private Entity entity;
+    private Combatant entity;
     private Sprite projectileSprite;
     private float damage;
     private float range;
     private boolean enabled;
+    private float reloadTime;
+    private float reloadCountdown;
 
-    public CombatComponent(Entity entity, float damage, float range) {
+    public CombatComponent(Combatant entity, float damage, float range, float reloadTime) {
         this.entity = entity;
         this.damage = damage;
         this.range = range;
         this.enabled = true;
+        this.reloadTime = reloadTime;
+        this.reloadCountdown = reloadTime;
     }
 
+    public void update(float deltaTime) {
+        reloadCountdown -= deltaTime;
+    }
+
+    /**
+     * Builds a CombatComponent from a JsonValue object. */
+    public CombatComponent(Combatant entity, JsonValue json) {
+        // Initialize the combat component
+        this.entity = entity;
+        damage = json.getFloat("damage");
+        range = json.getFloat("range");
+        String img = json.getString("img");
+        reloadTime = json.getFloat("reloadTime");
+        reloadCountdown = reloadTime;
+        projectileSprite = getEntity().getKroy().getSprite(img);
+    }
+
+    /**
+     * Attack a given target. All tests will be run to check whether the target is valid.
+     * @param target The Unit that is to be attacked*/
     public void attack(Unit target) {
-        if (!isInRange(target))
+        float attackStrength = entity.attackDamage(target);
+        // Check if target is valid
+        if (!hasReloaded() || !isInRange(target) || attackStrength <= 0)
             return;
-        Kroy gameScreen = entity.kroy;
-        Projectile projectile = new Projectile(gameScreen, entity.position.cpy(), 10, projectileSprite, -1, 10.0f, target, damage);
-        gameScreen.addEntity(projectile);
+
+        Kroy kroy = entity.getKroy();
+        // Spawn a new projectile
+        Projectile projectile = new Projectile(kroy, entity.getPosition().cpy(), 10 * attackStrength, projectileSprite, -1, 500.0f, false, target, attackStrength);
+        kroy.addEntity(projectile);
+        reloadCountdown = reloadTime;
+        entity.onAttack(projectile);
     }
 
     public boolean isInRange(Unit target) {
-        return entity.position.dst2(target.position) <= range * range;
+        return entity.getPosition().dst2(target.position) <= range * range;
     }
 
-    public Entity getEntity() {
+    public Combatant getEntity() {
         return entity;
+    }
+
+    public float getDamage() {
+        return damage;
+    }
+    public float getRange() {
+        return range;
+    }
+    public boolean hasReloaded() {
+        return reloadCountdown <= 0;
     }
 }

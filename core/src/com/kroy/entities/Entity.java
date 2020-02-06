@@ -1,7 +1,9 @@
 package com.kroy.entities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.Tools;
@@ -16,6 +18,7 @@ public abstract class Entity{
     Vector2 position;
     float rotation;
     Sprite sprite;
+    private boolean toBeRemoved;
 
     /**
      * @param position The current position of the Entity
@@ -35,29 +38,33 @@ public abstract class Entity{
     public Entity(Kroy kroy, JsonValue json) {
         this.kroy = kroy;
         position = Tools.vector2fromJson(json.get("position"));
-        size = json.getFloat("size");
+        if (json.has("size"))
+            size = json.getFloat("size");
+        else
+            size = json.getInt("sizeInTiles") * 32f * Tools.MAP_UNIT_SCALE;
         String imgPath = json.getString("img");
         sprite = kroy.getSprite(imgPath);
         rotation = 0;
     }
 
     /**
-     * The update method that is called with every tick of the game. */
+     * The update method that is called with every tick of the game. It will be overwritten by one of its subclasses. */
     public void update(float timeDelta) {}
 
     public void render() {
         SpriteBatch batch = kroy.getBatch();
-        sprite.setPosition(position.x, position.y);
-        sprite.setOriginCenter();
-        float shortSide = Math.min(sprite.getHeight(), sprite.getWidth());
-        float scalar = 0.5f * size / shortSide;
-        sprite.setScale(scalar);
+        float shortSide = Math.min(sprite.getWidth(), sprite.getHeight());
+        float scalar = size / shortSide;
+        sprite.setPosition(position.x - sprite.getWidth() * 0.5f, position.y - sprite.getHeight() * 0.5f);
         sprite.setRotation(rotation);
+        sprite.setScale(scalar);
         sprite.draw(batch);
     }
 
-    public void drawShapes() {
+    public void drawShapes() { }
 
+    public void removeSelf() {
+        toBeRemoved = true;
     }
 
     /**
@@ -69,5 +76,13 @@ public abstract class Entity{
 
     public Vector2 getPosition() {
         return position;
+    }
+
+    public Kroy getKroy() {
+        return kroy;
+    }
+
+    public boolean isToBeRemoved() {
+        return toBeRemoved;
     }
 }

@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.Tools;
 import com.kroy.entities.*;
 import com.kroy.Controller;
 
@@ -38,10 +39,11 @@ public class Kroy implements Screen, InputProcessor {
     private ArrayList<Entity> entities;
     private HashMap<Class, ArrayList<Entity>> entityTypes;
     private FireEngine selectedFireEngine;
+    private boolean isUpdating = false;
+    private ArrayList<Entity> toBeAdded;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
-    private final float mapUnitScale = 4f;
 
 
 
@@ -49,12 +51,13 @@ public class Kroy implements Screen, InputProcessor {
         this.controller = controller;
         pauseOverlay = new PauseOverlay(this);
         camera = new OrthographicCamera();
-        camera.position.set(500f, 500f, 1f);
+        camera.position.set(0f, 0f, 1f);
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         font = new BitmapFont();
-        entities = new ArrayList<Entity>();
+        toBeAdded = new ArrayList<>();
+        entities = new ArrayList<>();
         entityTypes = new HashMap<>();
         assetManager = new AssetManager();
     }
@@ -63,10 +66,34 @@ public class Kroy implements Screen, InputProcessor {
      * Adds an Entity to the game.
      * @param entity The Entity that is to be added */
     public void addEntity(Entity entity) {
+        if (isUpdating) {
+            toBeAdded.add(entity);
+            return;
+        }
+
         entities.add(entity);
         if (!entityTypes.containsKey(entity.getClass()))
             entityTypes.put(entity.getClass(), new ArrayList<Entity>());
         entityTypes.get(entity.getClass()).add(entity);
+    }
+
+    /**
+     * Removes all entites that have the isToBeRemoved flag set. */
+    public void garbageCollectEntities() {
+        // Collect all entites with the isToBeRemoved flag
+        ArrayList<Entity> toBeRemoved = new ArrayList<Entity>();
+        for (Entity entity : entities)
+            if (entity.isToBeRemoved()) {
+                toBeRemoved.add(entity);
+                if (entity == selectedFireEngine)
+                    setSelectedFireEngine(null);
+            }
+        entities.removeAll(toBeRemoved);
+
+        for (Class klass : entityTypes.keySet()) {
+            ArrayList<Entity> arrayList = entityTypes.get(klass);
+            arrayList.removeAll(toBeRemoved);
+        }
     }
 
     /**
@@ -95,7 +122,7 @@ public class Kroy implements Screen, InputProcessor {
 
         // Load the map from the according .tmx file
         map = new TmxMapLoader().load(levelJson.getString("mapFile"));
-        mapRenderer = new OrthogonalTiledMapRenderer(map, mapUnitScale);
+        mapRenderer = new OrthogonalTiledMapRenderer(map, Tools.MAP_UNIT_SCALE);
 
         // Lead all entities from the level file. This could be made more generic, but for the sake of simplicity we
         // keep it as is.
@@ -135,31 +162,36 @@ public class Kroy implements Screen, InputProcessor {
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
         // Let the camera follow the selected FireTruck
         if (selectedFireEngine != null) {
             Vector2 fireEnginePosition = selectedFireEngine.getPosition().cpy();
             Vector2 cameraPosition = new Vector2(camera.position.x, camera.position.y);
-            cameraPosition.add(fireEnginePosition.sub(cameraPosition).scl(deltaTime * 2f));
+            Vector2 delta = fireEnginePosition.sub(cameraPosition);
+            float length = deltaTime * delta.len2() * 0.005f;
+            cameraPosition.add(delta.setLength(length));
             camera.position.set(cameraPosition.x, cameraPosition.y, camera.position.z);
         }
 
         camera.update();
-
-        handleWASDInput();
-
         mapRenderer.setView(camera);
         mapRenderer.render();
-
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
 
 
-        batch.begin();
-        for (Entity entity : entities) {
+        // To avoid modification of the entities array whilst iterating over it, we feed all newly added
+        // entities into a buffer (toBeAdded) and add them in the next tick (addPendingEntities). We manage deleting
+        // entities similarly.
+        addPendingEntities();
+        isUpdating = true;
+        for (Entity entity : entities)
             entity.update(deltaTime);
+        isUpdating = false;
+        garbageCollectEntities();
+
+        batch.begin();
+        for (Entity entity : entities)
             entity.render();
-        }
         batch.end();
 
         // We need to draw all shapes outside the batch.begin context, see:
@@ -168,24 +200,12 @@ public class Kroy implements Screen, InputProcessor {
             entity.drawShapes();
     }
 
-    private void handleWASDInput() {
-        if (selectedFireEngine == null)
-            return;
-
-        getTile(selectedFireEngine.getPosition());
-
-        float x = 0;
-        float y = 0;
-        if (Gdx.input.isKeyPressed(Input.Keys.W))
-            y += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.D))
-            x += 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.S))
-            y -= 1;
-        if (Gdx.input.isKeyPressed(Input.Keys.A))
-            x -= 1;
-
-        selectedFireEngine.setVelocity(new Vector2(x, y));
+    /**
+     * Add all the waiting entities to the game. */
+    private void addPendingEntities() {
+        for (Entity entity : toBeAdded)
+            addEntity(entity);
+        toBeAdded.clear();
     }
 
     /**
@@ -204,29 +224,20 @@ public class Kroy implements Screen, InputProcessor {
     public void show(){
         // Sets the input processor to this class
         Gdx.input.setInputProcessor(this);
-
+        // Load level from JSON file
         loadLevel("levels/level1.json");
-    }
-
-    public void printStats(int x, int y) {
-        boolean blocked = getTile(x, y).getProperties().get("blocked", Boolean.class);
-        System.out.println(blocked);
+        selectNextFireEngine();
     }
 
     public TiledMapTile getTile(Vector2 pos) {
         // There is probably a better way of getting the tile but whatever :)
         TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        int x = (int) (pos.x / (tiledMapTileLayer.getTileWidth() * mapUnitScale) - tiledMapTileLayer.getOffsetX());
-        int y = (int) (pos.y / (tiledMapTileLayer.getTileHeight() * mapUnitScale) - tiledMapTileLayer.getOffsetY());
+        int x = (int) (pos.x / (tiledMapTileLayer.getTileWidth() * Tools.MAP_UNIT_SCALE) - tiledMapTileLayer.getOffsetX());
+        int y = (int) (pos.y / (tiledMapTileLayer.getTileHeight() * Tools.MAP_UNIT_SCALE) - tiledMapTileLayer.getOffsetY());
         TiledMapTileLayer.Cell cell = tiledMapTileLayer.getCell(x, y);
         if (cell == null)
             return null;
         return cell.getTile();
-    }
-
-    public TiledMapTile getTile(int x, int y) {
-        TiledMapTileLayer tiledMapTileLayer = (TiledMapTileLayer) map.getLayers().get(0);
-        return tiledMapTileLayer.getCell(x, y).getTile();
     }
 
     @Override
@@ -253,23 +264,26 @@ public class Kroy implements Screen, InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode == Input.Keys.SPACE) {
-            ArrayList<Entity> fireEngines = getEntitiesOfType(FireEngine.class);
-
-            if (selectedFireEngine == null)
-                setSelectedFireEngine((FireEngine) fireEngines.get(0));
-            else {
-
-                for (int i = 0; i < fireEngines.size(); i++) {
-                    FireEngine fireEngine = (FireEngine) fireEngines.get(i);
-                    if (fireEngine.equals(selectedFireEngine)) {
-                        setSelectedFireEngine((FireEngine)fireEngines.get((i + 1) % fireEngines.size()));
-                        break;
-                    }
-                }
-            }
+        if (keycode == Input.Keys.SHIFT_LEFT) {
+            selectNextFireEngine();
+            return true;
         }
         return false;
+    }
+
+    private void selectNextFireEngine() {
+        ArrayList<Entity> fireEngines = getEntitiesOfType(FireEngine.class);
+        if (selectedFireEngine == null) {
+            setSelectedFireEngine((FireEngine) fireEngines.get(0));
+            return;
+        }
+        for (int i = 0; i < fireEngines.size(); i++) {
+            FireEngine fireEngine = (FireEngine) fireEngines.get(i);
+            if (fireEngine.equals(selectedFireEngine)) {
+                setSelectedFireEngine((FireEngine)fireEngines.get((i + 1) % fireEngines.size()));
+                break;
+            }
+        }
     }
 
     @Override
@@ -289,7 +303,6 @@ public class Kroy implements Screen, InputProcessor {
         Ray pickRay = camera.getPickRay(screenX, screenY);
         Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
 
-        setSelectedFireEngine(null);
         for (Entity entity : getEntitiesOfType(FireEngine.class)) {
             FireEngine fireEngine = (FireEngine) entity;
             if (fireEngine.collides(pos)) {
@@ -332,9 +345,15 @@ public class Kroy implements Screen, InputProcessor {
         return map;
     }
 
-    public void setSelectedFireEngine(FireEngine fireEngine) {
-        if (selectedFireEngine != null)
+    private void setSelectedFireEngine(FireEngine fireEngine) {
+        if (selectedFireEngine != null) {
             selectedFireEngine.setVelocity(new Vector2(0, 0));
+            selectedFireEngine.setAttack(false);
+        }
         selectedFireEngine = fireEngine;
+    }
+
+    public FireEngine getSelectedFireEngine() {
+        return selectedFireEngine;
     }
 }
