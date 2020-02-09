@@ -1,55 +1,64 @@
 import com.badlogic.gdx.graphics.Texture;
- import com.kroy.entities.Entity;
- import com.kroy.game.Point;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.entities.Entity;
+import com.kroy.screens.Kroy;
 import org.junit.Before;
 import org.junit.Test;
- import org.junit.jupiter.api.Assertions;
- import org.junit.jupiter.params.ParameterizedTest;
- import org.junit.jupiter.params.provider.ValueSource;
  import org.junit.runner.RunWith;
  import org.mockito.Mock;
  import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+class TestEntity extends Entity {
+    public TestEntity(Kroy kroy, Vector2 position, float size, Sprite sprite) {
+        super(kroy, position, size, sprite);
+    }
+
+    public TestEntity(Kroy kroy, JsonValue json) {
+        super(kroy, json);
+    }
+}
 
 @RunWith(MockitoJUnitRunner.class)
 public class EntityTest {
 
      @Mock
-     public Texture mockedImg;
+     public Sprite mockedSprite;
+     public Kroy mockedKroy;
 
      @Before
      public void setup() {
-         mockedImg = mock(Texture.class);
-         when(mockedImg.getWidth()).thenReturn(5);
-         when(mockedImg.getHeight()).thenReturn(5);
+         mockedSprite = mock(Sprite.class);
+         mockedKroy = mock(Kroy.class);
+         when(mockedKroy.getSprite("Sprites/FireEngine1.png")).thenReturn(mockedSprite);
      }
 
     @Test
-    public void pointShouldBeInRangeTest() {
-        Entity e = new Entity(0,5, new Point(5,5));
-        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(3,3), mockedImg)));
+    public void testCollides() {
+         TestEntity e = new TestEntity(mockedKroy, new Vector2(10.0f, 10.0f), 5.0f, mockedSprite);
+         assertTrue(e.collides(new Vector2(10.0f, 10.0f)));
+         assertTrue(e.collides(new Vector2(10.0f, 14.0f)));
+         assertFalse(e.collides(new Vector2(4.0f, 10.0f)));
     }
 
     @Test
-    public void pointShouldNotBeInRangeTest() {
-        Entity e = new Entity(0,5, new Point(5,5));
-        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(15,15), mockedImg)));
-    }
-
-    @ParameterizedTest
-    @ValueSource(ints = {11,12})
-    public void insideBoundaryInRangeTest(int val) {
-        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
-        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(val,5), mockedImg)));
-        Assertions.assertTrue(e.inRange(new Entity(0,0,new Point(5,val), mockedImg)));
+    public void testRemoveSelf() {
+        TestEntity e = new TestEntity(mockedKroy, new Vector2(10.0f, 10.0f), 5.0f, mockedSprite);
+        e.removeSelf();
+        assertTrue(e.isToBeRemoved());
     }
 
     @Test
-    public void outsideBoundaryInRangeTest() {
-        Entity e = new Entity(0,5, new Point(5,5), mockedImg);
-        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(13,5), mockedImg)));
-        Assertions.assertFalse(e.inRange(new Entity(0,0,new Point(5,13), mockedImg)));
+    public void testJSONInitializer() {
+        JsonValue json = new JsonReader().parse("{\"position\": {\"x\": 10, \"y\": 10}, \"size\": 5, \"img\": \"Sprites/FireEngine1.png\"}");
+        TestEntity e = new TestEntity(mockedKroy, json);
+        assertEquals(e.getPosition(), new Vector2(10f, 10f));
+        assertEquals(e.getSize(), 5f, 0.0);
+        assertEquals(e.getRotation(), 0, 0);
     }
 }
