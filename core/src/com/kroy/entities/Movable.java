@@ -61,7 +61,15 @@ public abstract class Movable extends Unit {
         if (!checkCollisions)
             return true;
         TiledMapTile nextPositionTile = kroy.getTile(pos);
+        if (nextPositionTile == null)
+            return false;
         return !nextPositionTile.getProperties().get("blocked", Boolean.class);
+    }
+
+    boolean nextPositionIsValid(float timeDelta) {
+        Vector2 adjustedVelocity = getAdjustedVelocity(timeDelta);
+        Vector2 nextPosition = position.cpy().add(adjustedVelocity);
+        return isValidPosition(nextPosition);
     }
 
     public void setVelocity(Vector2 velocity) {

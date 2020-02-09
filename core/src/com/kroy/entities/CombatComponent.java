@@ -58,6 +58,8 @@ public class CombatComponent {
     }
 
     public boolean isInRange(Unit target) {
+        if (target == null)
+            return false;
         return entity.getPosition().dst2(target.position) <= range * range;
     }
 

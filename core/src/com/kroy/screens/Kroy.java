@@ -29,7 +29,8 @@ import com.badlogic.gdx.Input;
 public class Kroy implements Screen, InputProcessor {
 
     private Controller controller;
-    private PauseOverlay pauseOverlay;
+    private KroyHUD kroyHUD;
+
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
@@ -42,14 +43,14 @@ public class Kroy implements Screen, InputProcessor {
     private boolean isUpdating = false;
     private ArrayList<Entity> toBeAdded;
 
+    private float time;
+
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
 
-
     public Kroy(final Controller controller) {
         this.controller = controller;
-        pauseOverlay = new PauseOverlay(this);
         camera = new OrthographicCamera();
         camera.position.set(0f, 0f, 1f);
         batch = new SpriteBatch();
@@ -60,6 +61,7 @@ public class Kroy implements Screen, InputProcessor {
         entities = new ArrayList<>();
         entityTypes = new HashMap<>();
         assetManager = new AssetManager();
+        time = 0f;
     }
 
     /**
@@ -159,6 +161,8 @@ public class Kroy implements Screen, InputProcessor {
      */
     @Override
     public void render(float deltaTime){
+        time += deltaTime;
+
         Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -177,7 +181,6 @@ public class Kroy implements Screen, InputProcessor {
         mapRenderer.render();
         batch.setProjectionMatrix(camera.combined);
         shapeRenderer.setProjectionMatrix(camera.combined);
-
 
         // To avoid modification of the entities array whilst iterating over it, we feed all newly added
         // entities into a buffer (toBeAdded) and add them in the next tick (addPendingEntities). We manage deleting
@@ -198,6 +201,8 @@ public class Kroy implements Screen, InputProcessor {
         // https://stackoverflow.com/questions/30894456/how-to-use-spritebatch-and-shaperenderer-in-one-screen
         for (Entity entity : entities)
             entity.drawShapes();
+
+        getKroyHUD().update(deltaTime);
     }
 
     /**
@@ -222,8 +227,6 @@ public class Kroy implements Screen, InputProcessor {
 
     @Override
     public void show(){
-        // Sets the input processor to this class
-        Gdx.input.setInputProcessor(this);
         // Load level from JSON file
         loadLevel("levels/level1.json");
         selectNextFireEngine();
@@ -355,5 +358,13 @@ public class Kroy implements Screen, InputProcessor {
 
     public FireEngine getSelectedFireEngine() {
         return selectedFireEngine;
+    }
+
+    public KroyHUD getKroyHUD() {
+        return controller.getKroyHUD();
+    }
+
+    public float getTime() {
+        return time;
     }
 }

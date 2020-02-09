@@ -14,6 +14,10 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
+
+/**
+ * Since the Entity class is abstract, we can not instantiate it directly. To circumvent that, we run our tests against
+ * this dummy class.*/
 class TestEntity extends Entity {
     public TestEntity(Kroy kroy, Vector2 position, float size, Sprite sprite) {
         super(kroy, position, size, sprite);
