@@ -1,122 +1,126 @@
 package com.kroy.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.kroy.Controller;
 
-/**
- * This screen is shown when the user first enters the app
- */
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen implements Screen{
 
-    private static final int BUTTON_WIDTH = 225;
-    private static final int BUTTON_HEIGHT = 100;
-    private static final int x = Gdx.graphics.getWidth()/2;
-    private static final int EXIT_BUTTON_Y = 50;
-    private static final int PLAY_BUTTON_Y = 175;
-    private static final int KROY_LOGO_Y = 400;
-    private static final int LOGO_WIDTH = 600;
-    private static final int LOGO_HEIGHT = 300;
+    Controller controller;
+    private SpriteBatch batch;
+    protected Stage stage;
+    private Viewport viewport;
+    private OrthographicCamera camera;
+    private TextureAtlas atlas;
+    protected Skin skin;
 
-    Controller game;
-    SpriteBatch spriteBatch;
+    public MainMenuScreen(Controller controller)
+    {
+        this.controller = controller;
+        atlas = new TextureAtlas("skin/uiSkin.atlas");
+        skin = new Skin(Gdx.files.internal("skin/uiSkin.json"), atlas);
 
-    Texture playButtonActive;
-    Texture playButtonInactive;
-    Texture exitButtonActive;
-    Texture exitButtonInactive;
-    Texture kroyLogo;
-    OrthographicCamera camera;
+        batch = new SpriteBatch();
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(Gdx.app.getGraphics().getWidth() / 2, Gdx.app.getGraphics().getHeight() / 2, camera);
+        viewport.apply();
 
-    public MainMenuScreen(Controller game){
-        this.game = game;
-        spriteBatch = new SpriteBatch();
-        playButtonActive = new Texture("MainMenuScreen/playButtonActive.png");
-        playButtonInactive = new Texture("MainMenuScreen/playButton.png");
-        exitButtonActive = new Texture("MainMenuScreen/exitButtonActive.png");
-        exitButtonInactive = new Texture("MainMenuScreen/exitButton.png");
-        kroyLogo = new Texture("KROY_logo.png");
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
+
+        stage = new Stage(viewport, batch);
     }
-
 
 
     @Override
     public void show() {
+        //Stage should control input:
+        Gdx.input.setInputProcessor(stage);
 
-    }
+        //Create Table
+        Table mainTable = new Table();
+        //Set table to fill stage
+        mainTable.setFillParent(true);
+        //Set alignment of contents in the table.
+        mainTable.center();
 
-    /**
-     * Renders the Main Menu screen
-     * @param delta A parameter required to render this screen
-     */
-    @Override
-    public void render(float delta) {
-        Gdx.gl.glClearColor(0.25f, 0.25f, 0.25f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //Create buttons
+        TextButton playButton = new TextButton("Play", skin);
+        TextButton exitButton = new TextButton("Exit", skin);
 
-        spriteBatch.begin();
-        //Draws the logo
-        spriteBatch.draw(kroyLogo, x - LOGO_WIDTH/2, KROY_LOGO_Y, LOGO_WIDTH, LOGO_HEIGHT);
-
-        //If the 'play' button is scrolled over, display the 'active' state, else display the 'inactive' state
-        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && Gdx.graphics.getHeight()
-                - Gdx.input.getY() < PLAY_BUTTON_Y + BUTTON_HEIGHT
-                && Gdx.graphics.getHeight() - Gdx.input.getY() > PLAY_BUTTON_Y){
-            spriteBatch.draw(playButtonActive, (x) - BUTTON_WIDTH/2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            //If the button is clicked, begin a game
-            if(Gdx.input.isTouched()){
-                game.setScreen(new Kroy(game));
+        //Add listeners to buttons
+        playButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                controller.startGame();
             }
-        }
-        //Else display the 'inactive' sprite
-        else {
-            spriteBatch.draw(playButtonInactive, (x) - BUTTON_WIDTH / 2, PLAY_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        }
-        //If the 'exit' button is scrolled over, display the 'active' state
-        if(Gdx.input.getX() < x + BUTTON_WIDTH/2 && Gdx.input.getX() > x - BUTTON_WIDTH/2 && Gdx.graphics.getHeight()
-                - Gdx.input.getY() < EXIT_BUTTON_Y + BUTTON_HEIGHT
-                && Gdx.graphics.getHeight() - Gdx.input.getY() > EXIT_BUTTON_Y){
-            spriteBatch.draw(exitButtonActive, (x) - BUTTON_WIDTH/2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-            //If the button is clicked, exit the app
-            if(Gdx.input.isTouched()){
+        });
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
-        }
-        //Else display the 'inactive' sprite
-        else {
-            spriteBatch.draw(exitButtonInactive, (x) - BUTTON_WIDTH / 2, EXIT_BUTTON_Y, BUTTON_WIDTH, BUTTON_HEIGHT);
-        }
-        spriteBatch.end();
+        });
 
+        //Add buttons and labels to table
+        mainTable.add(new Label("Kroy", skin)).pad(40);
+        mainTable.row();
+        mainTable.add(playButton).pad(20);
+        mainTable.row();
+        mainTable.add(exitButton).pad(20);
+
+        //Add table to stage
+        stage.addActor(mainTable);
+    }
+
+    @Override
+    public void render(float delta) {
+        Gdx.gl.glClearColor(.1f, .12f, .16f, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        stage.act();
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
+        viewport.update(width, height);
+        camera.position.set(camera.viewportWidth / 2, camera.viewportHeight / 2, 0);
+        camera.update();
+    }
+
+    @Override
+    public void pause() {
 
     }
 
     @Override
-    public void pause() { }
+    public void resume() {
 
-    @Override
-    public void resume() { }
+    }
 
     @Override
     public void hide() {
-        this.dispose();
+
     }
 
     @Override
     public void dispose() {
-        Gdx.gl.glClearColor(0,0,0,1);
-        playButtonActive.dispose();
-        playButtonInactive.dispose();
-        exitButtonActive.dispose();
-        exitButtonInactive.dispose();
-        kroyLogo.dispose();
+        skin.dispose();
+        atlas.dispose();
     }
 }

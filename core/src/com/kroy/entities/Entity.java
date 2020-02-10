@@ -1,9 +1,7 @@
 package com.kroy.entities;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.Tools;
@@ -63,10 +61,6 @@ public abstract class Entity{
 
     public void drawShapes() { }
 
-    public void removeSelf() {
-        toBeRemoved = true;
-    }
-
     /**
      * Returns whether a Vector is inside, i.e. collides with the entity.
      * @param v The vector */
@@ -82,7 +76,19 @@ public abstract class Entity{
         return kroy;
     }
 
+    public void removeSelf() {
+        toBeRemoved = true;
+    }
+
     public boolean isToBeRemoved() {
         return toBeRemoved;
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public float getRotation() {
+        return rotation;
     }
 }

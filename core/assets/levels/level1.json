@@ -3,7 +3,7 @@
   "entities": {
     "FireEngine": [
       {
-        "position": {"x": 1000, "y": 200},
+        "position": {"row": 29, "column": 8},
         "size": 50,
         "img": "Sprites/FireEngine1.png",
         "health": 100,
@@ -17,7 +17,7 @@
         }
       },
       {
-        "position": {"x": 1500, "y": 200},
+        "position": {"row": 29, "column": 8},
         "size": 50,
         "water": 200,
         "health": 100,
@@ -31,7 +31,7 @@
         }
       },
       {
-        "position": {"x":  2000, "y":  200},
+        "position": {"row": 29, "column": 8},
         "size": 40,
         "img": "Sprites/FireEngine3.png",
         "health": 100,
@@ -45,7 +45,7 @@
         }
       },
       {
-        "position": {"x":  2500, "y":  200},
+        "position": {"row": 29, "column": 8},
         "size": 50,
         "img": "Sprites/FireEngine4.png",
         "health": 100,
@@ -59,7 +59,7 @@
         }
       },
       {
-        "position": {"x":  3250, "y":  200},
+        "position": {"row": 29, "column": 8},
         "size": 150,
         "img": "Sprites/FireEngine5.png",
         "health": 100,
@@ -73,7 +73,7 @@
         }
       },
       {
-        "position": {"x":  3500, "y":  200},
+        "position": {"row": 29, "column": 8},
         "size": 150,
         "img": "Sprites/FireEngine6.png",
         "health": 100,
@@ -90,10 +90,10 @@
 
     "FireStation": [
       {
-        "position": {"x": 500, "y": 200},
-        "size": 200,
+        "position": {"row": 29, "column": 6},
+        "size": 260,
         "img": "Sprites/FireStation.png",
-        "health": 100,
+        "health": 1000,
         "repairRange": 500,
         "repairRate": 100,
         "refillRate": 100
@@ -104,78 +104,58 @@
       {
         "position": {"row": 6.5, "column": 12.5},
         "sizeInTiles": 3,
-        "img": "Sprites/Fortress1.png",
+        "img": "Sprites/Fortress2.png",
         "health": 100,
         "combat": {
           "img": "Sprites/bubble.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
+        },
+        "alienSpawnRate": 0.25,
+        "alienType": {
+          "position": {"row": 6.5, "column": 11},
+          "size": 160,
+          "img": "Sprites/Alien.png",
+          "health": 50,
+          "movementSpeed":  300,
+          "combat": {
+            "img": "Sprites/bubble.png",
+            "damage": 5,
+            "range": 300,
+            "reloadTime": 1
+          }
+        }
+      },
+
+      {
+        "position": {"row": 16.5, "column": 6.5},
+        "sizeInTiles": 3,
+        "img": "Sprites/Fortress3.png",
+        "health": 100,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300,
+          "reloadTime": 1
+        },
+        "alienSpawnRate": 0.25,
+        "alienType": {
+          "position": {"row": 18, "column": 6.5},
+          "size": 160,
+          "img": "Sprites/Alien.png",
+          "health": 50,
+          "movementSpeed":  300,
+          "combat": {
+            "img": "Sprites/bubble.png",
+            "damage": 5,
+            "range": 300,
+            "reloadTime": 1
+          }
         }
       }
     ],
-
     "Alien": [
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },
-      {
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },{
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },{
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      },{
-        "position": {"x": 100, "y": 100},
-        "size": 80,
-        "img": "Sprites/Alien.png",
-        "health": 50,
-        "movementSpeed":  100
-      }
     ]
   }
 }
