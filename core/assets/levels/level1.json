@@ -104,7 +104,7 @@
       {
         "position": {"row": 6.5, "column": 12.5},
         "sizeInTiles": 3,
-        "img": "Sprites/Fortress2.png",
+        "img": "Sprites/stationInfected.png",
         "health": 100,
         "combat": {
           "img": "Sprites/bubble.png",
@@ -131,7 +131,7 @@
       {
         "position": {"row": 16.5, "column": 6.5},
         "sizeInTiles": 3,
-        "img": "Sprites/Fortress3.png",
+        "img": "Sprites/towerInfected.png",
         "health": 100,
         "combat": {
           "img": "Sprites/bubble.png",
