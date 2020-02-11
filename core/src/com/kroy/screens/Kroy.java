@@ -62,6 +62,7 @@ public class Kroy implements Screen, InputProcessor {
         entityTypes = new HashMap<>();
         assetManager = new AssetManager();
         time = 0f;
+        kroyHUD = new KroyHUD(controller);
     }
 
     /**
@@ -361,10 +362,17 @@ public class Kroy implements Screen, InputProcessor {
     }
 
     public KroyHUD getKroyHUD() {
-        return controller.getKroyHUD();
+        return kroyHUD;
     }
 
     public float getTime() {
         return time;
+    }
+
+    public InputProcessor getInputProcessor() {
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(kroyHUD.stage);
+        multiplexer.addProcessor(this);
+        return multiplexer;
     }
 }

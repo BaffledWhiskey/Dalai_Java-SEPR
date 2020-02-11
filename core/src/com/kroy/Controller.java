@@ -21,7 +21,6 @@ import java.util.ArrayList;
 public class Controller extends Game {
 
     Kroy kroy;
-    KroyHUD kroyHUD;
 
     public void create() {
         setScreen(new MainMenuScreen(this));
@@ -35,21 +34,11 @@ public class Controller extends Game {
 
     public void startGame() {
         kroy = new Kroy(this);
-        kroyHUD = new KroyHUD(this);
-
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(kroyHUD.stage);
-        multiplexer.addProcessor(kroy);
-        Gdx.input.setInputProcessor(multiplexer);
-
-        setScreen((kroy));
+        Gdx.input.setInputProcessor(kroy.getInputProcessor());
+        setScreen(kroy);
     }
 
     public Kroy getKroy() {
         return kroy;
-    }
-
-    public KroyHUD getKroyHUD() {
-        return kroyHUD;
     }
 }
