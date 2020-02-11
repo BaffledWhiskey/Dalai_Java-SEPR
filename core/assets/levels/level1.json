@@ -96,7 +96,22 @@
         "health": 1000,
         "repairRange": 500,
         "repairRate": 100,
-        "refillRate": 100
+        "refillRate": 100,
+        "miniGame": {
+          "probability": 0.1,
+          "duration": 10.0,
+          "spawnRate": 1,
+          "hammerSize": 150,
+          "initialInvaderQty": 5,
+          "invaderType": {
+            "killRadius": 300,
+            "spawnDistance": 1000,
+            "img": "Sprites/Alien.png",
+            "shyness": 2,
+            "shynessRange": 0.01,
+            "movementSpeed": 200
+          }
+      }
       }
     ],
 

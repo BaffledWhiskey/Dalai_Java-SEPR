@@ -1,12 +1,6 @@
 package com.kroy.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -16,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.kroy.BaseGame;
 import com.kroy.Tools;
 import com.kroy.entities.*;
 import com.kroy.Controller;
@@ -26,21 +21,16 @@ import java.util.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-public class Kroy implements Screen, InputProcessor {
+public class Kroy extends BaseGame {
 
-    private Controller controller;
     private KroyHUD kroyHUD;
-
-    private OrthographicCamera camera;
-    private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
-    private AssetManager assetManager;
 
     private ArrayList<Entity> entities;
     private HashMap<Class, ArrayList<Entity>> entityTypes;
     private FireEngine selectedFireEngine;
     private boolean isUpdating = false;
     private ArrayList<Entity> toBeAdded;
+    private FireStation waitingMiniGameFireStation;
 
     private float time;
 
@@ -48,19 +38,16 @@ public class Kroy implements Screen, InputProcessor {
     private OrthogonalTiledMapRenderer mapRenderer;
 
 
-    public Kroy(final Controller controller) {
-        this.controller = controller;
-        camera = new OrthographicCamera();
-        camera.position.set(0f, 0f, 1f);
-        batch = new SpriteBatch();
-        shapeRenderer = new ShapeRenderer();
-        shapeRenderer.setAutoShapeType(true);
+    public Kroy(Controller controller) {
+        super(controller);
         toBeAdded = new ArrayList<>();
         entities = new ArrayList<>();
         entityTypes = new HashMap<>();
-        assetManager = new AssetManager();
         time = 0f;
         kroyHUD = new KroyHUD(controller);
+        // Load level from JSON file
+        loadLevel("levels/level1.json");
+        selectNextFireEngine();
     }
 
     /**
@@ -104,18 +91,6 @@ public class Kroy implements Screen, InputProcessor {
     }
 
     /**
-     * A wrapper around the central AssetManager.
-     * @param path The path to the image to be used as the Texture, relative to the assets folder */
-    public Sprite getSprite(String path) {
-        if (!assetManager.contains(path)) {
-            assetManager.load(path, Texture.class);
-            assetManager.finishLoading();
-        }
-        Texture texture = assetManager.get(path);
-        return new Sprite(texture);
-    }
-
-    /**
      * Load a level from a JSON file. */
     public void loadLevel(String levelFile) {
         Reader reader = Gdx.files.internal(Paths.get(levelFile).toString()).reader();
@@ -154,16 +129,20 @@ public class Kroy implements Screen, InputProcessor {
         }
     }
 
+    @Override
+    public void show() {
+        waitingMiniGameFireStation = null;
+    }
+
     /**
      * Updates and renders the scene.
      * @param deltaTime The difference in time to the last call to render
      */
     @Override
     public void render(float deltaTime){
-        time += deltaTime;
+        super.render(deltaTime);
 
-        Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        time += deltaTime;
 
         // Let the camera follow the selected FireTruck
         if (selectedFireEngine != null) {
@@ -175,11 +154,8 @@ public class Kroy implements Screen, InputProcessor {
             camera.position.set(cameraPosition.x, cameraPosition.y, camera.position.z);
         }
 
-        camera.update();
         mapRenderer.setView(camera);
         mapRenderer.render();
-        batch.setProjectionMatrix(camera.combined);
-        shapeRenderer.setProjectionMatrix(camera.combined);
 
         // To avoid modification of the entities array whilst iterating over it, we feed all newly added
         // entities into a buffer (toBeAdded) and add them in the next tick (addPendingEntities). We manage deleting
@@ -202,6 +178,9 @@ public class Kroy implements Screen, InputProcessor {
             entity.drawShapes();
 
         getKroyHUD().update(deltaTime);
+
+        if (waitingMiniGameFireStation != null)
+            controller.startMiniGame(waitingMiniGameFireStation);
     }
 
     /**
@@ -212,23 +191,8 @@ public class Kroy implements Screen, InputProcessor {
         toBeAdded.clear();
     }
 
-    /**
-     * Resizes the screen if it has been adjusted
-     * @param width The new width to resize to
-     * @param height The new height to resize to
-     */
-    @Override
-    public void resize(int width, int height) {
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
-        camera.update();
-    }
-
-    @Override
-    public void show(){
-        // Load level from JSON file
-        loadLevel("levels/level1.json");
-        selectNextFireEngine();
+    public void startMiniGame(FireStation fireStation) {
+        waitingMiniGameFireStation = fireStation;
     }
 
     public TiledMapTile getTile(Vector2 pos) {
@@ -240,28 +204,6 @@ public class Kroy implements Screen, InputProcessor {
         if (cell == null)
             return null;
         return cell.getTile();
-    }
-
-    @Override
-    public void hide(){
-        dispose();
-    }
-
-    @Override
-    public void pause(){
-    }
-
-    @Override
-    public void resume(){
-    }
-
-    @Override
-    public void dispose(){
-    }
-
-    @Override
-    public boolean keyDown(int keycode) {
-        return true;
     }
 
     @Override
@@ -289,16 +231,6 @@ public class Kroy implements Screen, InputProcessor {
     }
 
     @Override
-    public boolean keyTyped(char character) {
-        return false;
-    }
-
-    @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
-    }
-
-    @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         // If you click on a fire Engine, set the selectedFireEngine to the according FireEngine.
         // If no fire engine is selected, set selectedFireEngine to null.
@@ -315,36 +247,8 @@ public class Kroy implements Screen, InputProcessor {
         return true;
     }
 
-    @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
-
-    @Override
-    public boolean scrolled(int amount) {
-        return false;
-
-    }
-
-    public SpriteBatch getBatch() {
-        return batch;
-    }
-
     public ArrayList<Entity> getEntities() {
         return entities;
-    }
-
-    public ShapeRenderer getShapeRenderer() {
-        return shapeRenderer;
-    }
-
-    public TiledMap getMap() {
-        return map;
     }
 
     private void setSelectedFireEngine(FireEngine fireEngine) {
@@ -367,6 +271,7 @@ public class Kroy implements Screen, InputProcessor {
         return time;
     }
 
+    @Override
     public InputProcessor getInputProcessor() {
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(kroyHUD.stage);

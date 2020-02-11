@@ -28,7 +28,7 @@ public class KroyHUD implements Disposable {
     private Label timeLabel;
 
 
-    public KroyHUD(Controller controller){
+    public KroyHUD(final Controller controller){
         this.controller = controller;
 
         // Set up the Stage and necessary components

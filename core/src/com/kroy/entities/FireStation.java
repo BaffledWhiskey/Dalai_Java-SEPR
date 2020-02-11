@@ -10,6 +10,9 @@ public class FireStation extends Unit {
     float repairRange;
     float repairRate;
     float refillRate;
+    JsonValue miniGameJson;
+    float miniGameProbability;
+    float miniGameDifficulty = 1;
 
     public FireStation(Kroy gameScreen, Vector2 position, float size, Sprite sprite, float health) {
         super(gameScreen, position, size, sprite, health);
@@ -22,9 +25,18 @@ public class FireStation extends Unit {
         repairRange = json.getFloat("repairRange");
         repairRate = json.getFloat("repairRate");
         refillRate = json.getFloat("refillRate");
+
+        miniGameJson = json.get("miniGame");
+        miniGameProbability = miniGameJson.getFloat("probability");
     }
 
     public void update(float deltaTime) {
+        if ((Math.random() < miniGameProbability * deltaTime)) {
+            // With each time that we play the minigame, the difficulty increases
+            miniGameDifficulty += 0.25;
+            kroy.startMiniGame(this);
+        }
+
         for (Entity entity : getKroy().getEntitiesOfType(FireEngine.class)) {
             FireEngine fireEngine = (FireEngine) entity;
             if (fireEngine.getPosition().dst2(getPosition()) > repairRange * repairRange)
@@ -35,4 +47,11 @@ public class FireStation extends Unit {
         super.update(deltaTime);
     }
 
+    public JsonValue getMiniGameJson() {
+        return miniGameJson;
+    }
+
+    public float getMiniGameDifficulty() {
+        return miniGameDifficulty;
+    }
 }

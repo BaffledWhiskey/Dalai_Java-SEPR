@@ -91,4 +91,8 @@ public abstract class Entity{
     public float getRotation() {
         return rotation;
     }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
 }
