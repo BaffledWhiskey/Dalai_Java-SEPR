@@ -34,7 +34,6 @@ public class Kroy implements Screen, InputProcessor {
     private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
     private AssetManager assetManager;
 
     private ArrayList<Entity> entities;
@@ -56,7 +55,6 @@ public class Kroy implements Screen, InputProcessor {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
-        font = new BitmapFont();
         toBeAdded = new ArrayList<>();
         entities = new ArrayList<>();
         entityTypes = new HashMap<>();
