@@ -104,10 +104,10 @@
           "hammerSize": 150,
           "initialInvaderQty": 5,
           "invaderType": {
-            "killRadius": 300,
+            "killRadius": 100,
             "spawnDistance": 1000,
             "img": "Sprites/Alien.png",
-            "shyness": 2,
+            "shyness": 4,
             "shynessRange": 0.01,
             "movementSpeed": 200
           }
@@ -157,6 +157,84 @@
         "alienSpawnRate": 0.25,
         "alienType": {
           "position": {"row": 18, "column": 6.5},
+          "size": 160,
+          "img": "Sprites/Alien.png",
+          "health": 50,
+          "movementSpeed":  300,
+          "combat": {
+            "img": "Sprites/bubble.png",
+            "damage": 5,
+            "range": 300,
+            "reloadTime": 1
+          }
+        }
+      },
+      {
+        "position": {"row": 3.5, "column": 29.5},
+        "sizeInTiles": 3,
+        "img": "Sprites/airFieldInfected.png",
+        "health": 100,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300,
+          "reloadTime": 1
+        },
+        "alienSpawnRate": 0.25,
+        "alienType": {
+          "position": {"row": 5, "column": 29.5},
+          "size": 160,
+          "img": "Sprites/Alien.png",
+          "health": 50,
+          "movementSpeed":  300,
+          "combat": {
+            "img": "Sprites/bubble.png",
+            "damage": 5,
+            "range": 300,
+            "reloadTime": 1
+          }
+        }
+      },
+      {
+        "position": {"row": 6.5, "column": 25.5},
+        "sizeInTiles": 3,
+        "img": "Sprites/minsterInfected.png",
+        "health": 100,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300,
+          "reloadTime": 1
+        },
+        "alienSpawnRate": 0.25,
+        "alienType": {
+          "position": {"row": 6.5, "column": 27},
+          "size": 160,
+          "img": "Sprites/Alien.png",
+          "health": 50,
+          "movementSpeed":  300,
+          "combat": {
+            "img": "Sprites/bubble.png",
+            "damage": 5,
+            "range": 300,
+            "reloadTime": 1
+          }
+        }
+      },
+      {
+        "position": {"row": 21.5, "column": 26.5},
+        "sizeInTiles": 3,
+        "img": "Sprites/raceCourseInfected.png",
+        "health": 100,
+        "combat": {
+          "img": "Sprites/bubble.png",
+          "damage": 10,
+          "range": 300,
+          "reloadTime": 1
+        },
+        "alienSpawnRate": 0.25,
+        "alienType": {
+          "position": {"row": 20, "column": 26.5},
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
