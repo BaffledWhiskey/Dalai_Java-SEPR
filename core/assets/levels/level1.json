@@ -52,7 +52,7 @@
         "movementSpeed": 400,
         "water": 500,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/waterDrum.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
@@ -78,7 +78,7 @@
         "img": "Sprites/FireEngine6.png",
         "health": 1000,
         "movementSpeed": 1000,
-        "water": 3000,
+        "water": 999999,
         "combat": {
           "img": "Sprites/cow.png",
           "damage": 100,
@@ -136,7 +136,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -150,7 +150,7 @@
         "img": "Sprites/towerInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
@@ -163,7 +163,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -189,7 +189,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -215,7 +215,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -241,7 +241,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -254,10 +254,10 @@
         "img": "Sprites/airFieldInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
-          "damage": 10,
+          "img": "Sprites/bomb.png",
+          "damage": 30,
           "range": 300,
-          "reloadTime": 1
+          "reloadTime": 3
         },
         "alienSpawnRate": 0.25,
         "alienType": {
@@ -267,7 +267,7 @@
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
