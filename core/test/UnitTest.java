@@ -21,9 +21,6 @@ import static org.mockito.Mockito.when;
  * this dummy class.*/
 class TestUnit extends Unit{
 
-    public float health;
-    public float maxHealth;
-
     public TestUnit(Kroy kroy, Vector2 position, float size, Sprite sprite, float health) {
         super(kroy, position, size, sprite, health);
     }
@@ -84,6 +81,14 @@ public class UnitTest {
         unit1.setHealth(50);        //Tests lower bound with a negative
         unit1.addHealth(-75);
         assertEquals(0, unit1.getHealth(), 0.0);
+    }
 
+    @Test
+    public void UnitShouldUpdateTest(){
+        TestUnit unit1 = new TestUnit(mockedKroy, new Vector2(0.0f, 0.0f), 5.0f, mockedSprite1, 100);
+
+        unit1.setHealth(0);      //Changes health to zero and checks if it should be removed
+        unit1.update(1);
+        Assert.assertTrue(unit1.isToBeRemoved());
     }
 }
