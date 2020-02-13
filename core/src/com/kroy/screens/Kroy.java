@@ -38,7 +38,7 @@ public class Kroy extends BaseGame {
     private OrthogonalTiledMapRenderer mapRenderer;
 
 
-    public Kroy(Controller controller) {
+    public Kroy(Controller controller, String levelFile) {
         super(controller);
         toBeAdded = new ArrayList<>();
         entities = new ArrayList<>();
@@ -46,7 +46,7 @@ public class Kroy extends BaseGame {
         time = 0f;
         kroyHUD = new KroyHUD(controller);
         // Load level from JSON file
-        loadLevel("levels/level1.json");
+        loadLevel(levelFile);
         selectNextFireEngine();
     }
 

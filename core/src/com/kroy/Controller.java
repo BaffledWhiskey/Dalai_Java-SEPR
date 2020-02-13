@@ -35,8 +35,8 @@ public class Controller extends Game {
 
     public void dispose() {}
 
-    public void startGame() {
-        kroy = new Kroy(this);
+    public void startGame(String levelFile) {
+        kroy = new Kroy(this, levelFile);
         Gdx.input.setInputProcessor(kroy.getInputProcessor());
         setScreen(kroy);
     }

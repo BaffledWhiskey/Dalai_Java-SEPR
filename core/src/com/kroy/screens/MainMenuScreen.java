@@ -28,6 +28,8 @@ public class MainMenuScreen implements Screen{
     private TextureAtlas atlas;
     protected Skin skin;
 
+    String[] levelFiles = new String[]{"levels/level1.json", "levels/level2.json"};
+
     public MainMenuScreen(Controller controller)
     {
         this.controller = controller;
@@ -58,17 +60,27 @@ public class MainMenuScreen implements Screen{
         //Set alignment of contents in the table.
         mainTable.center();
 
+        mainTable.add(new Label("Kroy", skin)).pad(40);
+        mainTable.row();
+
         //Create buttons
-        TextButton playButton = new TextButton("Play", skin);
+        TextButton levelButtons[] = new TextButton[levelFiles.length];
+        for (int i = 0; i < levelFiles.length; i++) {
+            levelButtons[i] = new TextButton("Level " + (i + 1), skin);
+            final int finalI = i;
+            levelButtons[i].addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    controller.startGame(levelFiles[finalI]);
+                }
+            });
+            //Add buttons and labels to table
+            mainTable.add(levelButtons[i]).pad(20);
+            mainTable.row();
+        }
         TextButton exitButton = new TextButton("Exit", skin);
 
-        //Add listeners to buttons
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                controller.startGame();
-            }
-        });
+        //Add listener to exit button
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -76,11 +88,7 @@ public class MainMenuScreen implements Screen{
             }
         });
 
-        //Add buttons and labels to table
-        mainTable.add(new Label("Kroy", skin)).pad(40);
-        mainTable.row();
-        mainTable.add(playButton).pad(20);
-        mainTable.row();
+
         mainTable.add(exitButton).pad(20);
 
         //Add table to stage
