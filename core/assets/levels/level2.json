@@ -1,5 +1,5 @@
 {
-  "mapFile": "maps/newMap.tmx",
+  "mapFile": "maps/map2/map.tmx",
   "entities": {
     "FireEngine": [
       {
