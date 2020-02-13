@@ -98,13 +98,14 @@
         "repairRate": 100,
         "refillRate": 100,
         "miniGame": {
-          "probability": 0.1,
+          "interval": 30,
+          "intervalOffset": 60,
           "duration": 10.0,
           "spawnRate": 1,
           "hammerSize": 150,
           "initialInvaderQty": 5,
           "invaderType": {
-            "killRadius": 100,
+            "killRadius": 300,
             "spawnDistance": 1000,
             "img": "Sprites/Alien.png",
             "shyness": 4,
