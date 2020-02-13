@@ -5,23 +5,45 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.screens.Kroy;
 
+/**
+ * The class for Aliens in the main game. */
 public class Alien extends Movable implements Combatant{
 
     CombatComponent combatComponent;
 
-    public Alien(Kroy gameScreen, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, CombatComponent combatComponent) {
-        super(gameScreen, position, size, sprite, health, movementSpeed, checkCollisions);
+    /**
+     * The constructor for an Alien that can be used for testing. Note that this is not the constructor that is used in
+     * the actual game.
+     *
+     * @param kroy The Kroy instance in which the Alien lives
+     * @param position The Alien's position within the game world
+     * @param size The Alien's size. It is used for rendering
+     * @param sprite The Alien's Sprite
+     * @param health The Alien's (maximum) health. It always starts out with full health
+     * @param movementSpeed The Alien's movement speed in pixels per second
+     * @param checkCollisions If false, then no collision checking will be donw, i.e. the Movable can move through walls and over water
+     * @param combatComponent The Alien's combat component that it will use for combat
+     */
+    public Alien(Kroy kroy, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, CombatComponent combatComponent) {
+        super(kroy, position, size, sprite, health, movementSpeed, checkCollisions);
         this.combatComponent = combatComponent;
     }
 
     /**
-     * Builds an Alien from a JsonValue object. */
-    public Alien(Kroy gameScreen, JsonValue json) {
-        super(gameScreen, json);
+     * Builds an Alien from a JsonValue object. This is the constructor that is used in the game.
+     *
+     * @param kroy The Kroy instance in which the Alien lives
+     * @param json The JsonObject instance that holds the information according to which the alien is initialized. */
+    public Alien(Kroy kroy, JsonValue json) {
+        super(kroy, json);
         setVelocity(new Vector2(movementSpeed, 0).rotate((float) (Math.random() * 360f)));
         combatComponent = new CombatComponent(this, json.get("combat"));
     }
 
+    /**
+     * Updates the alien, looking for enemies that it can attack and moving around the map in a random pattern.
+     *
+     * @param deltaTime The amount of time that has passed since the last tick */
     public void update(float deltaTime) {
         combatComponent.update(deltaTime);
 
@@ -43,11 +65,20 @@ public class Alien extends Movable implements Combatant{
         return combatComponent;
     }
 
+    /**
+     * A hook for the combat component. As we do not need special behaviour, we do not make any use of it here. */
     @Override
     public void onAttack(Projectile projectile) {
 
     }
 
+    /**
+     * A hook for the combat component. It is called right as the combat component attacks a target and spawns a
+     * projectile.
+     *
+     * @param target The Unit that is to be attacked
+     * @return The amount of damage that the fired projectile will cause to the target
+     */
     @Override
     public float attackDamage(Unit target) {
         return combatComponent.getDamage();

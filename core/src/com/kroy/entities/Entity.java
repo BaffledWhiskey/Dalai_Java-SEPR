@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.Tools;
 import com.kroy.screens.Kroy;
 
-/** The Entity class stores any object.
+/** The Entity class stores any object within the game world. It is the root node of our entity inheritance hierarchy.
  */
 public abstract class Entity{
 
@@ -19,6 +19,8 @@ public abstract class Entity{
     private boolean toBeRemoved;
 
     /**
+     * A constructor that can be used in unit tests.
+     *
      * @param position The current position of the Entity
      * @param kroy The Kroy class that owns the Entity
      * @param size The size of the Entity, i.e. radius
@@ -32,7 +34,9 @@ public abstract class Entity{
     }
 
     /**
-     * Builds an Entity from a JsonValue object. */
+     * Builds an Entity from a JsonValue object. This is the constructor that is actually used in the game.
+     * @param kroy The Kroy instance in which the Entity lives
+     * @param json The JsonObject instance that holds the information according to which the entity is initialized*/
     public Entity(Kroy kroy, JsonValue json) {
         this.kroy = kroy;
         position = Tools.vector2fromJson(json.get("position"));
@@ -46,9 +50,14 @@ public abstract class Entity{
     }
 
     /**
-     * The update method that is called with every tick of the game. It will be overwritten by one of its subclasses. */
+     * The update method that is called with every tick of the game. It will be overwritten by one of its subclasses.
+     * We do not make it abstract as a subclass might not overwrite it in case no special behaviour is needed.
+     * @param timeDelta The amount of time that has passed since the last tick */
     public void update(float timeDelta) {}
 
+    /**
+     * The render method renders the entity to the Kroy instance's screen. This method must always be called within the
+     * context of batch.begin(), as it makes use of sprite.draw(batch). */
     public void render() {
         SpriteBatch batch = kroy.getBatch();
         float shortSide = Math.min(sprite.getWidth(), sprite.getHeight());
@@ -59,6 +68,9 @@ public abstract class Entity{
         sprite.draw(batch);
     }
 
+
+    /**
+     * The drawShapes method draws any shapes to the screen, using the Kroy instance's shape renderer. */
     public void drawShapes() { }
 
     /**
@@ -68,16 +80,18 @@ public abstract class Entity{
         return position.dst2(v) < size * size;
     }
 
+    /**
+     * When called, the entity will be removed from the game during the next tick. */
+    public void removeSelf() {
+        toBeRemoved = true;
+    }
+
     public Vector2 getPosition() {
         return position;
     }
 
     public Kroy getKroy() {
         return kroy;
-    }
-
-    public void removeSelf() {
-        toBeRemoved = true;
     }
 
     public boolean isToBeRemoved() {

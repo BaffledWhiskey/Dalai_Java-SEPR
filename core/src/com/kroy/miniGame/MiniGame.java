@@ -1,6 +1,10 @@
 package com.kroy.miniGame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonValue;
@@ -18,6 +22,7 @@ public class MiniGame extends BaseGame {
     ArrayList<Invader> toBeRemoved;
     Vector2 mousePosition;
 
+    float hammerSize;
     float hammerSize2;
     float invaderKillRadius2;
     JsonValue invaderJson;
@@ -31,19 +36,24 @@ public class MiniGame extends BaseGame {
         this.fireStation = fireStation;
         float difficulty = fireStation.getMiniGameDifficulty();
 
-        fireStationSprite = new Sprite(fireStation.getSprite());
-        fireStationSprite.setPosition(0, 0);
-
         JsonValue miniGameJson = fireStation.getMiniGameJson();
         duration = miniGameJson.getFloat("duration");
         spawnRate = miniGameJson.getFloat("spawnRate") * difficulty;
-        hammerSize2 = miniGameJson.getFloat("hammerSize");
-        hammerSize2 *= hammerSize2;
+        hammerSize = miniGameJson.getFloat("hammerSize");
+        hammerSize2 = hammerSize * hammerSize;
         invaderJson = miniGameJson.get("invaderType");
+
+        fireStationSprite = new Sprite(fireStation.getSprite());
+        fireStationSprite.setPosition(0, 0);
+        float size = Math.max(fireStationSprite.getHeight(), fireStationSprite.getWidth());
         invaderKillRadius2 = invaderJson.getFloat("killRadius");
+        fireStationSprite.setScale(invaderKillRadius2 / size);
+        invaderKillRadius2 *= invaderKillRadius2;
 
         invaders = new ArrayList<>();
         toBeRemoved = new ArrayList<>();
+
+        // Initialize some initial invaders
         for (int i = 0; i < miniGameJson.getInt("initialInvaderQty"); ++i)
             invaders.add(new Invader(this, invaderJson));
         mousePosition = new Vector2(0, 0);
@@ -89,21 +99,27 @@ public class MiniGame extends BaseGame {
         // Garbage collect dead invaders
         invaders.removeAll(toBeRemoved);
         toBeRemoved.clear();
+
+        // Draw hammer
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT))
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        else
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLUE);
+        shapeRenderer.circle(mousePosition.x, mousePosition.y, hammerSize);
+        shapeRenderer.end();
     }
 
     /**
      * Handle clicks, i.e. kill invaders that are clicked on. */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Ray pickRay = camera.getPickRay(screenX, screenY);
-        Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
-
         // Do not allow the player to just hit the centre to avoid loosing
-        if (pos.len2() < invaderKillRadius2)
+        if (mousePosition.len2() < invaderKillRadius2)
             return true;
 
         for (Invader invader : invaders)
-            if (invader.position.dst2(pos) < hammerSize2)
+            if (invader.position.dst2(mousePosition) < hammerSize2)
                 toBeRemoved.add(invader);
         return true;
     }
