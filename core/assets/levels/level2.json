@@ -1,5 +1,5 @@
 {
-  "mapFile": "maps/map2/map.tmx",
+  "mapFile": "maps/map1/map.tmx",
   "entities": {
     "FireEngine": [
       {
@@ -99,20 +99,21 @@
         "refillRate": 100,
         "miniGame": {
           "interval": 30,
-          "intervalOffset": 60,
+          "intervalOffset": 10,
           "duration": 10.0,
           "spawnRate": 1,
           "hammerSize": 150,
           "initialInvaderQty": 5,
           "invaderType": {
             "killRadius": 300,
+            "size": 100,
             "spawnDistance": 1000,
             "img": "Sprites/Alien.png",
             "shyness": 2,
             "shynessRange": 0.01,
             "movementSpeed": 200
           }
-      }
+        }
       }
     ],
 
@@ -134,6 +135,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",
@@ -161,6 +163,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",
@@ -187,6 +190,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",
@@ -213,6 +217,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",
@@ -239,6 +244,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",
@@ -265,6 +271,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
+          "maxAge":30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/bubble.png",

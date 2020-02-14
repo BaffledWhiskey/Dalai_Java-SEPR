@@ -10,6 +10,8 @@ import com.kroy.screens.Kroy;
 public class Alien extends Movable implements Combatant{
 
     CombatComponent combatComponent;
+    float age;
+    float maxAge;
 
     /**
      * The constructor for an Alien that can be used for testing. Note that this is not the constructor that is used in
@@ -24,9 +26,12 @@ public class Alien extends Movable implements Combatant{
      * @param checkCollisions If false, then no collision checking will be donw, i.e. the Movable can move through walls and over water
      * @param combatComponent The Alien's combat component that it will use for combat
      */
-    public Alien(Kroy kroy, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, CombatComponent combatComponent) {
+    public Alien(Kroy kroy, Vector2 position, float size, Sprite sprite, int health, float movementSpeed, boolean checkCollisions, CombatComponent combatComponent, float maxAge) {
         super(kroy, position, size, sprite, health, movementSpeed, checkCollisions);
         this.combatComponent = combatComponent;
+        this.age = 0;
+        this.maxAge = maxAge;
+
     }
 
     /**
@@ -38,6 +43,8 @@ public class Alien extends Movable implements Combatant{
         super(kroy, json);
         setVelocity(new Vector2(movementSpeed, 0).rotate((float) (Math.random() * 360f)));
         combatComponent = new CombatComponent(this, json.get("combat"));
+        this.age = 0;
+        this.maxAge = json.getFloat("maxAge");
     }
 
     /**
@@ -45,6 +52,13 @@ public class Alien extends Movable implements Combatant{
      *
      * @param deltaTime The amount of time that has passed since the last tick */
     public void update(float deltaTime) {
+        age += deltaTime;
+
+        // If the alien is above a certain age, make it slowly loose health. This limits the total amount of aliens in
+        // the game.
+        if (age > maxAge)
+            addHealth(-3 * deltaTime);
+
         combatComponent.update(deltaTime);
 
         // If the alien hits a wall, turn by 180 degrees

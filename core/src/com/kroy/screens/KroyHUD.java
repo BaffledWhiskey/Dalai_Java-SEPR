@@ -40,14 +40,14 @@ public class KroyHUD implements Disposable {
         stage = new Stage(viewport, batch);
 
         table = new Table();
-        table.top();
-        table.setFillParent(true);
+        table.top(); // position all elements at the top of the table
+        table.setFillParent(true); // Let the table fill up the entire space on the screen
 
         // Create font for our labels
         white = new BitmapFont(Gdx.files.internal("skin/fonts/default.fnt"), false);
         Label.LabelStyle labelStyle = new Label.LabelStyle(white, Color.WHITE);
 
-        // Create the widgets that will be displayed in the HUD
+        // Create the label that displays the game time
         timeLabel = new Label("Game Time", labelStyle);
         timeLabel.setFontScale(5f);
 
@@ -55,7 +55,7 @@ public class KroyHUD implements Disposable {
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                controller.startMainMenu();
             }
         });
 

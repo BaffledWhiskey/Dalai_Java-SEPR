@@ -13,6 +13,7 @@ public class Invader {
     Vector2 position;
     Vector2 velocity;
     Vector2 acceleration;
+    float size;
     float movementSpeed;
     float shynessRange;
     float shyness;
@@ -28,6 +29,7 @@ public class Invader {
         shyness = json.getFloat("shyness");
         shynessRange = json.getFloat("shynessRange");
         killRadius2 = json.getFloat("killRadius");
+        size = json.getFloat("size");
         killRadius2 *= killRadius2;
     }
 
@@ -52,8 +54,10 @@ public class Invader {
 
     public void render() {
         SpriteBatch batch = miniGame.getBatch();
+        // Apply necessary transformations to the sprite
         sprite.setRotation(velocity.angle());
-        sprite.setPosition(position.x, position.y);
+        sprite.setPosition(position.x - sprite.getWidth() * 0.5f, position.y - sprite.getHeight() * 0.5f);
+        sprite.setScale(size / Math.min(sprite.getHeight(), sprite.getWidth()));
         sprite.draw(batch);
     }
 }

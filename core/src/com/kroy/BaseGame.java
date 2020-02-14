@@ -34,6 +34,7 @@ public class BaseGame implements Screen, InputProcessor {
 
     /**
      * A wrapper around the central AssetManager.
+     *
      * @param path The path to the image to be used as the Texture, relative to the assets folder */
     public Sprite getSprite(String path) {
         if (!assetManager.contains(path)) {

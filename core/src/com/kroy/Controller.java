@@ -24,16 +24,25 @@ public class Controller extends Game {
 
     Kroy kroy;
     MiniGame miniGame;
+    MainMenuScreen mainMenuScreen;
 
     public void create() {
-        setScreen(new MainMenuScreen(this));
+        // The first screen we show is the MainMenu screen
+        mainMenuScreen = new MainMenuScreen(this);
+        setScreen(mainMenuScreen);
     }
 
-    public void render() {
-        super.render();
+    public void dispose() {
+        if (kroy != null)
+            kroy.dispose();
+        if (miniGame != null)
+            miniGame.dispose();
+        super.dispose();
     }
 
-    public void dispose() {}
+    public void startMainMenu() {
+        setScreen(mainMenuScreen);
+    }
 
     public void startGame(String levelFile) {
         kroy = new Kroy(this, levelFile);

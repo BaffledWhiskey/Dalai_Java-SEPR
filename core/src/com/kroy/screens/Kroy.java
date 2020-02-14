@@ -179,6 +179,12 @@ public class Kroy extends BaseGame {
 
         getKroyHUD().update(deltaTime);
 
+        if (hasWon()) {
+            // TODO
+        } else if (hasLost()) {
+            // TODO
+        }
+
         if (waitingMiniGameFireStation != null)
             controller.startMiniGame(waitingMiniGameFireStation);
     }
@@ -277,5 +283,13 @@ public class Kroy extends BaseGame {
         multiplexer.addProcessor(kroyHUD.stage);
         multiplexer.addProcessor(this);
         return multiplexer;
+    }
+
+    public boolean hasWon() {
+        return getEntitiesOfType(Fortress.class).isEmpty();
+    }
+
+    public boolean hasLost() {
+        return getEntitiesOfType(FireEngine.class).isEmpty();
     }
 }

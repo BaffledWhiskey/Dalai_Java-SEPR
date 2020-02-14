@@ -1,6 +1,5 @@
 package com.kroy.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -52,6 +51,7 @@ public class MainMenuScreen implements Screen{
     public void show() {
         //Stage should control input:
         Gdx.input.setInputProcessor(stage);
+        stage.clear();
 
         //Create Table
         Table mainTable = new Table();
@@ -60,10 +60,11 @@ public class MainMenuScreen implements Screen{
         //Set alignment of contents in the table.
         mainTable.center();
 
+        // Add Kroy label
         mainTable.add(new Label("Kroy", skin)).pad(40);
         mainTable.row();
 
-        //Create buttons
+        //Create and add level buttons
         TextButton levelButtons[] = new TextButton[levelFiles.length];
         for (int i = 0; i < levelFiles.length; i++) {
             levelButtons[i] = new TextButton("Level " + (i + 1), skin);
@@ -78,18 +79,29 @@ public class MainMenuScreen implements Screen{
             mainTable.add(levelButtons[i]).pad(20);
             mainTable.row();
         }
-        TextButton exitButton = new TextButton("Exit", skin);
 
-        //Add listener to exit button
-        exitButton.addListener(new ClickListener(){
+        // Create and add Resume button if needed
+        if (controller.getKroy() != null) {
+            TextButton resumeButton = new TextButton("Resume", skin);
+            resumeButton.addListener(new ClickListener(){
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    controller.resumeGame();
+                }
+            });
+            mainTable.add(resumeButton).pad(20);
+            mainTable.row();
+        }
+
+        // Create and add quit button
+        TextButton quitButton = new TextButton("Quit", skin);
+        quitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
-
-
-        mainTable.add(exitButton).pad(20);
+        mainTable.add(quitButton).pad(20);
 
         //Add table to stage
         stage.addActor(mainTable);

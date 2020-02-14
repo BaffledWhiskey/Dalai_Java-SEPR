@@ -119,7 +119,7 @@ public class MiniGame extends BaseGame {
             return true;
 
         for (Invader invader : invaders)
-            if (invader.position.dst2(mousePosition) < hammerSize2)
+            if (invader.position.dst(mousePosition) < hammerSize + invader.size)
                 toBeRemoved.add(invader);
         return true;
     }
