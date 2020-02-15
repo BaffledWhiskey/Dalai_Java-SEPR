@@ -43,7 +43,7 @@ public class EntityTest {
      }
 
     @Test
-    public void testCollides() {
+    public void CollidesTest() {
          TestEntity e = new TestEntity(mockedKroy, new Vector2(10.0f, 10.0f), 5.0f, mockedSprite);
          assertTrue(e.collides(new Vector2(10.0f, 10.0f)));
          assertTrue(e.collides(new Vector2(10.0f, 14.0f)));
@@ -51,14 +51,14 @@ public class EntityTest {
     }
 
     @Test
-    public void testRemoveSelf() {
+    public void RemoveSelfTest() {
         TestEntity e = new TestEntity(mockedKroy, new Vector2(10.0f, 10.0f), 5.0f, mockedSprite);
         e.removeSelf();
         assertTrue(e.isToBeRemoved());
     }
 
     @Test
-    public void testJSONInitializer() {
+    public void JSONInitializerTest() {
         JsonValue json = new JsonReader().parse("{\"position\": {\"x\": 10, \"y\": 10}, \"size\": 5, \"img\": \"Sprites/FireEngine1.png\"}");
         TestEntity e = new TestEntity(mockedKroy, json);
         assertEquals(e.getPosition(), new Vector2(10f, 10f));
