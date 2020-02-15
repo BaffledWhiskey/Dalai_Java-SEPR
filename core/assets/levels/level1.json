@@ -52,7 +52,7 @@
         "movementSpeed": 400,
         "water": 500,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/waterDrum.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
@@ -76,14 +76,14 @@
         "position": {"row": 29, "column": 8},
         "size": 150,
         "img": "Sprites/FireEngine6.png",
-        "health": 1000,
-        "movementSpeed": 1000,
-        "water": 3000,
+        "health": 750,
+        "movementSpeed": 400,
+        "water": 1500,
         "combat": {
           "img": "Sprites/cow.png",
-          "damage": 100,
+          "damage": 15,
           "range": 500,
-          "reloadTime": 0.1
+          "reloadTime": 2
         }
       }
     ],
@@ -123,20 +123,20 @@
         "img": "Sprites/stationInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
         },
         "alienSpawnRate": 0.25,
         "alienType": {
-          "position": {"row": 6.5, "column": 11},
+          "position": {"row": 8.5, "column": 12.5},
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -150,20 +150,20 @@
         "img": "Sprites/towerInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
         },
         "alienSpawnRate": 0.25,
         "alienType": {
-          "position": {"row": 18, "column": 6.5},
+          "position": {"row": 18.5, "column": 6.5},
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -176,21 +176,21 @@
         "img": "Sprites/raceCourseInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
-          "reloadTime": 1
+          "reloadTime": 3
         },
-        "alienSpawnRate": 0.25,
+        "alienSpawnRate": 0.1,
         "alienType": {
-          "position": {"row": 18, "column": 6.5},
-          "size": 160,
+          "position": {"row": 7.5, "column": 2.5},
+          "size": 480,
           "img": "Sprites/Alien.png",
-          "health": 50,
+          "health": 250,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
-            "damage": 5,
+            "img": "Sprites/slime.png",
+            "damage": 15,
             "range": 300,
             "reloadTime": 1
           }
@@ -202,21 +202,21 @@
         "img": "Sprites/centralHallInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
-          "reloadTime": 1
+          "reloadTime": 3
         },
-        "alienSpawnRate": 0.25,
+        "alienSpawnRate": 0.50,
         "alienType": {
-          "position": {"row": 18, "column": 6.5},
-          "size": 160,
+          "position": {"row": 23.5, "column": 26.5},
+          "size": 50,
           "img": "Sprites/Alien.png",
-          "health": 50,
-          "movementSpeed":  300,
+          "health": 10,
+          "movementSpeed":  400,
           "combat": {
-            "img": "Sprites/bubble.png",
-            "damage": 5,
+            "img": "Sprites/slime.png",
+            "damage": 1,
             "range": 300,
             "reloadTime": 1
           }
@@ -228,20 +228,20 @@
         "img": "Sprites/minsterInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
+          "img": "Sprites/slime.png",
           "damage": 10,
           "range": 300,
           "reloadTime": 1
         },
         "alienSpawnRate": 0.25,
         "alienType": {
-          "position": {"row": 18, "column": 6.5},
+          "position": {"row": 8.5, "column": 25.5},
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
@@ -254,20 +254,20 @@
         "img": "Sprites/airFieldInfected.png",
         "health": 100,
         "combat": {
-          "img": "Sprites/bubble.png",
-          "damage": 10,
+          "img": "Sprites/bomb.png",
+          "damage": 20,
           "range": 300,
-          "reloadTime": 1
+          "reloadTime": 2
         },
         "alienSpawnRate": 0.25,
         "alienType": {
-          "position": {"row": 18, "column": 6.5},
+          "position": {"row": 5.5, "column": 29.5},
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
           "movementSpeed":  300,
           "combat": {
-            "img": "Sprites/bubble.png",
+            "img": "Sprites/slime.png",
             "damage": 5,
             "range": 300,
             "reloadTime": 1
