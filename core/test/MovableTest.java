@@ -37,7 +37,7 @@ public class MovableTest {
     }
 
     @Test
-    public void ShouldBeAbleToChangeVelocity(){
+    public void ShouldBeAbleToChangeVelocityTest(){
         TestMovable movable1 = new TestMovable(mockedKroy, new Vector2(0.0f, 0.0f)
                 , 5.0f, mockedSprite1, 100, 0
                 , false);
