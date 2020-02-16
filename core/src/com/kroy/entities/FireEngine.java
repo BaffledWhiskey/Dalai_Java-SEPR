@@ -149,9 +149,11 @@ public class FireEngine extends Movable implements Combatant {
      */
     @Override
     public float attackDamage(Unit target) {
-        if (attack)
-            return Math.min(water, combatComponent.getDamage());
-        return 0;
+        if (!attack)
+            return 0;
+        if (target.getClass() == Fortress.class && !((Fortress) target).isOccupied)
+            return 0;
+        return Math.min(water, combatComponent.getDamage());
     }
 
     public void setWater(float water) {

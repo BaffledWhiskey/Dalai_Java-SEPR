@@ -121,6 +121,7 @@
         "position": {"row": 6.5, "column": 12.5},
         "sizeInTiles": 3,
         "img": "Sprites/stationInfected.png",
+        "neutralImg": "Sprites/station.png",
         "health": 100,
         "combat": {
           "img": "Sprites/slime.png",
@@ -148,6 +149,7 @@
         "position": {"row": 16.5, "column": 6.5},
         "sizeInTiles": 3,
         "img": "Sprites/towerInfected.png",
+        "neutralImg": "Sprites/tower.png",
         "health": 100,
         "combat": {
           "img": "Sprites/slime.png",
@@ -174,6 +176,7 @@
         "position": {"row": 5.5, "column": 2.5},
         "sizeInTiles": 3,
         "img": "Sprites/raceCourseInfected.png",
+        "neutralImg": "Sprites/raceCourse.png",
         "health": 100,
         "combat": {
           "img": "Sprites/slime.png",
@@ -200,6 +203,7 @@
         "position": {"row": 21.5, "column": 26.5},
         "sizeInTiles": 3,
         "img": "Sprites/centralHallInfected.png",
+        "neutralImg": "Sprites/centralHall.png",
         "health": 100,
         "combat": {
           "img": "Sprites/slime.png",
@@ -226,6 +230,7 @@
         "position": {"row": 6.5, "column": 25.5},
         "sizeInTiles": 3,
         "img": "Sprites/minsterInfected.png",
+        "neutralImg": "Sprites/minster.png",
         "health": 100,
         "combat": {
           "img": "Sprites/slime.png",
@@ -252,6 +257,7 @@
         "position": {"row": 3.5, "column": 29.5},
         "sizeInTiles": 3,
         "img": "Sprites/airFieldInfected.png",
+        "neutralImg": "Sprites/airField.png",
         "health": 100,
         "combat": {
           "img": "Sprites/bomb.png",
