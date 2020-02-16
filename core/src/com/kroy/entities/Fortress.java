@@ -61,6 +61,9 @@ public class Fortress extends Unit implements Combatant {
             if (Math.random() < alienSpawnRate * deltaTime) {
                 spawnAlien();
             }
+
+            // Increase the fortress' damage over time
+            combatComponent.setDamage(combatComponent.getDamage() + 0.5f * deltaTime);
         }
 
         super.update(deltaTime);

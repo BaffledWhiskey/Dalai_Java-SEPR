@@ -122,6 +122,11 @@ public class CombatComponent {
     public float getDamage() {
         return damage;
     }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
+    }
+
     public float getRange() {
         return range;
     }
