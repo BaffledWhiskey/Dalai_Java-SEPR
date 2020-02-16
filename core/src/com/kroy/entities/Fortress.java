@@ -12,6 +12,7 @@ public class Fortress extends Unit implements Combatant {
     private JsonValue alienJSON;
     private Sprite neutralSprite;
     public boolean isOccupied;
+    int scoreValue; // The amount of points awarded for freeing this fortress
 
     /**
      * The constructor for a Fortress that can be used for testing. Note that this is not the constructor that is used in
@@ -69,6 +70,7 @@ public class Fortress extends Unit implements Combatant {
     protected void onHealthBelowZero() {
         isOccupied = false;
         setSprite(neutralSprite);
+        //getKroy().addScore();
     }
 
     /**
@@ -81,7 +83,7 @@ public class Fortress extends Unit implements Combatant {
     /**
      * Attacks the nearest enemy. */
     private void attackNearestEnemy() {
-        combatComponent.attack(getClosestOfTypes(new Class[]{FireEngine.class}));
+        combatComponent.attack((Unit) getClosestOfTypes(new Class[]{FireEngine.class}));
     }
 
     public CombatComponent getCombatComponent() {

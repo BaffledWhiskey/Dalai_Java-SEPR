@@ -1,6 +1,7 @@
 package com.kroy.entities;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.screens.Kroy;
 
@@ -93,6 +94,19 @@ public class CombatComponent {
         if (target == null)
             return false;
         return entity.getPosition().dst2(target.position) <= range * range;
+    }
+
+
+    /**
+     * Checks whether a given position is within range of the combat component.
+     *
+     * @param pos The position in question
+     * @return
+     */
+    public boolean isInRange(Vector2 pos) {
+        if (pos == null)
+            return false;
+        return entity.getPosition().dst2(pos) <= range * range;
     }
 
     /**

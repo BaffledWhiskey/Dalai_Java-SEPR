@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Ray;
 
 /**
  * A helper class to reduce code duplication between the main Kroy game and the MiniGame. */
@@ -20,7 +22,9 @@ public class BaseGame implements Screen, InputProcessor {
     protected OrthographicCamera camera;
     protected SpriteBatch batch;
     protected ShapeRenderer shapeRenderer;
+    protected Vector2 mousePosition;
     AssetManager assetManager;
+
 
     public BaseGame(Controller controller) {
         this.controller = controller;
@@ -30,6 +34,7 @@ public class BaseGame implements Screen, InputProcessor {
         shapeRenderer = new ShapeRenderer();
         shapeRenderer.setAutoShapeType(true);
         assetManager = new AssetManager();
+        mousePosition = new Vector2(0, 0);
     }
 
     /**
@@ -89,6 +94,8 @@ public class BaseGame implements Screen, InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Ray pickRay = camera.getPickRay(screenX, screenY);
+        mousePosition.set(pickRay.origin.x, pickRay.origin.y);
         return false;
     }
 
@@ -144,5 +151,9 @@ public class BaseGame implements Screen, InputProcessor {
 
     public InputProcessor getInputProcessor() {
         return this;
+    }
+
+    public Vector2 getMousePosition() {
+        return mousePosition;
     }
 }

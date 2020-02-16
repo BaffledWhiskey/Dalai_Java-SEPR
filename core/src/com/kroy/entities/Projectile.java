@@ -48,7 +48,6 @@ public class Projectile extends Movable {
      * This is the method that gets called when the projectile hits its target.
      */
     void impact() {
-        System.out.println("impact");
         target.addHealth(-damage);
         removeSelf();
     }

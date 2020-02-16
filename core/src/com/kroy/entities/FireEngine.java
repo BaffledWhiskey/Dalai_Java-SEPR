@@ -17,6 +17,7 @@ public class FireEngine extends Movable implements Combatant {
     float originalMovementSpeed;
     private CombatComponent combatComponent;
     private boolean attack;
+    private Vector2 targetPos;
 
     /**
      * The constructor for a FireEngine that can be used for testing. Note that this is not the constructor that is used in
@@ -62,10 +63,11 @@ public class FireEngine extends Movable implements Combatant {
     public void update(float deltaTime) {
         if (isSelected())
             handleUserInput();
-        if (attack)
-            attackNearestEnemy();
 
         combatComponent.update(deltaTime);
+
+        if (attack || hasValidTargetPos())
+            attackNearestEnemyFromTargetPos();
 
         // Adapt the movement speed to the tile type that the fire engine is moving over
         TiledMapTile tile = kroy.getTile(position);
@@ -73,6 +75,14 @@ public class FireEngine extends Movable implements Combatant {
         movementSpeed = originalMovementSpeed * speedFactor;
 
         super.update(deltaTime);
+    }
+
+    /**
+     * Returns whether the fire engine's target pos is valid. */
+    private boolean hasValidTargetPos() {
+        if (targetPos == null)
+            return false;
+        return combatComponent.isInRange(targetPos);
     }
 
     /**
@@ -100,9 +110,17 @@ public class FireEngine extends Movable implements Combatant {
     }
 
     /**
-     * Helper function to attack the nearest enemy (i.e. nearest Alien of Fortress). */
-    private void attackNearestEnemy() {
-        combatComponent.attack(getClosestOfTypes(new Class[]{Alien.class, Fortress.class}));
+     * Helper function to attack the nearest enemy to the target pos (i.e. nearest Alien of Fortress). If the target
+     * pos is out of range, attack the nearest enemy. */
+    private void attackNearestEnemyFromTargetPos() {
+        Entity target;
+        Class[] targetClasses = new Class[]{Alien.class, Fortress.class};
+        if (hasValidTargetPos()) {
+            target = getClosestOfTypes(targetClasses, targetPos);
+        } else {
+            target = getClosestOfTypes(targetClasses);
+        }
+        combatComponent.attack((Unit) target);
     }
 
     /**
@@ -175,5 +193,9 @@ public class FireEngine extends Movable implements Combatant {
 
     public boolean isSelected() {
         return getKroy().getSelectedFireEngine() == this;
+    }
+
+    public void setTargetPos(Vector2 pos) {
+        targetPos = pos;
     }
 }

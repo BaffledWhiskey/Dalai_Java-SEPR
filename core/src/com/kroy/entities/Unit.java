@@ -95,16 +95,23 @@ public abstract class Unit extends Entity {
      * Returns the unit that is the closest to this Unit and is of one of the given types.
      *
      * @param types The types that are allowed */
-    public Unit getClosestOfTypes(Class[] types) {
-        Unit closest = null;
+    public Entity getClosestOfTypes(Class[] types) {
+        return getClosestOfTypes(types, getPosition());
+    }
+
+    /**
+     * Returns the unit that is the closest to the given position and is of one of the given types.
+     *
+     * @param types The types that are allowed */
+    public Entity getClosestOfTypes(Class[] types, Vector2 pos) {
+        Entity closest = null;
         float closestDistance = Float.POSITIVE_INFINITY;
 
         for (Class klass : types)
             for (Entity entity : getKroy().getEntitiesOfType(klass)) {
-                Unit unit = (Unit) entity;
-                float dst2 = unit.position.dst2(getPosition());
+                float dst2 = entity.position.dst2(pos);
                 if (dst2 < closestDistance) {
-                    closest = unit;
+                    closest = entity;
                     closestDistance = dst2;
                 }
             }
@@ -118,6 +125,10 @@ public abstract class Unit extends Entity {
 
     public void setHealth(float health) {
         this.health = Math.max(0, Math.min(health, maxHealth));
+    }
+
+    public float getMaxHealth() {
+        return maxHealth;
     }
 
     public void addHealth(float delta) {

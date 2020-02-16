@@ -7,7 +7,6 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.BaseGame;
@@ -33,6 +32,7 @@ public class Kroy extends BaseGame {
     private FireStation waitingMiniGameFireStation;
 
     private float time;
+    private int score;
 
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
@@ -48,6 +48,7 @@ public class Kroy extends BaseGame {
         entities = new ArrayList<>();
         entityTypes = new HashMap<>();
         time = 0f;
+        score = 0;
         kroyHUD = new KroyHUD(controller);
         // Load level from JSON file
         loadLevel(levelFile);
@@ -184,11 +185,8 @@ public class Kroy extends BaseGame {
 
         getKroyHUD().update(deltaTime);
 
-        if (hasWon()) {
-            // TODO
-        } else if (hasLost()) {
-            // TODO
-        }
+        if (hasWon() || hasLost())
+            controller.startMainMenu(); // return to main menu
 
         if (waitingMiniGameFireStation != null)
             controller.startMiniGame(waitingMiniGameFireStation);
@@ -243,17 +241,23 @@ public class Kroy extends BaseGame {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        // If you click on a fire Engine, set the selectedFireEngine to the according FireEngine.
-        // If no fire engine is selected, set selectedFireEngine to null.
-        Ray pickRay = camera.getPickRay(screenX, screenY);
-        Vector2 pos = new Vector2(pickRay.origin.x, pickRay.origin.y);
-
-        for (Entity entity : getEntitiesOfType(FireEngine.class)) {
-            FireEngine fireEngine = (FireEngine) entity;
-            if (fireEngine.collides(pos)) {
-                setSelectedFireEngine(fireEngine);
+        switch (button) {
+            case Input.Buttons.LEFT:
+                // If you click on a fire Engine, set the selectedFireEngine to the according FireEngine.
+                // If no fire engine is selected, set selectedFireEngine to null.
+                for (Entity entity : getEntitiesOfType(FireEngine.class)) {
+                    FireEngine fireEngine = (FireEngine) entity;
+                    if (fireEngine.collides(mousePosition)) {
+                        setSelectedFireEngine(fireEngine);
+                        break;
+                    }
+                }
                 break;
-            }
+            case Input.Buttons.RIGHT:
+                if (getSelectedFireEngine() == null)
+                    break;
+                getSelectedFireEngine().setTargetPos(mousePosition);
+                break;
         }
         return true;
     }
@@ -291,10 +295,23 @@ public class Kroy extends BaseGame {
     }
 
     public boolean hasWon() {
-        return getEntitiesOfType(Fortress.class).isEmpty();
+        for (Entity entity : getEntitiesOfType(Fortress.class)) {
+            Fortress fortress = (Fortress) entity;
+            if (fortress.isOccupied)
+                return false;
+        }
+        return true;
     }
 
     public boolean hasLost() {
         return getEntitiesOfType(FireEngine.class).isEmpty();
+    }
+
+    public void addScore(int value) {
+        score += value;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

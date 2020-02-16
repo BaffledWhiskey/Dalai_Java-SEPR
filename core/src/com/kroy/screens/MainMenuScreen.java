@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -27,7 +25,7 @@ public class MainMenuScreen implements Screen{
     private TextureAtlas atlas;
     protected Skin skin;
 
-    String[] levelFiles = new String[]{"levels/level1.json", "levels/level2.json"};
+    String[] levelFiles = new String[]{"levels/level1.json"}; // Add new level files here
 
     public MainMenuScreen(Controller controller)
     {
@@ -61,13 +59,27 @@ public class MainMenuScreen implements Screen{
         mainTable.center();
 
         // Add Kroy label
-        mainTable.add(new Label("Kroy", skin)).pad(40);
+        Texture kroyLogoTexture = new Texture("KROY_logo.png");
+        Image kroyLogo = new Image(kroyLogoTexture);
+        mainTable.add(kroyLogo);
         mainTable.row();
+
+        if (controller.getKroy() != null) {
+            if (controller.getKroy().hasWon()) {
+                Label hasWonLabel = new Label("You won!", skin);
+                mainTable.add(hasWonLabel);
+                mainTable.row();
+            } else if (controller.getKroy().hasLost()) {
+                Label hasLostLabel = new Label("You Lost!", skin);
+                mainTable.add(hasLostLabel);
+                mainTable.row();
+            }
+        }
 
         //Create and add level buttons
         TextButton levelButtons[] = new TextButton[levelFiles.length];
         for (int i = 0; i < levelFiles.length; i++) {
-            levelButtons[i] = new TextButton("Level " + (i + 1), skin);
+            levelButtons[i] = new TextButton("Play Level " + (i + 1), skin);
             final int finalI = i;
             levelButtons[i].addListener(new ClickListener(){
                 @Override
@@ -81,7 +93,7 @@ public class MainMenuScreen implements Screen{
         }
 
         // Create and add Resume button if needed
-        if (controller.getKroy() != null) {
+        if (controller.getKroy() != null && !(controller.getKroy().hasLost() || controller.getKroy().hasWon())) {
             TextButton resumeButton = new TextButton("Resume", skin);
             resumeButton.addListener(new ClickListener(){
                 @Override

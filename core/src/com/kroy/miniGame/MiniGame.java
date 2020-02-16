@@ -20,7 +20,6 @@ public class MiniGame extends BaseGame {
     Sprite fireStationSprite;
     ArrayList<Invader> invaders;
     ArrayList<Invader> toBeRemoved;
-    Vector2 mousePosition;
 
     float hammerSize;
     float hammerSize2;
@@ -56,7 +55,6 @@ public class MiniGame extends BaseGame {
         // Initialize some initial invaders
         for (int i = 0; i < miniGameJson.getInt("initialInvaderQty"); ++i)
             invaders.add(new Invader(this, invaderJson));
-        mousePosition = new Vector2(0, 0);
     }
 
     public void onWin() {
@@ -118,16 +116,5 @@ public class MiniGame extends BaseGame {
             if (invader.position.dst(mousePosition) < hammerSize + invader.size)
                 toBeRemoved.add(invader);
         return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        Ray pickRay = camera.getPickRay(screenX, screenY);
-        mousePosition.set(pickRay.origin.x, pickRay.origin.y);
-        return true;
-    }
-
-    public Vector2 getMousePosition() {
-        return mousePosition;
     }
 }

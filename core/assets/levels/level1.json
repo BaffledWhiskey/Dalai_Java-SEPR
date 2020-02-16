@@ -136,7 +136,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
-          "maxAge":30,
+          "maxAge": 30,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/slime.png",
@@ -165,7 +165,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
-          "maxAge":30,
+          "maxAge": 10,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/slime.png",
@@ -192,7 +192,7 @@
           "position": {"row": 7.5, "column": 2.5},
           "size": 480,
           "img": "Sprites/Alien.png",
-          "maxAge":30,
+          "maxAge": 10,
           "health": 250,
           "movementSpeed":  300,
           "combat": {
@@ -220,7 +220,7 @@
           "position": {"row": 23.5, "column": 26.5},
           "size": 50,
           "img": "Sprites/Alien.png",
-          "maxAge":30,
+          "maxAge": 10,
           "health": 10,
           "movementSpeed":  400,
           "combat": {
@@ -249,7 +249,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
-          "maxAge":30,
+          "maxAge": 10,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/slime.png",
@@ -277,7 +277,7 @@
           "size": 160,
           "img": "Sprites/Alien.png",
           "health": 50,
-          "maxAge":30,
+          "maxAge": 10,
           "movementSpeed":  300,
           "combat": {
             "img": "Sprites/slime.png",

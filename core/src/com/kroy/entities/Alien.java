@@ -57,7 +57,7 @@ public class Alien extends Movable implements Combatant{
         // If the alien is above a certain age, make it slowly loose health. This limits the total amount of aliens in
         // the game.
         if (age > maxAge)
-            addHealth(-3 * deltaTime);
+            addHealth(getMaxHealth() * -0.25f * deltaTime);
 
         combatComponent.update(deltaTime);
 
@@ -68,7 +68,7 @@ public class Alien extends Movable implements Combatant{
         setVelocity(getVelocity().rotate((float) (Math.random() * 10f - 5f)));
 
         // CombatComponent::attack will do all further checks for us
-        Unit closestEnemy = getClosestOfTypes(new Class[] {FireEngine.class, FireStation.class});
+        Unit closestEnemy = (Unit) getClosestOfTypes(new Class[] {FireEngine.class, FireStation.class});
         combatComponent.attack(closestEnemy);
 
         super.update(deltaTime);
