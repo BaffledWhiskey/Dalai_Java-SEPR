@@ -72,6 +72,7 @@ public class FireStation extends Unit {
             kroy.startMiniGame(this);
         }
 
+        // Refill and repair all fire engines within range
         for (Entity entity : getKroy().getEntitiesOfType(FireEngine.class)) {
             FireEngine fireEngine = (FireEngine) entity;
             if (fireEngine.getPosition().dst2(getPosition()) > repairRange * repairRange)

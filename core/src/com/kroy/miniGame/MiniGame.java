@@ -114,10 +114,6 @@ public class MiniGame extends BaseGame {
      * Handle clicks, i.e. kill invaders that are clicked on. */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // Do not allow the player to just hit the centre to avoid loosing
-        if (mousePosition.len2() < invaderKillRadius2)
-            return true;
-
         for (Invader invader : invaders)
             if (invader.position.dst(mousePosition) < hammerSize + invader.size)
                 toBeRemoved.add(invader);
