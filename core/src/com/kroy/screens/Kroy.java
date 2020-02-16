@@ -37,7 +37,11 @@ public class Kroy extends BaseGame {
     private TiledMap map;
     private OrthogonalTiledMapRenderer mapRenderer;
 
-
+    /**
+     * Default constructor. Loads the level from the given file, assuming that it has the right format.
+     * @param controller The controller that keeps track of the current Screen
+     * @param levelFile The level file's path relative to the assets folder
+     * */
     public Kroy(Controller controller, String levelFile) {
         super(controller);
         toBeAdded = new ArrayList<>();
@@ -52,6 +56,7 @@ public class Kroy extends BaseGame {
 
     /**
      * Adds an Entity to the game.
+     *
      * @param entity The Entity that is to be added */
     public void addEntity(Entity entity) {
         if (isUpdating) {
@@ -66,7 +71,7 @@ public class Kroy extends BaseGame {
     }
 
     /**
-     * Removes all entites that have the isToBeRemoved flag set. */
+     * Removes all entities that have the isToBeRemoved flag set. */
     public void garbageCollectEntities() {
         // Collect all entites with the isToBeRemoved flag
         ArrayList<Entity> toBeRemoved = new ArrayList<Entity>();
