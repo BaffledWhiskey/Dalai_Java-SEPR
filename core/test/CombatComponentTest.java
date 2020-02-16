@@ -15,12 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-class TestCombatComponent extends CombatComponent {
-    public TestCombatComponent(Combatant entity, float damage, float range, float reloadTime){
-        super(entity, damage, range, reloadTime);
-        }
-}
-
 @RunWith(MockitoJUnitRunner.class)
 public class CombatComponentTest {
     @Mock
@@ -40,7 +34,7 @@ public class CombatComponentTest {
         TestUnit unit1 = new TestUnit(mockedKroy, new Vector2(1.0f, 6.0f), 2.0f, mockedSprite1, 100);
         TestUnit unit2 = new TestUnit(mockedKroy, new Vector2(11.0f, 6.0f), 3.0f, mockedSprite2, 100);
         /**Combatant returns null apart from getKroy() gets mockedKroy and getPosition() get (6, 6). */
-        TestCombatComponent combat1 = new TestCombatComponent(new Combatant() {
+        CombatComponent combat1 = new CombatComponent(new Combatant() {
             @Override
             public CombatComponent getCombatComponent() {
                 return null;
@@ -77,7 +71,7 @@ public class CombatComponentTest {
         TestUnit unit1 = new TestUnit(mockedKroy, new Vector2(2.0f, 6.0f), 2.0f, mockedSprite1, 100);
         TestUnit unit2 = new TestUnit(mockedKroy, new Vector2(10.0f, 6.0f), 3.0f, mockedSprite2, 100);
         /**Combatant returns null apart from getKroy() gets mockedKroy and getPosition() get (6, 6). */
-        TestCombatComponent combat1 = new TestCombatComponent(new Combatant() {
+        CombatComponent combat1 = new CombatComponent(new Combatant() {
             @Override
             public CombatComponent getCombatComponent() {
                 return null;
