@@ -5,8 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.utils.JsonValue;
 import com.kroy.BaseGame;
 import com.kroy.Controller;
@@ -21,6 +19,7 @@ public class MiniGame extends BaseGame {
     ArrayList<Invader> invaders;
     ArrayList<Invader> toBeRemoved;
 
+    Sprite background;
     float hammerSize;
     float hammerSize2;
     float invaderKillRadius2;
@@ -48,6 +47,14 @@ public class MiniGame extends BaseGame {
         invaderKillRadius2 = invaderJson.getFloat("killRadius");
         fireStationSprite.setScale(invaderKillRadius2 / size);
         invaderKillRadius2 *= invaderKillRadius2;
+
+        background = getSprite(miniGameJson.getString("background"));
+        float w = background.getWidth();
+        float h = background.getHeight();
+        float screenW = Gdx.graphics.getWidth();
+        float screenH = Gdx.graphics.getHeight();
+        float scalar = Math.min(screenW / w, screenH / h);
+        background.setScale(scalar);
 
         invaders = new ArrayList<>();
         toBeRemoved = new ArrayList<>();
@@ -89,6 +96,7 @@ public class MiniGame extends BaseGame {
 
         // Render invaders
         batch.begin();
+        background.draw(batch);
         for (Invader invader : invaders)
             invader.render();
         fireStationSprite.draw(batch);

@@ -101,6 +101,7 @@
           "interval": 30,
           "intervalOffset": 60,
           "duration": 10.0,
+          "background": "Sprites/Alien.png",
           "spawnRate": 1,
           "hammerSize": 150,
           "initialInvaderQty": 5,
