@@ -99,9 +99,9 @@
         "refillRate": 100,
         "miniGame": {
           "interval": 30,
-          "intervalOffset": 60,
+          "intervalOffset": 5,
           "duration": 10.0,
-          "background": "Sprites/Alien.png",
+          "background": "Sprites/miniGameBackground.png",
           "spawnRate": 1,
           "hammerSize": 150,
           "initialInvaderQty": 5,
