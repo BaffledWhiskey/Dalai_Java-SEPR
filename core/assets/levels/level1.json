@@ -99,7 +99,7 @@
         "refillRate": 100,
         "miniGame": {
           "interval": 30,
-          "intervalOffset": 5,
+          "intervalOffset": 60,
           "duration": 10.0,
           "background": "Sprites/miniGameBackground.png",
           "spawnRate": 1,

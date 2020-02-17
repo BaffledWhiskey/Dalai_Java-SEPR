@@ -55,6 +55,7 @@ public class MiniGame extends BaseGame {
         float screenH = Gdx.graphics.getHeight();
         float scalar = Math.min(screenW / w, screenH / h);
         background.setScale(scalar);
+        background.setPosition(-w * 0.5f, -h * 0.5f);
 
         invaders = new ArrayList<>();
         toBeRemoved = new ArrayList<>();
